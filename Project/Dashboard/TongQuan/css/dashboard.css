@@ -1,0 +1,73 @@
+/* Body */
+body{
+    margin: 0;
+    background-color: #F7F8FC;
+}
+
+/* I. Sidebar */
+.sidebar{
+    background-color: #363740;
+    width: 250px;
+    height: 100%;
+    min-height: 100vh;
+    float: left;
+}
+
+/* II. Content */
+.content{
+    background-color: #F7F8FC;
+    color: brown;
+    width: 1120px;
+    display: inline-block;
+    min-height: 100vh;
+}
+.content div{
+    background-color: green;
+    /* width: -webkit-fill-available; */
+    width: 100%;
+    display: inline-block;
+}
+.content .header{
+    height: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left:35px;
+    margin-right: 35px;
+}
+.content .overview{
+    height: 135px;
+    margin: 10px 35px 10px 35px;
+}
+.content .subjects{
+    margin: 2px 35px 2px 35px;
+}
+.content .subjects .add-subject{
+    height: 50px;
+    margin-bottom: 15px;
+}
+.content .subjects .list-subject{
+    height: 1000px;
+}
+
+/* II.1 Overview */
+.overview div{
+    height: 134px;
+    width: 22.5%;
+    background-color: brown;
+    margin: 0px 1.45% 0px 1.45%;
+}
+div.overview-1{
+    margin-left: 0px;
+}
+div.overview-4{
+    margin-right: 0px;
+}
+
+/* II.2 Subjects */
+.subjects div{
+    background-color: gray;
+}
+div.add-subject{
+    width: 240px;
+    float: right;
+}
