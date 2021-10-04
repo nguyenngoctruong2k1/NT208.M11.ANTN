@@ -2,6 +2,7 @@
 body{
     margin: 0;
     background-color: #F7F8FC;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* I. Sidebar */
@@ -12,6 +13,26 @@ body{
     min-height: 100vh;
     float: left;
 }
+.sidebar div{
+    width: 100%;
+}
+.sidebar .name{
+    height: 128px;
+}
+.sidebar .list-item{
+    height: 360px;
+    border-bottom: #40414A solid 0.5px;
+}
+.sidebar .home{
+    height: 90px;
+}
+
+.sidebar .list-item .item{
+    height: 56px;
+    /* background-color: chartreuse; */
+    margin: 0px;
+}
+
 
 /* II. Content */
 .content{
