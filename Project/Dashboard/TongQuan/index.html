@@ -6,51 +6,475 @@
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- font icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script>
+        $('.dropdown-menu user').on('click', function(e) {
+        if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+
+
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+            $('.dropdown-submenu .show').removeClass("show");
+        });
+        return false;
+        });
+    </script>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="name">
-            DashBoard
-        </div>
-        <div class="list-item">
-            <div class="item">Tổng quan</div>
-            <div class="item">Duyệt tài liệu</div>
-            <div class="item">Đăng tài liệu</div>
-            <div class="item">Bài đăng</div>
-            <div class="item">Bình luận</div>
-            <div class="item">Thành viên</div>
-        </div>
-        <div class="home">
-            Home
-        </div>
-    </div>
-    <div class="content">
-        <div class="header">
-            head
-        </div>
-        <div class="overview">
-            <div class="overview-1">
-                overview-1
+    <div class="container-fluid" style="padding:0px">
+        
+        <div class="sidebar col-md-2 ">
+            <div class="name">
+                DashBoard
             </div>
-            <div class="overview-2">
-                overview-2
+            <div class="list-item">
+                <li class="item horizontal">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Tổng quan</p>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-ticket-alt"></i>
+                        <p>Duyệt tài liệu</p>
+                    </a>
+                </li>
+                    
+                <li class="item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>Đăng tài liệu</p>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-book"></i>
+                        <p>Bài đăng</p>
+                    </a>
+                </li>
+
+                <li class="item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-comments"></i>
+                        <p>Bình luận</p>
+                    </a>
+                </li>
+                
+                <li class="item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-users-cog"></i>
+                        <p>Thành viên</p>
+                    </a>
+                </li>
+                
             </div>
-            <div class="overview-3">
-                overview-3
+            <!--kết thúc danh sách item điều hướng-->
+            <div class="list-option">
+                <li class="item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </a>
+                </li>
             </div>
-            <div class="overview-4">
-                overview-4
-            </div>
+
+
         </div>
-        <div class="subjects">
-            <div class="add-subject">
-                add subject
+        
+        <div class="content col-md-10">
+            <div class="row header">
+                <div class="col-md-6">
+                    <h2 class="TieuDe">Tổng quan</h2>
+                </div>
+                <div class="col-md-6">
+                    <div class="user" rule="button">
+                        <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0;">
+                            <span id="username">Administrator</span>
+                            <span class= "avatar-frame">
+                                <div class="avatar"></div>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu" >
+                            <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Đăng tài liệu</a></li>
+                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                    
+                    
+                </div>
             </div>
-            <div class="list-subject">
-                list subject
+            <div class="row TongQuan">
+                <div class="col-md-3">
+                    <a class="overview" href="#">
+                        <span class="name" >Tài liệu mới</span>
+                        <span class="number">60</span>
+                    </a>
+                </div>
+                <div class="col-md-3 ">
+                    <a class="overview" href="#">
+                        <span class="name" >Số tài liệu</span>
+                        <span class="number">16</span>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a class="overview" href="#">
+                        <span class="name" >Số người dùng</span>
+                        <span class="number">43</span>
+                    </a>
+                </div>
+                <div class="col-md-3" class="overview">
+                    <a class="overview" href="#">
+                        <span class="name" >Lươt tải</span>
+                        <span class="number">64</span>
+                    </a>
+                </div>
             </div>
+            <div class="row subjects">
+                <div style="display: block; width: 100%;">
+                    <button class="add-subject" type="submit">
+                        <i class="fas fa-plus-square"></i> Thêm môn học
+                    </button>
+                </div>
+            </div>
+            <div class="row col-12" style="margin-bottom: 30px;">
+                <div class="col-12 list-subject">
+                    <div class="list-subject-header row">
+                        <ul class="subject-header">
+                            <li class="col-1">STT</li>
+                            <li class="col-1">Mã MH</li>
+                            <li class="col-3">Tên môn học</li>
+                            <li class="col-3">Khoa/Bộ môn quản lý</li>
+                            <li class="col-2">Nhóm môn học</li>
+                            <li class="col-1">Số lượng TL</li>
+                        </ul>
+                    </div>
+                    <div class="list-subject-item row">
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                        <ul class="subject-header">
+                            <li class="col-1">1</li>
+                            <li class="col-1">NT208</li>
+                            <li class="col-3">Lập trình ứng dụng web</li>
+                            <li class="col-3">Mạng máy tính và truyền thông</li>
+                            <li class="col-2">Môn học chuyên ngành</li>
+                            <li class="col-1">12</li>
+                        </ul>
+                    </div>
+                    <div class="list-subject-footer row">
+                        <div class="so-bai col-10">
+                            <p style="display: inline;">Số bài hiển thị tối đa</p>
+                            <select id="maximum-number" name="maximum-number" style="border: none;">
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="25">30</option>
+                                <option value="25">35</option>
+                            </select>
+                        </div>
+                        <div class="tong-bai col-2">
+                            <p style="display: inline;">1-8 of 1240</p>
+                            <button class="backward"><i class="fas fa-angle-left"></i></button>
+                            <button class="forward"><i class="fas fa-angle-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
         </div>
-    </div>
+    </div>  
 </body>
 </html>

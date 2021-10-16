@@ -1,6 +1,7 @@
 /* Body */
 body{
     margin: 0;
+    font-size: 14px;
     background-color: #F7F8FC;
     font-family: 'Montserrat', sans-serif;
 }
@@ -8,10 +9,13 @@ body{
 /* I. Sidebar */
 .sidebar{
     background-color: #363740;
-    width: 250px;
     height: 100%;
     min-height: 100vh;
     float: left;
+    position: fixed;
+}
+.sidebar.col-md-2 {
+    position: fixed;
 }
 .sidebar div{
     width: 100%;
@@ -19,76 +23,240 @@ body{
 .sidebar .name{
     height: 128px;
 }
-.sidebar .list-item{
-    height: 360px;
+.sidebar .list-item,.list-option{
     border-bottom: #40414A solid 0.5px;
-}
-.sidebar .home{
-    height: 90px;
+    list-style: none;
 }
 
 .sidebar .list-item .item{
-    height: 56px;
-    /* background-color: chartreuse; */
+    /* height: 56px; */
     margin: 0px;
+    color: #A4A6B3;
 }
+
+.sidebar .list-item .item:hover{
+    background-color: #3E4049;
+}
+.sidebar .list-item .horizontal{
+    /* height: 56px; */
+    border-left: #DDE2FF solid 3px;
+    background-color: #3E4049;
+    color: #DDE2FF;
+    /* width: 247px; */
+}
+.sidebar .nav-link{
+    display: block;
+    padding: 20px;
+}
+
+.sidebar a:-webkit-any-link {
+    color: #A4A6B3;
+    cursor: pointer;
+    text-decoration: none;
+}
+.horizontal a:-webkit-any-link{
+    color: #DDE2FF;
+}
+
+.sidebar .item i {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+}
+
+.sidebar .list-item .item p {
+    display: inline-block;
+    margin: 0;
+}
+.icon-sidebar{
+    height: 16px;
+    width: 16px;
+    display: block;
+    float: left;
+}
+
 
 
 /* II. Content */
 .content{
     background-color: #F7F8FC;
     color: brown;
-    width: 1120px;
-    display: inline-block;
+    display: block;
     min-height: 100vh;
+    font-family: 'Mulish', sans-serif;
+    float: right;
 }
-.content div{
-    background-color: green;
-    /* width: -webkit-fill-available; */
-    width: 100%;
-    display: inline-block;
-}
+
 .content .header{
     height: 50px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    margin-left:35px;
-    margin-right: 35px;
 }
 .content .overview{
     height: 135px;
-    margin: 10px 35px 10px 35px;
-}
-.content .subjects{
-    margin: 2px 35px 2px 35px;
 }
 .content .subjects .add-subject{
     height: 50px;
     margin-bottom: 15px;
 }
-.content .subjects .list-subject{
-    height: 1000px;
-}
-
-/* II.1 Overview */
-.overview div{
-    height: 134px;
-    width: 22.5%;
-    background-color: brown;
-    margin: 0px 1.45% 0px 1.45%;
-}
-div.overview-1{
+.content .row{
     margin-left: 0px;
-}
-div.overview-4{
     margin-right: 0px;
 }
 
-/* II.2 Subjects */
-.subjects div{
-    background-color: gray;
+/* II.1 Overview */
+.header{
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
-div.add-subject{
-    width: 240px;
+.overview{
+    display: block;
+    background: #FFFFFF;
+    border: solid 1px;
+    border-radius: 8px;
+    border-color: #DFE0EB;
+    text-align: center;
+    font-family: 'Mulish', sans-serif;
+    font-weight: bold;
+}
+.overview .name{
+    color: #9FA2B4;
+    font-size: 20px;
+    display: inherit;
+    padding-top: 20px;
+}
+.overview .number{
+    color: #252733;
+    font-size: 40px;
+}
+.overview:hover{
+    border-color: #3751FF;
+    text-decoration: none;
+}
+.overview:hover > .name{
+    color: #3751FF;
+}
+.overview:hover > .number{
+    color: #3751FF;
+}
+.overview a:-webkit-any-link {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.TongQuan{
+    margin: 15px 0px 15px 0px;
+}
+
+/* II.2 Subjects */
+
+.add-subject{
+    display: block;
     float: right;
+    border-radius: 8px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 19px;
+    border: solid 1px #DFE0EB;
+    margin-right: 15px;
+}
+.add-subject:hover{
+    border-color: #3751FF;
+    color: #3751FF;
+}
+.avatar-frame{
+    float: right;
+    height:48px;
+    width: 48px; 
+    border-radius: 25px; 
+    border: solid 2px #DFE0EB; 
+}
+.avatar{
+    height:42px;
+    width: 42px; 
+    margin: 1px;
+    border-radius: 22px; 
+    border: solid 2px #F7F8FC; 
+    background: url('../image/avatar.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+/* Thanh menu điều hướng */
+.user{
+    float: right;
+}
+.user:hover{
+    background-color: #F6E1E1;
+    border-radius: 5px;
+}
+#username{
+    font-size: 15px;
+    margin: 10px;
+    display:inline-block;
+}
+/* Menu điều kiển hướng */
+.dropdown-menu.show {
+    background-color: #F6E1E1;
+}
+.dropdown-submenu {
+    position: relative; 
+}
+.dropdown-submenu a::after {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 6px;
+    top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    /* margin-left: 1rem; */
+    margin-right: 15px;
+}
+.list-subject li{
+    display: inline-table;
+}
+
+/* Nội dung */
+.list-subject-header, .subject-header{
+    width: 100%;
+}
+.list-subject div ul{
+    padding: 15px 0px;
+    margin: 0;
+    height: 56px;
+    
+}
+.list-subject-header ul{
+    color:#9FA2B4;
+    font-weight: bold;
+    border-bottom: solid 1px #DFE0EB;
+}
+.list-subject-item ul{
+    border-top: solid 1px #DFE0EB;
+    color: #252733;
+}
+
+.list-subject{
+    border-radius: 8px;
+    border:solid 1px #DFE0EB;
+    background-color: #FFFFFF;
+}
+.col-12.list-subject {
+    padding: 0;
+}
+
+.list-subject-footer{
+    text-align: right;
+    padding: 20px 15px;
+}
+.tong-bai button{
+    background-color: #FFFFFF;
+    border: none;
+    color: #9FA2B4;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.tong-bai.col-2 {
+    padding-right: 20px;
 }
