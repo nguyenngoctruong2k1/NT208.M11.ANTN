@@ -1,0 +1,104 @@
+/* Login background */
+.login_bg{
+    height: 630px;
+    background-image: url(/Image/camap-removebg-preview.png); /*chèn hình con cá mập trẩu tre */
+    background-repeat: no-repeat; /* không cho nó lặp lại */
+    background-size: 495px 433px;   /*chỉnh kích thước của cá mập */
+    background-color: #DDEBFF;      /*màu background */
+    background-position-x: 858px;       /*chỉnh vị trí của cá mập */
+    background-position-y: 175px;
+    padding-left: 80px;
+    padding-top: 40px;
+    line-height: 50px;
+}
+
+/* chỉnh 2 thanh username và password */
+.login_bg > input{
+    font-size: 20px;
+    width: 420px;
+    height: 50px;
+    border-radius: 40px;
+    padding-left: 32px;
+    padding-right: 40px;
+}
+
+.login_bg > div > a{
+    margin-left: 189px;     /*Chỉnh cái forget password cho sang bên phải */
+}
+
+/* Chỉnh nút Sign In */
+.login_bg > button{
+    font-size: 20px;
+    width: 500px;
+    height: 70px;
+    border-radius: 40px;
+    padding-left: 32px;
+    padding-right: 40px;
+    margin-top: 50px;
+    background-color: #8798cf;
+}
+
+
+/*==============================================
+===================SIGN UP======================
+================================================*/
+/* Sign up background */
+.signup_bg {
+    height: 630px;
+    background-image: url(/Image/pikachu-removebg-preview.png); /*chèn hình con pikachu */
+    background-repeat: no-repeat; /* không cho nó lặp lại */
+    background-size: 500px 516px;   /*chỉnh kích thước của pikachu */
+    background-color: #DDEBFF;      /*màu background */
+    background-position-x: 858px;       /*chỉnh vị trí của pikachu */
+    background-position-y: 175px;
+    padding-left: 80px;
+    padding-top: 40px;
+    line-height: 50px;
+}
+
+/*Chỉnh mấy cái mục để điền */
+.signup_bg > div > input{
+    font-size: 20px;
+    width: 420px;
+    height: 50px;
+    border-radius: 40px;
+    padding-left: 32px;
+    padding-right: 40px;
+    margin-bottom: 30px;
+}
+
+.signup_bg > .personal >  .Name > input{
+    font-size: 20px;
+    width: 420px;
+    height: 50px;
+    border-radius: 40px;
+    padding-left: 32px;
+    padding-right: 40px;
+    margin-bottom: 30px;
+}
+
+.signup_bg > .personal >  .gender{
+    font-size: 24px;
+}
+
+.signup_bg > .personal >  .gender > input{
+    margin-left: 100px;
+    width: 50px;
+    font-size: 30px;
+    height: 30px;
+}
+
+.signup_bg > .personal > div{
+    float: left;
+}
+
+.signup_bg > button{
+    font-size: 20px;
+    width: 500px;
+    height: 70px;
+    border-radius: 40px;
+    padding-left: 32px;
+    padding-right: 40px;
+    margin-top: 50px;
+    background-color: #8798cf;
+}

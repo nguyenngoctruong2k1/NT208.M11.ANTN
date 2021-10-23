@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập, đăng kí</title>
+    <!-- Link Font chữ Open Sans-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,400;1,600;1,700;1,800;1,900&family=Overpass:wght@600;900&display=swap"
+        rel="stylesheet">
+    <!-- Liên kết với file css-->
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="web.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div id="banner">
+            <img src="/Image/ngoisao-removebg-preview.png" alt="icon ngoi sao" class="ngoisao">
+            <div class="title">
+                <p class="tieude">Web chia sẻ tài liệu</p>
+                <p class="slogan">Learning is sharing</p>
+            </div>
+            <img src="/Image/kimcuong-removebg-preview.png" alt="icon kim cuong" class="kimcuong">
+        </div>
+        <div id="menu">
+            <ul>
+                <li id="main"> <a href="#"> Trang chủ </a> </li>
+                <li id="dai_cuong">
+                    <a href="#"> Môn đại cương </a>
+                    <ul class="sub-menu">
+                        <li> <a href="#"> Lý luận chính trị </a> </li>
+                        <li> <a href="#"> Toán - Tin - KHTN </a> </li>
+                        <li> <a href="#"> Ngoại ngữ </a> </li>
+                        <li> <a href="#"> Kĩ năng nghề nghiệp </a> </li>
+                    </ul>
+                </li>
+                <li id="co_so_nhom">
+                    <a href="#"> Môn cơ sở nhóm ngành </a>
+                    <ul class="sub-menu">
+                        <li> <a href="#"> Lập trình hướng đối tượng </a> </li>
+                        <li> <a href="#"> Cấu trúc dữ liệu và giải thuật </a> </li>
+                        <li> <a href="#"> Cơ sở dữ liệu </a> </li>
+                        <li> <a href="#"> Nhập môn mạng máy tính </a> </li>
+                        <li> <a href="#"> Kiến trúc máy tính </a> </li>
+                        <li> <a href="#"> Hệ điều hành </a> </li>
+                        <li> <a href="#"> Nhập môn mạch số </a> </li>
+                        <li> <a href="#"> Giới thiệu ngành </a> </li>
+                    </ul>
+                </li>
+                <li id="co_so_nganh">
+                    <a href="#"> Môn cơ sở ngành </a>
+                    <ul class="sub-menu">
+                        <li> <a href="#"> Khoa Công nghệ phần mềm </a> </li>
+                        <li> <a href="#"> Khoa Hệ thống thông tin </a> </li>
+                        <li> <a href="#"> Khoa MMT&TT </a> </li>
+                        <li> <a href="#"> Khoa Kĩ thuật máy tính </a> </li>
+                        <li> <a href="#"> Khoa Khoa học máy tính </a> </li>
+                        <li> <a href="#"> Khoa KH&KTTT </a> </li>
+                    </ul>
+                </li>
+                <li id="chuyen_nganh">
+                    <a href="#"> Môn chuyên ngành </a>
+                    <ul class="sub-menu">
+                        <li> <a href="#"> Khoa Công nghệ phần mềm </a> </li>
+                        <li> <a href="#"> Khoa Hệ thống thông tin </a> </li>
+                        <li> <a href="#"> Khoa MMT&TT </a> </li>
+                        <li> <a href="#"> Khoa Kĩ thuật máy tính </a> </li>
+                        <li> <a href="#"> Khoa Khoa học máy tính </a> </li>
+                        <li> <a href="#"> Khoa KH&KTTT </a> </li>
+                    </ul>
+                </li>
+                <li id="contri"> <a href="#"> Đóng góp tài liệu </a> </li>
+                <li id="login">
+                    <a href="#"> Login/Join <i class="fas fa-sign-in-alt"></i></a>
+
+                </li>
+
+            </ul>
+        </div>
+        <div class="signup_bg">
+            <label>
+                <b style="font-family: Overpass; font-size: 36px; padding-top: 40px;">CREATE AN ACCOUNT</b>
+            </label>
+            <p style="font-size: 18px;">Đã có tài khoản, <a href="#">Sign in</a></p>
+            <div class="personal">
+                <div class="Name">
+                    <input type="text" name="name" placeholder="Họ và tên" required>
+                </div>
+                <div class="gender">
+                    <INPUT TYPE="Radio" Name="Gender" Value="Male">Nam
+                    <INPUT TYPE="Radio" Name="Gender" Value="Female">Nữ
+                </div>
+            </div>
+            <div style="clear: left;">
+                <input type="text" name="mssv" placeholder="MSSV" required>
+            </div>
+            <div>
+                <input type="password" name="pass" placeholder="Password" required>
+            </div>
+            <div>
+                <input type="password" name="conf_pass" placeholder="Confirm password" required>
+            </div>
+            <button type="button">Sign Up</button>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+*{
+    font-family: 'Open Sans';
+    margin: 0;
+    border: 0;
+}
+
+.container{
+    width: 1470px;
+    height: 1164px;
+    border: solid #e7e7e7;
+    border-width: 0.01px;
+}
+/* BANNER */
+#banner{
+    height: 200px;
+    background-image: url(/Image/banner.png);
+    background-size: 1442px 200px;
+    background-repeat: no-repeat;
+}
+
+.title{
+    margin-top: -30px;
+}
+
+.tieude{
+    color:#5B4858;
+    font-size: 54px;
+    font-weight: bold;
+    padding-left: 76px;
+    padding-top: 0px;
+}
+.slogan{
+    color: #72B918;
+    font-size: 40px;
+    text-align: right;
+    padding-right: 185px;
+    display: block;
+    margin-top: -20px;
+    text-shadow: 0.03em 0.03em black;
+}
+
+.ngoisao{
+    transform: rotate(20deg);
+    width: 58px;
+    height: 69px;
+    margin-left: 745px;
+}
+
+.kimcuong{
+    transform: rotate(340deg);
+    width: 71px;
+    height: 72.49px;
+    margin-top: -53px;
+    margin-left: 603px;
+}
+
+/* Menu */
+#menu{
+    margin-top: 0px;
+}
+#menu>ul{
+    list-style-type: none;
+    background-color: #2C2F30;
+    text-align: center;
+}
+
+#menu>ul>li{
+    color: #f1f1f1;
+    display: inline-table;
+    line-height: 70px;
+    height: 70px;
+    position: relative;  
+}
+
+#menu >ul >li>a{
+    color:#f1f1f1;      /*Mau chu*/
+    text-decoration: none; /*Xoa gach chan*/
+    display: block;     /*hien thi trong block*/
+}
+
+/* Chỉnh khung cho từng phần của menu */
+#main {
+    width: 111px; 
+}
+#dai_cuong{
+    width: 162px;
+}
+#co_so_nhom{
+    width: 240px;
+}
+#co_so_nganh{
+    width: 189px;
+}
+#chuyen_nganh{
+    width: 205px;
+}
+#contri{
+    width: 178px;
+}
+#login{
+    width: 178px;
+    border: solid #f1f1f1;
+}
+
+/* Chỉnh hiệu ứng khi rê chuột vào menu */
+#menu > ul > li:hover{
+    background:rgba(94, 93, 93, 0.603) ;
+    color:#ffffff80;
+}
+
+#menu > ul > li > .sub-menu{
+    display: none; /*Ẩn sub-menu đi */
+    position: absolute; /*Tách block của sub-menu*/
+    padding: 0px;
+    list-style-type: none;
+    z-index: 2; /*Sub-menu sẽ hiện ở trước background*/
+}
+
+/* Căn chỉnh sub-menu*/
+#menu > ul > li > .sub-menu > li{
+    width: 314px;
+    height: 54px;
+    line-height: 54px;
+    text-align: left;
+    padding-left: 20px;
+    border-bottom:#54565718 solid;
+}
+
+/* Chỉnh màu và bỏ gạch chân cho sub-menu */
+#menu ul li .sub-menu li a{ 
+    text-decoration: none;
+    color:#f1f1f1;
+    list-style-type: none;
+}
+
+/* Hiển thị sub-menu khi rê chuột vào */
+#menu > ul > li:hover > .sub-menu{
+    display:block;
+    background: #2C2F30;
+    color: #f1f1f1;
+}
+
+/* Hiệu ứng khi rê chuột trong sub-menu */
+#menu ul li .sub-menu li:hover{
+    background: #66A0B4;
+    border: #1FC4CE solid;
+}
+/* Chỉnh bo tròn list đầu tiên và cuối cùng trong sub-menu */
+#menu > ul > li > .sub-menu:first-child{
+    border-top-right-radius: 10px;
+}
+#menu > ul > li > .sub-menu:last-child{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+/* Chỉnh cái icon login */
+#menu > ul > li > a > i{
+    padding-left: 7px;
+    font-size: 20px;
+}
+
+/*===============END OF Menu==========*/
+
+/*=====================================
+============    BACKGROUND ============
+=======================================*/
+#background{
+    height: 630px;
+    line-height: 630px;
+}
+/* Dịch chuyển hình xuống góc phải */
+#background{
+    background:url('Image/Untitled-removebg-preview.png'); /*Chèn hình thanh niên ngồi đọc sách*/
+    background-repeat: no-repeat; /*tắt chế độ lặp lại */
+    background-size: 832.5px 555px; /* chỉnh size của hình */
+    background-position: bottom right; /* cho hình xuống góc phải phía dưới */
+    background-color: #DDEBFF; /* tạo màu cho hình nền */
+    background-position-x: 500px; /* xác định vị trí cho hình */
+}
+
+/* Chỉnh chữ <h1> */
+#background > h1{
+    font-size: 64px;
+    width: 684px;
+    height: 192px;
+    line-height: 85px;
+    padding-top: 50px;
+    padding-left: 76px;
+}
+
+/* Chỉnh thanh tìm kiếm */
+#background > .Search > input[type="Text"] {
+    font-size: 24px;
+    float: left;
+    width: 530px;
+    height: 76px;
+    border-radius: 40px;
+    margin-left: 81px;
+    padding-left: 32px;
+    padding-right: 80px;
+}
+
+#background > .Search > a > i{
+    float: left;
+    font-size: 45px;
+    color: #535555;
+    font-weight: 900;
+    height: 76px;
+    text-align: center;
+    margin-left: -70px;
+    padding-top: 18px;
+}
+/*============== END OF BACKGROUND===========*/
+
+/* Footer*/
+.footer {
+    width: 1211px;
+    height: 248px;
+    text-align: center;
+    margin-left: 125px;
+}
+
+.footer > div{
+    float: left;
+    width: 280px;
+    height: 247px;
+}
+
+.footer > div > p{
+    font-size: 24px;
+    font-weight: bold;
+    padding-top: 24px;
+}
+
+.footer >div > img{
+    text-align: center;
+    padding-top: 10px;
+    margin-bottom: -45px;
+}
+
+
+/* Chỉnh cho dấu tick*/
+.footer > div > i {
+    color: rgb(48, 165, 48);
+    width: 62px;
+    height: 62px;
+    font-size: 62px;
+}
