@@ -1,7 +1,7 @@
 /* Login background */
 .login_bg{
     height: 630px;
-    background-image: url(/Image/camap-removebg-preview.png); /*chèn hình con cá mập trẩu tre */
+    background-image: url(./Image/camap-removebg-preview.png); /*chèn hình con cá mập trẩu tre */
     background-repeat: no-repeat; /* không cho nó lặp lại */
     background-size: 495px 433px;   /*chỉnh kích thước của cá mập */
     background-color: #DDEBFF;      /*màu background */
@@ -45,7 +45,7 @@
 /* Sign up background */
 .signup_bg {
     height: 630px;
-    background-image: url(/Image/pikachu-removebg-preview.png); /*chèn hình con pikachu */
+    background-image: url(./Image/pikachu-removebg-preview.png); /*chèn hình con pikachu */
     background-repeat: no-repeat; /* không cho nó lặp lại */
     background-size: 500px 516px;   /*chỉnh kích thước của pikachu */
     background-color: #DDEBFF;      /*màu background */
