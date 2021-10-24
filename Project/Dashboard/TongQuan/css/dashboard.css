@@ -154,11 +154,12 @@ body{
     border-radius: 8px;
     font-family: 'Mulish', sans-serif;
     font-size: 19px;
-    border: solid 1px #DFE0EB;
+    border: none;
+    padding: 0px 15px   ;
     margin-right: 15px;
 }
 .add-subject:hover{
-    border-color: #3751FF;
+    background-color: #DFE0EB;
     color: #3751FF;
 }
 .avatar-frame{
@@ -216,23 +217,32 @@ body{
 }
 
 /* Nội dung */
-.list-subject-header, .subject-header{
+.list-subject-header, .subject-header, .subject-item{
     width: 100%;
 }
-.list-subject div ul{
-    padding: 15px 0px;
+.subject-item-show.row{
+    padding: 15px;
+}
+ul.subject-header.row{
+    padding:15px;
+}
+.list-subject ul{
     margin: 0;
-    height: 56px;
-    
+    padding: 0;
 }
 .list-subject-header ul{
     color:#9FA2B4;
+    padding: 15px 0px;
     font-weight: bold;
     border-bottom: solid 1px #DFE0EB;
 }
 .list-subject-item ul{
     border-top: solid 1px #DFE0EB;
     color: #252733;
+}
+.subject-item-show{
+    min-height: 56px;
+    padding: 15px 0px;
 }
 
 .list-subject{
@@ -259,4 +269,29 @@ body{
 }
 .tong-bai.col-2 {
     padding-right: 20px;
+}
+
+
+.subject-item a{
+    text-decoration: none;
+}
+.subject-item-show{
+    text-decoration: none;
+    cursor:pointer;
+}
+.object-item-edit div{
+    padding: 5px;
+}
+
+select#KhoaQL, select#NhomMH {
+    min-height: 29px;
+}
+.image-avatar
+{
+    /* background-image: url(../image/avt.jpg); */
+    width: 200px;
+    height: 200px;
+    background-repeat: no-repeat;
+    border-radius: 100px;
+    background-size: 100%;
 }

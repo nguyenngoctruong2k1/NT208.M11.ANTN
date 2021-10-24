@@ -31,7 +31,7 @@
         // Sử lý sự kiện khi click subject-item 
         function show_item_hidden(id){
             var x = document.getElementsByClassName("object-item-hidden");
-            if (x.length>1) x[0].parentNode.innerHTML = '<div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">'+x[0].parentNode.firstElementChild.innerHTML+'</div>';
+            if (x.length>1) x[0].parentNode.innerHTML = '<div class="subject-item-show" onclick="show_item_hidden(this.parentNode.id)">'+x[0].parentNode.firstElementChild.innerHTML+'</div>';
             else
             {
                 var htmlObj = document.getElementById(id);
@@ -64,14 +64,14 @@
                 DashBoard
             </div>
             <div class="list-item">
-                <li class="item horizontal">
+                <li class="item ">
                     <a class="nav-link" href="./index.html">
                         <i class="fas fa-chart-pie"></i>
                         <p>Tổng quan</p>
                     </a>
                 </li>
 
-                <li class="item ">
+                <li class="item horizontal">
                     <a class="nav-link" href="./DuyetTaiLieu.html">
                         <i class="fas fa-ticket-alt"></i>
                         <p>Duyệt tài liệu</p>
@@ -110,7 +110,7 @@
             <!--kết thúc danh sách item điều hướng-->
             <div class="list-option">
                 <li class="item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="./ThongTinCaNhan.html">
                         <i class="fas fa-home"></i>
                         Home
                     </a>
@@ -123,7 +123,7 @@
         <div class="content col-md-10">
             <div class="row header">
                 <div class="col-md-6">
-                    <h2 class="TieuDe">Tổng quan</h2>
+                    <h2 class="TieuDe">Duyệt Tài Liệu</h2>
                 </div>
                 <div class="col-md-6">
                     <div class="user" rule="button">
@@ -143,100 +143,57 @@
                     
                 </div>
             </div>
-            <div class="row TongQuan">
-                <div class="col-md-3">
-                    <a class="overview" href="#">
-                        <span class="name" >Tài liệu mới</span>
-                        <span class="number">60</span>
-                    </a>
-                </div>
-                <div class="col-md-3 ">
-                    <a class="overview" href="#">
-                        <span class="name" >Số tài liệu</span>
-                        <span class="number">16</span>
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a class="overview" href="#">
-                        <span class="name" >Số người dùng</span>
-                        <span class="number">43</span>
-                    </a>
-                </div>
-                <div class="col-md-3" class="overview">
-                    <a class="overview" href="#">
-                        <span class="name" >Lươt tải</span>
-                        <span class="number">64</span>
-                    </a>
-                </div>
-            </div>
-            <div class="row subjects">
-                <div style="display: block; width: 100%;">
-                    <button class="add-subject" type="submit" data-toggle="modal" data-target="#exampleModal">
-                        <i class="fas fa-plus-square"></i> Thêm môn học
-                    </button>
-                </div>
-            </div>
             <div class="row col-12" style="margin-bottom: 30px;">
                 <div class="col-12 list-subject">
                     <div class="list-subject-header row">
                         <ul class="subject-header row justify-content-center">
                             <li class="col-1">STT</li>
-                            <li class="col-1">Mã MH</li>
-                            <li class="col-3">Tên môn học</li>
-                            <li class="col-3">Khoa/Bộ môn quản lý</li>
-                            <li class="col-2">Nhóm môn học</li>
-                            <li class="col-1">Số lượng TL</li>
+                            <li class="col-1">Mã TL</li>
+                            <li class="col-3">Tên Tài liệu</li>
+                            <li class="col-2">Người gởi</li>
+                            <li class="col-3">Thông tin</li>
+                            <li class="col-1">Xét duyệt</li>
                         </ul>
                     </div>
                     <div class="list-subject-item row">
                         <ul id="item-0" class="subject-item" >
-                            <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                            <div class="subject-item-show row justify-content-center">
                                 <li class="col-1" name="SoTT">1</li>
-                                <li class="col-1" name="MaMH">NT208</li>
-                                <li class="col-3" name="TenMH">Lập trình ứng dụng web</li>
-                                <li class="col-3" name="KhoaQL">Khoa Công nghệ Phần mềm</li>
-                                <li class="col-2" name="NhomMH">Môn học chuyên ngành</li>
-                                <li class="col-1" name="SLTL">12</li>
+                                <li class="col-1" name="MaTL">NT208847</li>
+                                <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                                <li class="col-2" name="NGoi">19522440</li>
+                                <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                                <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
                             </div>
                         </ul>
                         <ul id="item-0" class="subject-item" >
-                            <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                            <div class="subject-item-show row justify-content-center">
                                 <li class="col-1" name="SoTT">1</li>
-                                <li class="col-1" name="MaMH">NT208</li>
-                                <li class="col-3" name="TenMH">Lập trình ứng dụng web</li>
-                                <li class="col-3" name="KhoaQL">Khoa Công nghệ Phần mềm</li>
-                                <li class="col-2" name="NhomMH">Môn học chuyên ngành</li>
-                                <li class="col-1" name="SLTL">12</li>
+                                <li class="col-1" name="MaTL">NT208847</li>
+                                <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                                <li class="col-2" name="NGoi">19522440</li>
+                                <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                                <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
                             </div>
                         </ul>
                         <ul id="item-0" class="subject-item" >
-                            <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                            <div class="subject-item-show row justify-content-center">
                                 <li class="col-1" name="SoTT">1</li>
-                                <li class="col-1" name="MaMH">NT208</li>
-                                <li class="col-3" name="TenMH">Lập trình ứng dụng web</li>
-                                <li class="col-3" name="KhoaQL">Khoa Công nghệ Phần mềm</li>
-                                <li class="col-2" name="NhomMH">Môn học chuyên ngành</li>
-                                <li class="col-1" name="SLTL">12</li>
+                                <li class="col-1" name="MaTL">NT208847</li>
+                                <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                                <li class="col-2" name="NGoi">19522440</li>
+                                <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                                <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
                             </div>
                         </ul>
                         <ul id="item-0" class="subject-item" >
-                            <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                            <div class="subject-item-show row justify-content-center">
                                 <li class="col-1" name="SoTT">1</li>
-                                <li class="col-1" name="MaMH">NT208</li>
-                                <li class="col-3" name="TenMH">Lập trình ứng dụng web</li>
-                                <li class="col-3" name="KhoaQL">Khoa Công nghệ Phần mềm</li>
-                                <li class="col-2" name="NhomMH">Môn học chuyên ngành</li>
-                                <li class="col-1" name="SLTL">12</li>
-                            </div>
-                        </ul>
-                        <ul id="item-0" class="subject-item" >
-                            <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                                <li class="col-1" name="SoTT">1</li>
-                                <li class="col-1" name="MaMH">NT208</li>
-                                <li class="col-3" name="TenMH">Lập trình ứng dụng web</li>
-                                <li class="col-3" name="KhoaQL">Khoa Công nghệ Phần mềm</li>
-                                <li class="col-2" name="NhomMH">Môn học chuyên ngành</li>
-                                <li class="col-1" name="SLTL">12</li>
+                                <li class="col-1" name="MaTL">NT208847</li>
+                                <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                                <li class="col-2" name="NGoi">19522440</li>
+                                <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                                <button type="button" class="btn btn-success col-1" style="border-radius: 25px;">Duyệt</button>
                             </div>
                         </ul>
 
@@ -315,44 +272,6 @@
           </div>
         </div>
     </div>
-    <div id="object-item-hidden" style="display: none;">
-        <div class="object-item-hidden" style="padding: 10px 0px; border-top:solid 1px #DFE0EB;">
-            <div class="row justify-content-center object-item-edit ">
-                <form class="row justify-content-center" style="width:100%">
-                    <div class="col-md-5 col-sm-10">
-                        <label for="MaMH" class="col-4" style="display: inline-block;">Mã MH</label>
-                        <input type="text" class="col-7" id="MaMH" name="MaMH">
-                    </div>
-                    <div class="col-md-5 col-sm-10">
-                        <label for="TenMH" class="col-4" style="display: inline-block;">Tên MH</label>
-                        <input type="text" class="col-7" id="TenMH" name="TenMH">
-                    </div>
-                    <div class="col-md-5 col-sm-10">
-                        <label for="KhoaQL" class="col-4" style="display: inline-block;">Khoa/Bộ môn QL</label>
-                        <select id="KhoaQL" name="KhoaQL" class="col-7">
-                            <option value="Khoa Công nghệ Phần mềm">Khoa Công nghệ Phần mềm</option>
-                            <option value="Khoa Hệ thống Thông tin">Khoa Hệ thống Thông tin</option>
-                            <option value="Khoa KH-KT Thông tin">Khoa KH-KT Thông tin</option>
-                            <option value="Khoa Kĩ thuật Máy tính">Khoa Kĩ thuật Máy tính</option>
-                            <option value="Khoa MMT & Truyền thông">Khoa MMT & Truyền thông</option>
-                            <option value="Khoa Khoa học máy tính">Khoa Khoa học máy tính</option>
-                            <option value="Bộ môn Toán Lý">Bộ môn Toán Lý</option>
-                        </select>
-                    </div>
-                    <div class="col-md-5 col-sm-10">
-                        <label for="NhomMH" class="col-4" style="display: inline-block;">Nhóm MH</label>
-                        <select id="NhomMH" name="NhomMH" class="col-7">
-                            <option value="Môn đại cương">Môn đại cương</option>
-                            <option value="Môn cơ sở nhóm ngành">Môn cơ sở nhóm ngành</option>
-                            <option value="Môn cơ sở ngành">Môn cơ sở ngành</option>
-                            <option value="Môn chuyên ngành">Môn chuyên ngành</option>
-                        </select>
-                    </div>  
-                </form>
-                <button type="button" class="btn btn-success col-3" style="margin: 0px 10px;">Lưu lại thay đổi</button>
-                <button type="button" class="btn btn-warning col-3" style="margin: 0px 10px;">Xóa môn học</button>
-            </div>
-        </div>
-    </div>
+    
 </body>
 </html>
