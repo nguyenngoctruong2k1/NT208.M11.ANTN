@@ -1,0 +1,52 @@
+{% load student_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <!-- Grey with black text -->
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Black with white text -->
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">...</nav>
+
+        <!-- Blue with white text -->
+        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">...</nav>
+
+        <h1>NguyỄn Ngọc Trưởng</h1>
+        <p>{{now}}</p>
+        <a href="{% url 'create_new_student_view' %}">ẻtweterWS</a>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+
+        <ul>
+            {% get_students as students %}
+            {% for item in students %}
+                <li>{{ item.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
