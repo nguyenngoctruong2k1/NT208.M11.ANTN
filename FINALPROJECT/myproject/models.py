@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.fields import TimeField
+from ckeditor.fields import RichTextField
 
 # class Student(models.Model):
 #     """
@@ -59,7 +60,7 @@ class MonHoc(models.Model):
         ('K','Khác')
     )
     NhomMH = models.CharField(max_length=10, choices=NhomMH_Choices, default='DC')
-    MoTa = models.CharField(max_length=1000)
+    MoTa = models.TextField()
 
 class TaiLieu(models.Model):
     """
@@ -68,6 +69,7 @@ class TaiLieu(models.Model):
     MaTL = models.CharField(max_length=20,primary_key=True, help_text="Mã tài liệu")
     TenTL = models.CharField(max_length=150, help_text="Tên tài liệu.")
     MaMH = models.ForeignKey(MonHoc, on_delete=models.PROTECT)
+    ThoiGian = models.DateTimeField(blank=True,null=True)
     MSSV = models.CharField(max_length=30, help_text="username người đăng")
     TacGia = models.CharField(max_length=30, help_text="Họ và tên của tác giả.")
     LoaiTL_Choices = (
@@ -77,7 +79,8 @@ class TaiLieu(models.Model):
         ('TLTK','Tài liệu tham khảo')
     )
     LoaiTL = models.CharField(max_length=10, choices=LoaiTL_Choices, default='Slide')
-    MoTa = models.CharField(max_length=1000)
+    # MoTa = models.CharField(max_length=1000)
+    MoTa = RichTextField(blank=True,null=True)
     LuotTai = models.DecimalField(max_digits=6,decimal_places=1,default=0)
     LuotXem = models.DecimalField(max_digits=6,decimal_places=1,default=0)
     Path = models.CharField(max_length=1000)
@@ -90,7 +93,7 @@ class CommentTL(models.Model):
     MSSV = models.CharField(max_length=30, help_text="username người đăng")
     MaTL = models.ForeignKey(TaiLieu,on_delete=models.CASCADE)
     ThoiGian = models.DateTimeField(blank=True,null=True)
-    NoiDung = models.CharField(max_length=1000)
+    NoiDung = models.TextField()
 
 class CommentMH(models.Model):
     """
@@ -100,4 +103,4 @@ class CommentMH(models.Model):
     MSSV = models.CharField(max_length=30, help_text="username người đăng")
     MaMH = models.ForeignKey(MonHoc,on_delete=models.CASCADE)
     ThoiGian = models.DateTimeField(blank=True,null=True)
-    NoiDung = models.CharField(max_length=1000)
+    NoiDung = models.TextField()
