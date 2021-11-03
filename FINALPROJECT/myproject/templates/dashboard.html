@@ -1,0 +1,169 @@
+{% extends "dashboard_base.html" %} 
+{% block title %}Tổng Quan{% endblock title %}
+{% block TrangTQ %}horizontal{% endblock%}
+{% block TieuDe %}Tổng Quan{% endblock %}
+{% block content %}
+<div class="row TongQuan">
+    <div class="col-md-3">
+        <a class="overview" href="#">
+            <span class="name" >Tài liệu mới</span>
+            <span class="number">60</span>
+        </a>
+    </div>
+    <div class="col-md-3 ">
+        <a class="overview" href="#">
+            <span class="name" >Số tài liệu</span>
+            <span class="number">16</span>
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a class="overview" href="#">
+            <span class="name" >Số người dùng</span>
+            <span class="number">43</span>
+        </a>
+    </div>
+    <div class="col-md-3" class="overview">
+        <a class="overview" href="#">
+            <span class="name" >Lươt tải</span>
+            <span class="number">64</span>
+        </a>
+    </div>
+</div>
+<div class="row subjects">
+    <div style="display: block; width: 100%;">
+        <button class="add-subject" type="submit" data-toggle="modal" data-target="#exampleModal">
+            <i class="fas fa-plus-square"></i> Thêm môn học
+        </button>
+    </div>
+</div>
+
+<div class="row col-12" style="margin-bottom: 30px;">
+    <div class="col-12 list-subject">
+        <div class="list-subject-header row">
+            <ul class="subject-header row justify-content-center">
+                <li class="col-1">STT</li>
+                <li class="col-1">Mã MH</li>
+                <li class="col-3">Tên môn học</li>
+                <li class="col-3">Khoa/Bộ môn quản lý</li>
+                <li class="col-2">Nhóm môn học</li>
+                <li class="col-1">Số lượng TL</li>
+            </ul>
+        </div>
+        <div class="list-subject-item row">
+            {% for item in object_list %}
+            <ul id="item-0" class="subject-item" >
+                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                    <li class="col-1" name="SoTT">1</li>
+                    <li class="col-1" name="MaMH">{{ item.MaMH }}</li>
+                    <li class="col-3" name="TenMH">{{ item.TenMH }}</li>
+                    <li class="col-3" name="KhoaQL">{{ item.Khoa }}</li>
+                    <li class="col-2" name="NhomMH">{{ item.NhomMH }}</li>
+                    <li class="col-1" name="SLTL">12</li>
+                </div>
+            </ul>
+            {% endfor %}
+
+
+            {% for item in monhoc %}
+            <ul id="item-0" class="subject-item" >
+                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                    <li class="col-1" name="SoTT">1</li>
+                    <li class="col-1" name="MaMH">{{ item.MaMH }}</li>
+                    <li class="col-3" name="TenMH">{{ item.TenMH }}</li>
+                    <li class="col-3" name="KhoaQL">{{ item.Khoa }}</li>
+                    <li class="col-2" name="NhomMH">{{ item.NhomMH }}</li>
+                    <li class="col-1" name="SLTL">12</li>
+                </div>
+            </ul>
+            {% endfor %}
+        </div>
+        <div class="list-subject-footer row">
+            <div class="so-bai col-10">
+                <p style="display: inline;">Số bài hiển thị tối đa</p>
+                <select id="maximum-number" name="maximum-number" style="border: none;">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
+            </div>
+            <div class="tong-bai col-2" style="min-width: 200px;">
+                <p style="display: inline;">Page {{ monhoc.number }} of {{ monhoc.paginator.num_pages }}</p>
+                {% if monhoc.has_previous %}
+                    <a href="?page={{ monhoc.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% else %}
+                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+                
+                {% if monhoc.has_next %}
+                    <a href="?page={{ monhoc.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                {% else %}
+                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block bonus_content%}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">THÊM MÔN HỌC MỚI</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+            
+            <form action="." method="post">
+                {% csrf_token %}
+                <!-- {{ form.as_table }} -->
+                <!-- 'MaMH','TenMH','Khoa','NhomMH','MoTa' -->
+                <div class="form-group">
+                    <label for="MaMH" class="col-form-label">Mã MH:</label>
+                    {{ form.MaMH }}
+                </div>
+                <div class="form-group">
+                    <label for="TenMH" class="col-form-label">Tên môn học:</label>
+                    {{ form.TenMH }}
+                </div>
+                <div class="form-group">
+                    <label for="KhoaQL" class="col-form-label">Khoa/Bộ môn quản lý:</label>
+                    {{ form.Khoa }}
+                </div>
+                <div class="form-group">
+                    <label for="NhomMH" class="col-form-label">Nhóm môn học: </label>
+                    {{ form.NhomMH }}
+                </div>
+                <div class="form-group">
+                    <label for="NhomMH" class="col-form-label">Mô tả: </label>
+                    {{ form.MoTa }}
+                </div>
+                <!-- {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        {{ field.errors }}
+                        {{ field.label_tag }} {{ field }}
+                    </div>
+                {% endfor %} -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button  class="btn btn-primary" type="submit" >Send message</button>
+                </div>
+            </form>
+            
+        </div>
+        
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+            

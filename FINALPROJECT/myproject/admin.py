@@ -1,19 +1,20 @@
 from django.contrib import admin
-from myproject.models import MonHoc, Student, TaiLieu, User, CommentMH, CommentTL
+from myproject.models import MonHoc, TaiLieu, CommentMH, CommentTL
+# from myproject.models import MonHoc, Student, TaiLieu, User, CommentMH, CommentTL
 
-@admin.register(Student)
-class StudentAdmin(admin.ModelAdmin):
-    list_display = ('HoTen','MSSV','GioiTinh','Email','NgayDK','Khoa','MoTa')
-    search_fields = ('HoTen', 'MSSV','Email','Khoa')
-    list_filter = ('HoTen', 'Khoa')
+# @admin.register(Student)
+# class StudentAdmin(admin.ModelAdmin):
+#     list_display = ('HoTen','MSSV','GioiTinh','Email','NgayDK','Khoa','MoTa')
+#     search_fields = ('HoTen', 'MSSV','Email','Khoa')
+#     list_filter = ('HoTen', 'Khoa')
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('MSSV','Password')
+# @admin.register(User)
+# class UserAdmin(admin.ModelAdmin):
+#     list_display = ('MSSV','Password')
 
 @admin.register(MonHoc)
 class MonHocAdmin(admin.ModelAdmin):
-    list_display = ('MaMH','TenMH','Khoa_Choices','Khoa','NhomMH','MoTa')
+    list_display = ('MaMH','TenMH','Khoa','NhomMH','MoTa')
 
 @admin.register(TaiLieu)
 class TaiLieuAdmin(admin.ModelAdmin):

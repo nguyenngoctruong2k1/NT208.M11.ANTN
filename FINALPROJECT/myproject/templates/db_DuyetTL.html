@@ -1,0 +1,128 @@
+{% extends "dashboard_base.html" %} 
+{% block title %}Duyệt Tài Liệu{% endblock title %}
+{% block TrangDTL %}horizontal{% endblock%}
+{% block TieuDe %}Duyệt Tài Liệu{% endblock %}
+{% block script_content %}
+<script>
+    $('.dropdown-menu user').on('click', function(e) {
+        if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+            $('.dropdown-submenu .show').removeClass("show");
+        });
+        return false;
+    });
+
+    // Sử lý sự kiện khi click subject-item 
+    function show_item_hidden(id){
+        var x = document.getElementsByClassName("object-item-hidden");
+        if (x.length>1) x[0].parentNode.innerHTML = '<div class="subject-item-show" onclick="show_item_hidden(this.parentNode.id)">'+x[0].parentNode.firstElementChild.innerHTML+'</div>';
+        else
+        {
+            var htmlObj = document.getElementById(id);
+            htmlObj.innerHTML = htmlObj.innerHTML + document.getElementById('object-item-hidden').innerHTML;
+            document.getElementById('MaMH').value = htmlObj.firstElementChild.children[1].innerHTML;
+            document.getElementById('TenMH').value = htmlObj.firstElementChild.children[2].innerHTML;
+            // document.getElementById('KhoaQL').value = htmlObj.firstElementChild.children[3].innerHTML;
+            for(var i, j = 0; i = document.getElementById('KhoaQL').options[j]; j++) {
+                if(i.value == htmlObj.firstElementChild.children[3].innerHTML) {
+                    document.getElementById('KhoaQL').selectedIndex = j;
+                    break;
+                }
+            }
+            // document.getElementById('NhomMH').value = htmlObj.firstElementChild.children[4].innerHTML;
+            for(var i, j = 0; i = document.getElementById('NhomMH').options[j]; j++) {
+                if(i.value == htmlObj.firstElementChild.children[4].innerHTML) {
+                    document.getElementById('NhomMH').selectedIndex = j;
+                    break;
+                }
+            }
+        }
+    };
+</script>
+{% endblock %}
+{% block content %}
+<div class="row col-12" style="margin-bottom: 30px;">
+    <div class="col-12 list-subject">
+        <div class="list-subject-header row">
+            <ul class="subject-header row justify-content-center">
+                <li class="col-1">STT</li>
+                <li class="col-1">Mã TL</li>
+                <li class="col-3">Tên Tài liệu</li>
+                <li class="col-2">Người gởi</li>
+                <li class="col-3">Thông tin</li>
+                <li class="col-1">Xét duyệt</li>
+            </ul>
+        </div>
+        <div class="list-subject-item row">
+            <ul id="item-0" class="subject-item" >
+                <div class="subject-item-show row justify-content-center">
+                    <li class="col-1" name="SoTT">1</li>
+                    <li class="col-1" name="MaTL">NT208847</li>
+                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                    <li class="col-2" name="NGoi">19522440</li>
+                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
+                </div>
+            </ul>
+            <ul id="item-0" class="subject-item" >
+                <div class="subject-item-show row justify-content-center">
+                    <li class="col-1" name="SoTT">1</li>
+                    <li class="col-1" name="MaTL">NT208847</li>
+                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                    <li class="col-2" name="NGoi">19522440</li>
+                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
+                </div>
+            </ul>
+            <ul id="item-0" class="subject-item" >
+                <div class="subject-item-show row justify-content-center">
+                    <li class="col-1" name="SoTT">1</li>
+                    <li class="col-1" name="MaTL">NT208847</li>
+                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                    <li class="col-2" name="NGoi">19522440</li>
+                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
+                </div>
+            </ul>
+            <ul id="item-0" class="subject-item" >
+                <div class="subject-item-show row justify-content-center">
+                    <li class="col-1" name="SoTT">1</li>
+                    <li class="col-1" name="MaTL">NT208847</li>
+                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
+                    <li class="col-2" name="NGoi">19522440</li>
+                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;">Duyệt</button>
+                </div>
+            </ul>
+
+            
+        </div>
+        <div class="list-subject-footer row">
+            <div class="so-bai col-10">
+                <p style="display: inline;">Số bài hiển thị tối đa</p>
+                <select id="maximum-number" name="maximum-number" style="border: none;">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
+            </div>
+            <div class="tong-bai col-2" style="min-width: 200px;">
+                <p style="display: inline;">1-8 of 1240</p>
+                <button class="backward"><i class="fas fa-angle-left"></i></button>
+                <button class="forward"><i class="fas fa-angle-right"></i></button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+            
