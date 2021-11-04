@@ -25,7 +25,7 @@ class MonHocListView(ListView, ModelFormMixin):
 def home_view(request):
     return render(
         request,
-        'home.html'
+        'home.html',
     )
 
 
