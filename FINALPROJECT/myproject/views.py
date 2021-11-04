@@ -43,13 +43,6 @@ def DangKy_view(request):
     )
 
 
-def DangNhap_view(request):
-    return render(
-        request,
-        'login.html',
-    )
-
-
 def dashboard_view(request):
     ic(request.user.username)
 

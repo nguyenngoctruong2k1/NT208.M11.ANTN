@@ -176,7 +176,7 @@
                             <b style="font-family: Overpass; font-size: 36px; padding-top: 40px;">WELCOME BACK!</b>
                         </label>
                         <p style="font-size: 18px;">Chưa có tài khoản, <a href="#">Sign up</a></p>
-                        <p style="font-size: 24px;">Username</p>
+                        <!-- <p style="font-size: 24px;">Username</p>
                         <input type="text" name="user" required>
                         <p style="font-size: 24px; margin-top: 20px;">Password</p>
                         <input type="password" name="pass" required>
@@ -184,7 +184,17 @@
                             <label> <input type="checkbox" name="checked"> Remember me</label>
                             <a href="#">Forget password?</a>
                         </div>
-                        <button type="button">Sign In</button>
+                        <button type="button">Sign In</button> -->
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for key, value in form.errors.items %}
+                            {{value}}
+                            {% endfor %}
+                            <p><label>Tài khoản :</label>{{form.username}}</p>
+                            <p><label>Mật khẩu :</label>{{form.password}}</p>
+                            <input type="hidden" name='next' value="/">
+                            <input type="submit" value="Đăng nhập">
+                        </form>
                     </div>
                 </div>
             </div>
