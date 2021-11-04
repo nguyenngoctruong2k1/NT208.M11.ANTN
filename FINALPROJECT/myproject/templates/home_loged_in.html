@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
     <meta charset="utf-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %} {% endblock %}</title>
+    <title>Home</title>
     <!-- Import Boostrap css, js, font awesome here -->
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
@@ -16,19 +16,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/web.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Link Font chữ Open Sans-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,400;1,600;1,700;1,800;1,900&family=Overpass:wght@600;900&display=swap"
         rel="stylesheet">
 </head>
 
@@ -67,7 +61,7 @@
             <div class="menu menu-center">
                 <ul class="navbar-nav flex-row d-none d-md-flex">
                     <li class="nav-item dropdown">
-                        <a href="/" class="nav-link" style="color: rgb(255, 255, 255);">Trang chủ</a>
+                        <a href="#" class="nav-link" style="color: rgb(255, 255, 255);">Trang chủ</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -126,15 +120,14 @@
 
             <!-- Right elements -->
             <div class="menu menu-right">
-                {% if user.username %}
                 <ul class="navbar-nav flex-row">
                     <li class="nav-item me-3 me-lg-1">
                         <a class="nav-link d-sm-flex align-items-sm-center" href="#">
-
-                            <img src="{% static 'images/avatar.jpg'%}" class="rounded-circle" height="22" alt=""
-                                loading="lazy" />
+                            {% if user.username %}
                             <strong class="d-none d-sm-block ms-1" style="color: rgb(255, 255, 255);">&nbsp;
                                 {{user.username}}</strong>
+                            {%endif%}
+
                         </a>
                     </li>
                     <li class="nav-item me-3 me-lg-1">
@@ -162,28 +155,70 @@
                             aria-labelledby="navbarDropdownMenuLink-333">
                             <a class="dropdown-item" href="#">Thông tin cá nhân</a>
                             <a class="dropdown-item" href="#">Dashboard</a>
-                            <a class="dropdown-item" href="{% url 'DangXuat_view' %}">Đăng xuất</a>
+                            <a class="dropdown-item" href="#">Đăng xuất</a>
                         </div>
                     </li>
                 </ul>
-                {% else %}
-                <li id="nav-item me-3 me-lg-1">
-                    <a href="{% url 'DangNhap_view' %}" style="color: rgb(255, 255, 255); font-size: 18px;">
-                        Login/Join <i class=" fas
-                                    fa-sign-in-alt"></i></a>
-                </li>
-                {% endif %}
             </div>
             <!-- Right elements -->
         </div>
     </nav>
-    {%block content%}{% endblock %}
+    <!-- Navbar -->
+
+    <!--Nội dung-->
+    <section>
+        <div class="container-fluid padding">
+            <div id="background" class="row justify-content-center" style="min-height: 60vh;">
+                <div class="col-md-5">
+                    <h2 style="font-size: 54px; line-height: 85px; padding-top: 50px; padding-left: 76px;">
+                        CHIA SẺ VÀ TÌM KIẾM TÀI LIỆU HỌC TẬP UIT
+                    </h2>
+                    <!-- Thanh tìm kiếm-->
+                    <div class="Search">
+                        <input type="Text" name="search" placeholder="TÌM KIẾM MÔN HỌC">
+                        <a href="#"> <i class="fas fa-search"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-4 backgroundimage">
+                </div>
+
+            </div>
+            <section class="footer row justify-content-center">
+                <div class="col-2">
+                    <p>Slide bài giảng</p>
+                    <img src="{% static 'Image/pp-removebg-preview.png'%}" alt="ảnh powerpoint"
+                        style="width:217px; height: 134px">
+                    <i class="far fa-check-circle" style="margin-left: -78px;"></i>
+                </div>
+                <div class="col-2">
+                    <p>Tài liệu tham khảo</p>
+                    <img src="{% static 'Image/thamkhao-removebg-preview.png'%}" alt="icon tài liệu tham khảo"
+                        style="width: 154px; height: 154px">
+                    <i class="far fa-check-circle" style="margin-left: -40px;"></i>
+                </div>
+                <div class="col-2">
+                    <p>Đề thi các năm</p>
+                    <img src="{% static 'Image/dethi-removebg-preview.png'%}" alt="icon đề thi"
+                        style="width: 149px; height: 149px">
+                    <i class="far fa-check-circle" style="margin-left: -40px;"></i>
+                </div>
+                <div class="col-2">
+                    <p>Đóng góp và feedback</p>
+                    <img src="{% static 'Image/feedback.png'%}" alt="icon đóng góp và feedback"
+                        style="width: 139px; height: 139px">
+                    <i class="far fa-check-circle" style="margin-left: -35px;"></i>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!--Footer-->
     <footer>
         <div class="container-fluid p-3">
             <div class="row text-center">
                 <div class="col-12">
-                    <marquee style="font-size: 25px;">Xây dựng và phát triển bởi nhóm Butterflies
-                    </marquee>
+                    <marquee style="font-size: 25px;">Xây dựng và phát triển bởi nhóm Butterflies</marquee>
                 </div>
             </div>
         </div>
