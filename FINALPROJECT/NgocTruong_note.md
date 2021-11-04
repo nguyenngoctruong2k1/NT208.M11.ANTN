@@ -23,3 +23,4 @@
 # một số gói cài thêm 
 > pip install icecream
 > pip install django-ckeditor
+> pip install django-mathfilters

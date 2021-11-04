@@ -6,10 +6,19 @@
 <div class="row col-12" style="margin-bottom: 30px">
     <div class="col-12 list-subject row justify-content-center" style="padding-top: 30px;" >
         
+
+        <!-- <form action="" method="POST" enctype="multipart/form-data">
+            <input type="text" name="filename" placeholder="enter you">
+            <input type="file" multiple name="uploadfile">
+            {% csrf_token %}
+            <button type="submit">uploadfile</button>
+        </form> -->
+
+
         <form class="col-10" action="." method="post">
             {% csrf_token %}
             <!-- {{ form.as_table }} -->
-            
+            {{ form.media }}
             {% for field in form.visible_fields %}
             <div class="form-group row">
                 {{ field.errors }}

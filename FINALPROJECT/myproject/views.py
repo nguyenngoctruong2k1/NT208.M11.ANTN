@@ -1,11 +1,17 @@
 from django.db import models
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render
 from icecream import ic
 from django.views.generic import ListView 
 from django.core.paginator import Paginator
 from django.views.generic.edit import ModelFormMixin
-from myproject.forms import ThemMonHoc,ThemTaiLieu
-from myproject.models import MonHoc
+from myproject.forms import ThemMonHoc,ThemTaiLieu,NewUserForm
+from myproject.models import MonHoc,FileUpload
+import random
+import hashlib
+import time
+from django.contrib.auth import login
+from django.contrib import messages
 
 # from myproject.forms import TaoTaiLieu
 
@@ -15,6 +21,24 @@ class MonHocListView(ListView, ModelFormMixin):
     paginate_by = 2
 
 
+def DangKy_view(request):
+    if request.method == 'POST':
+        # ic(request.method)
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful." )
+            # return redirect("main:homepage")
+        else:
+            return render(
+                request=request, 
+                template_name="DangKy.html", 
+                context={"register_form":form, 'form_error':form.errors})
+    form = NewUserForm()
+    return render (request=request, template_name="DangKy.html", context={"register_form":form, 'form_error':form.errors})
+
+
 def dashboard_view(request):
     ic(request.user.username)
     
@@ -22,13 +46,13 @@ def dashboard_view(request):
         form = ThemMonHoc(request.POST)
         if form.is_valid():
             form.save()
-    else:
-        # ic(request.GET['p'])
-        form = ThemMonHoc()
-        # data = MonHoc.objects.all()
-        p = Paginator(MonHoc.objects.all(),3)
-        page = request.GET.get('page')
-        monhoc = p.get_page(page)
+    
+    # ic(request.GET['p'])
+    form = ThemMonHoc()
+    # data = MonHoc.objects.all()
+    p = Paginator(MonHoc.objects.all(),3)
+    page = request.GET.get('page')
+    monhoc = p.get_page(page)
 
     return render(
         request,
@@ -42,18 +66,20 @@ def dashboard_view(request):
 def DuyetTL_view(request):
     return render(
         request,
-        'db_DuyetTL.html',
+        'db_DuyetTL.html', {'data':FileUpload.objects.all()}
     )
 
 def DongGopTL_view(request):
     if request.method == 'POST':
         form = ThemTaiLieu(request.POST)
         if form.is_valid():
-            form.save()
+            instan = form.save(commit=False)
+            instan.MaTL = hashlib.sha1(str(time.time()).encode()).hexdigest()[:15]
+            instan.save()
     else:
         form = ThemTaiLieu()
     return render(
-        request,
+        request, 
         'db_DongGopTL.html', {'form': form}
     )
 

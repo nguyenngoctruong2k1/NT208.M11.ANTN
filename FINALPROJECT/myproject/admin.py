@@ -1,5 +1,5 @@
 from django.contrib import admin
-from myproject.models import MonHoc, TaiLieu, CommentMH, CommentTL
+from myproject.models import MonHoc, TaiLieu, CommentMH, CommentTL,FileUpload
 # from myproject.models import MonHoc, Student, TaiLieu, User, CommentMH, CommentTL
 
 # @admin.register(Student)
@@ -18,7 +18,7 @@ class MonHocAdmin(admin.ModelAdmin):
 
 @admin.register(TaiLieu)
 class TaiLieuAdmin(admin.ModelAdmin):
-    list_display = ('MaTL','TenTL','MaMH','LoaiTL','MoTa','LuotTai','LuotXem','Path')
+    list_display = ('MaTL','TenTL','MaMH','LoaiTL','MoTa','LuotTai','LuotXem')
 
 @admin.register(CommentTL)
 class CommentTLAdmin(admin.ModelAdmin):
@@ -27,3 +27,7 @@ class CommentTLAdmin(admin.ModelAdmin):
 @admin.register(CommentMH)
 class CommentMHAdmin(admin.ModelAdmin):
     list_display = ('MSSV','MaMH','ThoiGian','NoiDung')
+
+@admin.register(FileUpload)
+class FileUploadAdmin(admin.ModelAdmin):
+    list_display = ('MaTL','filename','Path','FileUL')

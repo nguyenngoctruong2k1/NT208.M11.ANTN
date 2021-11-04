@@ -83,7 +83,13 @@ class TaiLieu(models.Model):
     MoTa = RichTextField(blank=True,null=True)
     LuotTai = models.DecimalField(max_digits=6,decimal_places=1,default=0)
     LuotXem = models.DecimalField(max_digits=6,decimal_places=1,default=0)
-    Path = models.CharField(max_length=1000)
+    Path = models.FileField()
+
+class FileUpload(models.Model):
+    MaTL = models.CharField(max_length=30, help_text="username người đăng")
+    filename = models.CharField(max_length=30, help_text="username người đăng")
+    Path = models.CharField(max_length=30, help_text="username người đăng")
+    FileUL = models.FileField()
 
 class CommentTL(models.Model):
     """
