@@ -165,40 +165,38 @@
         </div>
     </nav>
     <!-- Navbar -->
-    <!--Register-->
+
+    <!--Nội dung-->
     <section>
         <div class="container-fluid padding ">
             <div id="background" class="row justify-content-center" style="min-height: 60vh;">
-                <div class="signup_bg col-10 row justify-content-center">
+                <div class="login_bg col-10 row justify-content-center">
                     <div class="col-11">
                         <label>
-                            <b style="font-family: Overpass; font-size: 36px; padding-top: 40px;">CREATE AN ACCOUNT</b>
+                            <b style="font-family: Overpass; font-size: 36px; padding-top: 40px;">WELCOME BACK!</b>
                         </label>
-                        <p style="font-size: 18px;">Đã có tài khoản, <a href="#">Sign in</a></p>
-                        <div class="container py-5">
-                            <ul class="messages">
-                                {% for item in form_error %}
-                                <li>{{ item }}</li>
-                                {% endfor %}
-                            </ul>
-                            <form method="POST">
-                                {% csrf_token %}
-                                {{form.as_p}}
-                                <button class="btn btn-primary" type="submit">Register</button>
-                            </form>
+                        <p style="font-size: 18px;">Chưa có tài khoản, <a href="#">Sign up</a></p>
+                        <p style="font-size: 24px;">Username</p>
+                        <input type="text" name="user" required>
+                        <p style="font-size: 24px; margin-top: 20px;">Password</p>
+                        <input type="password" name="pass" required>
+                        <div>
+                            <label> <input type="checkbox" name="checked"> Remember me</label>
+                            <a href="#">Forget password?</a>
                         </div>
+                        <button type="button">Sign In</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <!--Footer-->
     <footer>
         <div class="container-fluid p-3">
             <div class="row text-center">
                 <div class="col-12">
-                    <marquee style="font-size: 25px;">Xây dựng và phát triển bởi nhóm Butterflies
-                    </marquee>
+                    <marquee style="font-size: 25px;">Xây dựng và phát triển bởi nhóm Butterflies</marquee>
                 </div>
             </div>
         </div>
