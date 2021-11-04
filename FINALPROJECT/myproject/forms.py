@@ -39,6 +39,7 @@ class ThemMonHoc(forms.ModelForm):
         }
 
 class ThemTaiLieu(forms.ModelForm):
+    # myfile = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
     class Meta:
         model = TaiLieu
         fields =('TenTL','LoaiTL','MaMH','TacGia','MoTa')
@@ -48,26 +49,12 @@ class ThemTaiLieu(forms.ModelForm):
             'MaMH': forms.Select(attrs={'class': 'form-control'}),
             'LoaiTL': forms.Select(attrs={'class': 'form-control'}),
             'MoTa': forms.Textarea(attrs={'class': 'form-control'}),
+            # 'Path': forms.FileField(),
         }
 
 class TL(forms.ModelForm):
     class Meta:
         model = FileUpload
-        fields =('MaTL','filename','Path','FileUL')
-        # widgets = {
-        #     'TenTL': forms.TextInput(attrs={'class': 'form-control'}),
-        #     'TacGia': forms.TextInput(attrs={'class': 'form-control'}),
-        #     'MaMH': forms.Select(attrs={'class': 'form-control'}),
-        #     'LoaiTL': forms.Select(attrs={'class': 'form-control'}),
-        #     'MoTa': forms.Textarea(attrs={'class': 'form-control'}),
-        # }
+        fields =('MaTL','filename','Path')
 
-
-#     def clean_student_code(self):
-#         data = self.cleaned_data["student_code"]
-#         try:
-#             student_code = int(data)
-#         except ValueError:
-#             raise forms.ValidationError("Mã số sinh viên là một số nguyên")
-#         return data
     

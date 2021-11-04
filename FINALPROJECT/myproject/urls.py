@@ -12,4 +12,6 @@ urlpatterns = [
     path('dashboard/ThanhVien/', views.ThanhVien_view, name='ThanhVien_view'),
     path('dashboard/BinhLuan/', views.BinhLuan_view, name='BinhLuan_view'),
     path('DangKy/', views.DangKy_view, name='DangKy_view'),
+    path('simple_upload/', views.simple_upload, name='simple_upload'),
+    
 ]

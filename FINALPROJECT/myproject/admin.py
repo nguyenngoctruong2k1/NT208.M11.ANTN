@@ -30,4 +30,4 @@ class CommentMHAdmin(admin.ModelAdmin):
 
 @admin.register(FileUpload)
 class FileUploadAdmin(admin.ModelAdmin):
-    list_display = ('MaTL','filename','Path','FileUL')
+    list_display = ('MaTL','filename','Path')

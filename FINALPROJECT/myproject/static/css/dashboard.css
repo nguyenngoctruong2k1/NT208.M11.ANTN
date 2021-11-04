@@ -295,3 +295,6 @@ select#KhoaQL, select#NhomMH {
     border-radius: 100px;
     background-size: 100%;
 }
+.django-ckeditor-widget{
+    width: 100%;
+}

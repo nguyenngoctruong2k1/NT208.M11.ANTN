@@ -1,4 +1,5 @@
 {% extends "dashboard_base.html" %} 
+{% load mathfilters %}
 {% block title %}Tài Liệu{% endblock title %}
 {% block TrangTL %}horizontal{% endblock%}
 {% block TieuDe %}Tất cả tài liệu{% endblock %}
@@ -16,92 +17,31 @@
             </ul>
         </div>
         <div class="list-subject-item row ">
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row">
-                    <li class="col-1" name="SoTT">NT208847</li>
-                    <li class="col-4" name="MaTL">Đề thi học kỳ 1 môn Mạng máy tính 2018-2019</li>
-                    <li class="col-2" name="TenTL">Trần Tấn Đại</li>
-                    <li class="col-2" name="NGoi">NT132</li>
-                    <li class="col-1" name="NoiDung">202</li>
-                    <li class="col-1" name="">4.6/5.0</li>
-                    <div class="col-1">
-                        <div class="user" rule="button" style="text-align: right;">
-                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu" >
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xem</a></li>
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xóa</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </ul>
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row">
-                    <li class="col-1" name="SoTT">NT208847</li>
-                    <li class="col-4" name="MaTL">Đề thi học kỳ 1 môn Mạng máy tính 2018-2019</li>
-                    <li class="col-2" name="TenTL">Trần Tấn Đại</li>
-                    <li class="col-2" name="NGoi">NT132</li>
-                    <li class="col-1" name="NoiDung">202</li>
-                    <li class="col-1" name="">4.6/5.0</li>
-                    <div class="col-1">
-                        <div class="user" rule="button" style="text-align: right;">
-                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu" >
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xem</a></li>
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xóa</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </ul>
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row">
-                    <li class="col-1" name="SoTT">NT208847</li>
-                    <li class="col-4" name="MaTL">Đề thi học kỳ 1 môn Mạng máy tính 2018-2019</li>
-                    <li class="col-2" name="TenTL">Trần Tấn Đại</li>
-                    <li class="col-2" name="NGoi">NT132</li>
-                    <li class="col-1" name="NoiDung">202</li>
-                    <li class="col-1" name="">4.6/5.0</li>
-                    <div class="col-1">
-                        <div class="user" rule="button" style="text-align: right;">
-                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu" >
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xem</a></li>
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xóa</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </ul>
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row">
-                    <li class="col-1" name="SoTT">NT208847</li>
-                    <li class="col-4" name="MaTL">Đề thi học kỳ 1 môn Mạng máy tính 2018-2019</li>
-                    <li class="col-2" name="TenTL">Trần Tấn Đại</li>
-                    <li class="col-2" name="NGoi">NT132</li>
-                    <li class="col-1" name="NoiDung">202</li>
-                    <li class="col-1" name="">4.6/5.0</li>
-                    <div class="col-1">
-                        <div class="user" rule="button" style="text-align: right;">
-                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu" >
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xem</a></li>
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xóa</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </ul>
+            {% for item in tailieu %}
 
-            
+            <ul id="{{ item.MaTL }}" class="subject-item" >
+                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                    <li class="col-1" name="SoTT">{{ tailieu.number| sub:1| mul:15| add:forloop.counter }}</li>
+                    <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
+                    <li class="col-2" name="MSSV">{{ item.MSSV }}</li>
+                    <li class="col-2" name="MaMH">{{ item.MaMH.MaMH }}</li>
+                    <li class="col-1" name="LuotTai">{{ item.LuotTai }}</li>
+                    <li class="col-1" name="">4.6/5.0</li>
+                    <div class="col-1">
+                        <div class="user" rule="button" style="text-align: right;">
+                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <ul class="dropdown-menu" >
+                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xem</a></li>
+                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="#">Xóa</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+            {% endfor %}
+        
         </div>
         <div class="list-subject-footer row">
             <div class="so-bai col-10">
@@ -116,9 +56,18 @@
                 </select>
             </div>
             <div class="tong-bai col-2" style="min-width: 200px;">
-                <p style="display: inline;">1-8 of 1240</p>
-                <button class="backward"><i class="fas fa-angle-left"></i></button>
-                <button class="forward"><i class="fas fa-angle-right"></i></button>
+                <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
+                {% if tailieu.has_previous %}
+                    <a href="?page={{ tailieu.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% else %}
+                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+                
+                {% if tailieu.has_next %}
+                    <a href="?page={{ tailieu.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                {% else %}
+                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>

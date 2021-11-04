@@ -5,8 +5,8 @@ from icecream import ic
 from django.views.generic import ListView 
 from django.core.paginator import Paginator
 from django.views.generic.edit import ModelFormMixin
-from myproject.forms import ThemMonHoc,ThemTaiLieu,NewUserForm
-from myproject.models import MonHoc,FileUpload
+from myproject.forms import ThemMonHoc,ThemTaiLieu,NewUserForm,TL
+from myproject.models import MonHoc,FileUpload, TaiLieu
 import random
 import hashlib
 import time
@@ -15,11 +15,25 @@ from django.contrib import messages
 
 # from myproject.forms import TaoTaiLieu
 
+from django.conf import settings
+def simple_upload(request):
+    # ic(request.POST['text'])
+    ic(bool(request.FILES))  
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES.getlist('myfile')
+        fs = FileSystemStorage()
+        for f in myfile:
+            filename = fs.save(f.name, f)
+            uploaded_file_url = fs.url(filename)
+        return render(request, 'simple_upload.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+    return render(request, 'simple_upload.html')
+
 class MonHocListView(ListView, ModelFormMixin):
     model = MonHoc
     template_name = 'dashboard.html'
     paginate_by = 2
-
 
 def DangKy_view(request):
     if request.method == 'POST':
@@ -27,10 +41,11 @@ def DangKy_view(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            # login(request, user)
             messages.success(request, "Registration successful." )
             # return redirect("main:homepage")
         else:
+            ic(form.errors)
             return render(
                 request=request, 
                 template_name="DangKy.html", 
@@ -38,10 +53,8 @@ def DangKy_view(request):
     form = NewUserForm()
     return render (request=request, template_name="DangKy.html", context={"register_form":form, 'form_error':form.errors})
 
-
 def dashboard_view(request):
     ic(request.user.username)
-    
     if request.method == 'POST':
         form = ThemMonHoc(request.POST)
         if form.is_valid():
@@ -71,11 +84,23 @@ def DuyetTL_view(request):
 
 def DongGopTL_view(request):
     if request.method == 'POST':
+        ic(request.POST)
         form = ThemTaiLieu(request.POST)
         if form.is_valid():
             instan = form.save(commit=False)
             instan.MaTL = hashlib.sha1(str(time.time()).encode()).hexdigest()[:15]
+            instan.MSSV = request.user.username
+            # Lưu file vào cơ sở dữ liệu
+            if request.FILES and request.FILES['myfile']:
+                myfile = request.FILES.getlist('myfile')
+                fs = FileSystemStorage()
+                for f in myfile:
+                    filename = fs.save(f.name, f)
+                    uploaded_file_url = fs.url(filename)
+                    file_tai_lieu = TL({'MaTL':instan.MaTL,'filename':filename,'Path':uploaded_file_url})
+                    file_tai_lieu.save()
             instan.save()
+
     else:
         form = ThemTaiLieu()
     return render(
@@ -84,10 +109,20 @@ def DongGopTL_view(request):
     )
 
 def TaiLieu_view(request):
+    ic(request.user.username)
+
+    p = Paginator(TaiLieu.objects.all(),15)
+    page = request.GET.get('page')
+    tailieu = p.get_page(page)
+
     return render(
         request,
         'db_TaiLieu.html',
+        {
+            'tailieu':tailieu
+        }
     )
+
 def ThanhVien_view(request):
     return render(
         request,
