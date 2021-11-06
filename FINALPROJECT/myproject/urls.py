@@ -2,6 +2,7 @@ from django.urls import path
 
 
 from myproject import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard_view'),
@@ -13,6 +14,9 @@ urlpatterns = [
     path('dashboard/ThanhVien/', views.ThanhVien_view, name='ThanhVien_view'),
     path('dashboard/BinhLuan/', views.BinhLuan_view, name='BinhLuan_view'),
     path('DangKy/', views.DangKy_view, name='DangKy_view'),
-    path('simple_upload/', views.simple_upload, name='simple_upload'),
-    
+    path('', views.home_view, name='home_view'),
+    path('DangNhap/', auth_views.LoginView.as_view(template_name='login.html'),
+         name='DangNhap_view'),
+    path('DangXuat/', auth_views.LogoutView.as_view(next_page='/'),
+         name='DangXuat_view')
 ]

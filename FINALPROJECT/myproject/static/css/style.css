@@ -95,10 +95,16 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 30px;
 	box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.2);
 }
-label, .form-check-label, h1,h2,h3,h4 {
+.form-check-label, h1 {
 	color: white;	
-	text-shadow: 2px 2px 10px #000;
+	text-shadow: 2px 2px 10px #000; 
 }
+
+label{
+    font-size: 16px;
+    font-weight: bold;
+}
+
 /* .emailError, .passwordError {
 	color: red;
 	background-color: blanchedalmond;
@@ -106,6 +112,7 @@ label, .form-check-label, h1,h2,h3,h4 {
 	border-radius: 4px;
 	margin-top: 1px;
 } */
+
 /* card */
 .card-img{
 	border-radius: 4px;

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %} Đăng nhập {% endblock %}
+{% block content %}
+<!--Nội dung-->
+<section>
+    <div class="container-fluid padding ">
+        <div id="background" class="row justify-content-center" style="min-height: 60vh;">
+            <div class="login_bg col-10 row justify-content-center">
+                <div class="col-11">
+                    <label>
+                        <b
+                            style="font-family: Overpass; font-size: 36px; padding-top: 40px; color: black; text-shadow: none;">WELCOME
+                            BACK!</b>
+                    </label>
+                    <p style="font-size: 18px;">Chưa có tài khoản, <a href="{% url 'DangKy_view' %}">Sign up</a></p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for key, value in form.errors.items %}
+                        {{value}}
+                        {% endfor %}
+                        <p><label style="color: black; text-shadow:none; margin:0px; font-size: 16px;">Tài khoản</label>
+                        </p>
+                        <p
+                            style="font-size: 20px; width: 420px; height: 50px;border-radius: 40px;padding-left: 32px;padding-right: 40px;">
+                            {{form.username}}</p>
+                        <p><label style="color: black; text-shadow:none;font-size: 16px; margin: 0px">Mật khẩu</label>
+                        </p>
+                        <p
+                            style="font-size: 20px; width: 420px; height: 50px;border-radius: 40px;padding-left: 32px;padding-right: 40px;">
+                            {{form.password}}</p>
+                        <input type="hidden" name='next' value="/">
+                        <input type="submit" value="Đăng nhập"
+                            style="font-size: 20px; width: 500px; height: 70px; border-radius: 40px; padding-left: 32px; padding-right: 40px; margin-top: 50px; background-color: #8798cf;">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

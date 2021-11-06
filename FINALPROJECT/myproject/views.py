@@ -2,85 +2,73 @@ from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render
 from icecream import ic
-from django.views.generic import ListView 
+from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.views.generic.edit import ModelFormMixin
-from myproject.forms import ThemMonHoc,ThemTaiLieu,NewUserForm,TL
+
+from myproject.forms import ThemMonHoc,ThemTaiLieu,TL
 from myproject.models import MonHoc,FileUpload, TaiLieu
+from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm
 import random
 import hashlib
 import time
-from django.contrib.auth import login
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 # from myproject.forms import TaoTaiLieu
-
-from django.conf import settings
-def simple_upload(request):
-    # ic(request.POST['text'])
-    ic(bool(request.FILES))  
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES.getlist('myfile')
-        fs = FileSystemStorage()
-        for f in myfile:
-            filename = fs.save(f.name, f)
-            uploaded_file_url = fs.url(filename)
-        return render(request, 'simple_upload.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-    return render(request, 'simple_upload.html')
-
 class MonHocListView(ListView, ModelFormMixin):
     model = MonHoc
     template_name = 'dashboard.html'
     paginate_by = 2
 
+def home_view(request):
+    return render(
+        request,
+        'home.html',
+    )
+
 def DangKy_view(request):
+    form = RegisterForm()
     if request.method == 'POST':
-        # ic(request.method)
-        form = NewUserForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # login(request, user)
-            messages.success(request, "Registration successful." )
-            # return redirect("main:homepage")
-        else:
-            ic(form.errors)
-            return render(
-                request=request, 
-                template_name="DangKy.html", 
-                context={"register_form":form, 'form_error':form.errors})
-    form = NewUserForm()
-    return render (request=request, template_name="DangKy.html", context={"register_form":form, 'form_error':form.errors})
+            form.save()
+            return HttpResponseRedirect('/')
+    return render(
+        request,
+        'DangKy.html',
+        {'form': form}
+    )
 
 def dashboard_view(request):
-    ic(request.user.username)
+    #ic(request.user.username)
     if request.method == 'POST':
         form = ThemMonHoc(request.POST)
         if form.is_valid():
             form.save()
-    
     # ic(request.GET['p'])
     form = ThemMonHoc()
     # data = MonHoc.objects.all()
-    p = Paginator(MonHoc.objects.all(),3)
+    p = Paginator(MonHoc.objects.all(), 3)
     page = request.GET.get('page')
     monhoc = p.get_page(page)
 
     return render(
         request,
-        'dashboard.html', 
+        'dashboard.html',
         {
-            'form': form , 
-            'monhoc':monhoc
+            'form': form,
+            'monhoc': monhoc
         }
     )
+
 
 def DuyetTL_view(request):
     return render(
         request,
-        'db_DuyetTL.html', {'data':FileUpload.objects.all()}
+        'db_DuyetTL.html', {'data': FileUpload.objects.all()}
     )
+
 
 def DongGopTL_view(request):
     if request.method == 'POST':
@@ -101,12 +89,12 @@ def DongGopTL_view(request):
                     file_tai_lieu.save()
             instan.save()
 
-    else:
-        form = ThemTaiLieu()
+    form = ThemTaiLieu()
     return render(
-        request, 
+        request,
         'db_DongGopTL.html', {'form': form}
     )
+
 
 def TaiLieu_view(request):
     ic(request.user.username)
@@ -135,6 +123,8 @@ def ThanhVien_view(request):
         request,
         'db_ThanhVien.html',
     )
+
+
 def BinhLuan_view(request):
     return render(
         request,

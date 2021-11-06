@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} Trang chủ {% endblock %}
+{% block content %}
+{% load static %}
+<!--Nội dung-->
+<section>
+    <div class="container-fluid padding">
+        <div id="background" class="row justify-content-center" style="min-height: 60vh;">
+            <div class="col-md-5">
+                <h2 style="font-size: 54px; line-height: 85px; padding-top: 50px; padding-left: 76px;">
+                    CHIA SẺ VÀ TÌM KIẾM TÀI LIỆU HỌC TẬP UIT
+                </h2>
+                <!-- Thanh tìm kiếm-->
+                <div class="Search">
+                    <input type="Text" name="search" placeholder="TÌM KIẾM MÔN HỌC">
+                    <a href="#"> <i class="fas fa-search"></i></a>
+                </div>
+            </div>
+
+            <div class="col-4 backgroundimage">
+            </div>
+
+        </div>
+        <section class="footer row justify-content-center">
+            <div class="col-2">
+                <p>Slide bài giảng</p>
+                <img src="{% static 'Image/pp-removebg-preview.png' %}" alt="ảnh powerpoint"
+                    style="width:217px; height: 134px">
+                <i class="far fa-check-circle" style="margin-left: -78px;"></i>
+            </div>
+            <div class="col-2">
+                <p>Tài liệu tham khảo</p>
+                <img src="{% static 'Image/thamkhao-removebg-preview.png' %}" alt="icon tài liệu tham khảo"
+                    style="width: 154px; height: 154px">
+                <i class="far fa-check-circle" style="margin-left: -40px;"></i>
+            </div>
+            <div class="col-2">
+                <p>Đề thi các năm</p>
+                <img src="{% static 'Image/dethi-removebg-preview.png' %}" alt="icon đề thi"
+                    style="width: 149px; height: 149px">
+                <i class="far fa-check-circle" style="margin-left: -40px;"></i>
+            </div>
+            <div class="col-2">
+                <p>Đóng góp và feedback</p>
+                <img src="{% static 'Image/feedback.png' %}" alt="icon đóng góp và feedback"
+                    style="width: 139px; height: 139px">
+                <i class="far fa-check-circle" style="margin-left: -35px;"></i>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}
