@@ -123,6 +123,13 @@ def TaiLieu_view(request):
         }
     )
 
+def TaiLieu_delete(request, slug):  
+    tailieu = TaiLieu.objects.get(MaTL=slug)  
+    if tailieu: tailieu.delete() 
+    fileUp = FileUpload.objects.get(MaTL=slug)
+    if fileUp: fileUp.delete()
+    return redirect('TaiLieu_view')  
+
 def ThanhVien_view(request):
     return render(
         request,

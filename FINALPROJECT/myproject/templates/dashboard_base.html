@@ -34,13 +34,6 @@
                         <p>Tổng quan</p>
                     </a>
                 </li>
-
-                <li class="item {% block TrangDTL %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'DuyetTL_view' %}">
-                        <i class="fas fa-ticket-alt"></i>
-                        <p>Duyệt tài liệu</p>
-                    </a>
-                </li>
                     
                 <li class="item {% block TrangDGTL %}{% endblock %}">
                     <a class="nav-link" href="{% url 'DongGopTL_view' %}">
@@ -48,6 +41,13 @@
                         <p>Đóng góp tài liệu</p>
                     </a>
                 </li>
+                <li class="item {% block TrangDTL %}{% endblock %}">
+                    <a class="nav-link" href="{% url 'DuyetTL_view' %}">
+                        <i class="fas fa-ticket-alt"></i>
+                        <p>Duyệt tài liệu</p>
+                    </a>
+                </li>
+                
                 <li class="item {% block TrangTL %}{% endblock %}">
                     <a class="nav-link" href="{% url 'TaiLieu_view' %}">
                         <i class="fas fa-book"></i>
