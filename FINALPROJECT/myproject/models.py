@@ -62,7 +62,7 @@ class MonHoc(models.Model):
     NhomMH = models.CharField(max_length=10, choices=Khoa_Choices, default='DC')
     MoTa = models.CharField(max_length=1000)
     def __str__(self):
-        return self.MSSV
+        return self.MaMH
 
 class TaiLieu(models.Model):
     """
@@ -82,6 +82,7 @@ class TaiLieu(models.Model):
     LuotTai = models.DecimalField(max_digits=5,decimal_places=0)
     LuotXem = models.DecimalField(max_digits=5,decimal_places=0)
     Path = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=False, auto_now=False)
 
 class CommentTL(models.Model):
     """
@@ -90,13 +91,46 @@ class CommentTL(models.Model):
     MSSV = models.ForeignKey(Student,on_delete=models.CASCADE)
     MaTL = models.ForeignKey(TaiLieu,on_delete=models.CASCADE)
     ThoiGian = models.DateTimeField(blank=True,null=True)
-    NoiDung = models.CharField(max_length=1000)
+    NoiDung = models.TextField()
 
 class CommentMH(models.Model):
     """
     Lưu dữ liệu về môn học
     """
     MSSV = models.ForeignKey(Student,on_delete=models.CASCADE)
-    MaMH = models.ForeignKey(MonHoc,on_delete=models.CASCADE)
+    MaMH = models.ForeignKey(MonHoc,on_delete=models.CASCADE, related_name='comments')
     ThoiGian = models.DateTimeField(blank=True,null=True)
-    NoiDung = models.CharField(max_length=1000)
+    NoiDung = models.TextField()
+
+class Mon_Dai_Cuong(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Co_So_Nhom_Nganh(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Mon_Chuyen_Nganh(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Co_So_Nganh(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    """ class Meta:
+        verbose_name_plural = 'Co_So_Nganh_s' """
+
+class Toan_Tin_KHTN(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
