@@ -4,47 +4,12 @@
 {% block TrangDTL %}horizontal{% endblock%}
 {% block TieuDe %}Duyệt Tài Liệu{% endblock %}
 {% block script_content %}
-<script>
-    $('.dropdown-menu user').on('click', function(e) {
-        if (!$(this).next().hasClass('show')) {
-            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-        }
-        var $subMenu = $(this).next(".dropdown-menu");
-        $subMenu.toggleClass('show');
 
-        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-            $('.dropdown-submenu .show').removeClass("show");
-        });
-        return false;
-    });
-
-    // Sử lý sự kiện khi click subject-item 
-    function show_item_hidden(id){
-        var x = document.getElementsByClassName("object-item-hidden");
-        if (x.length>1) x[0].parentNode.innerHTML = '<div class="subject-item-show" onclick="show_item_hidden(this.parentNode.id)">'+x[0].parentNode.firstElementChild.innerHTML+'</div>';
-        else
-        {
-            var htmlObj = document.getElementById(id);
-            htmlObj.innerHTML = htmlObj.innerHTML + document.getElementById('object-item-hidden').innerHTML;
-            document.getElementById('MaMH').value = htmlObj.firstElementChild.children[1].innerHTML;
-            document.getElementById('TenMH').value = htmlObj.firstElementChild.children[2].innerHTML;
-            // document.getElementById('KhoaQL').value = htmlObj.firstElementChild.children[3].innerHTML;
-            for(var i, j = 0; i = document.getElementById('KhoaQL').options[j]; j++) {
-                if(i.value == htmlObj.firstElementChild.children[3].innerHTML) {
-                    document.getElementById('KhoaQL').selectedIndex = j;
-                    break;
-                }
-            }
-            // document.getElementById('NhomMH').value = htmlObj.firstElementChild.children[4].innerHTML;
-            for(var i, j = 0; i = document.getElementById('NhomMH').options[j]; j++) {
-                if(i.value == htmlObj.firstElementChild.children[4].innerHTML) {
-                    document.getElementById('NhomMH').selectedIndex = j;
-                    break;
-                }
-            }
-        }
-    };
-</script>
+<style  type="text/css">
+    .django-ckeditor-widget{
+        width: 100%;
+    }
+</style>
 {% endblock %}
 {% block content %}
 
@@ -55,56 +20,23 @@
                 <li class="col-1">STT</li>
                 <li class="col-4">Tên Tài liệu</li>
                 <li class="col-2">Người gởi</li>
-                <li class="col-2">Loại TL</li>
-                <li class="col-1">SL File</li>
+                <li class="col-4">Thông tin cơ bản</li>
                 <li class="col-1">Kiểm duyệt</li>
             </ul>
         </div>
         <div class="list-subject-item row">
-            <!-- {% for item in tailieu %}
+            {% for item in tailieu %}
             <ul id="{{ item.MaTL }}" class="subject-item" >
                 <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
                     <li class="col-1" name="SoTT">{{ tailieu.number| sub:1| mul:15| add:forloop.counter }}</li>
                     <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-1" name="MaMH">{{ item.MaMH.MaMH }}</li>
-                    <li class="col-2" name="LoaiTaiLieu">{{ item.LoaiTL }}</li>
-                    <li class="col-2" name="NguoiGoi">{{ item.MSSV }}</li>
-                    <li class="col-1" name="SLFile">{{ item.MSSV }}</li>
-                </div>
-            </ul>
-            {% endfor %} -->
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row justify-content-center">
-                    <li class="col-1" name="SoTT">1</li>
-                    <li class="col-1" name="MaTL">NT208847</li>
-                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
-                    <li class="col-2" name="NGoi">19522440</li>
-                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
+                    <li class="col-2" name="NguoiGoi">{{ item.user }}</li>
+                    <li class="col-4" name="Thông tin cơ bản">{{ item.get_LoaiTL_display }}, {{ item.TacGia }}, {{ item.date|date:"M d, Y" }}</li>
+                    <!-- <a class="btn btn-success col-1" style="border-radius: 25px;" href="/dashboard/DuyetTL/XetDuyet/{{ item.MaTL }}">Duyệt</a> -->
                     <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
                 </div>
             </ul>
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row justify-content-center">
-                    <li class="col-1" name="SoTT">1</li>
-                    <li class="col-1" name="MaTL">NT208847</li>
-                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
-                    <li class="col-2" name="NGoi">19522440</li>
-                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
-                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
-                </div>
-            </ul>
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row justify-content-center">
-                    <li class="col-1" name="SoTT">1</li>
-                    <li class="col-1" name="MaTL">NT208847</li>
-                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
-                    <li class="col-2" name="NGoi">19522440</li>
-                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
-                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;">Duyệt</button>
-                </div>
-            </ul>
-
-            
+            {% endfor %}          
         </div>
         <div class="list-subject-footer row">
             <div class="so-bai col-10">
@@ -119,9 +51,18 @@
                 </select>
             </div>
             <div class="tong-bai col-2" style="min-width: 200px;">
-                <p style="display: inline;">1-8 of 1240</p>
-                <button class="backward"><i class="fas fa-angle-left"></i></button>
-                <button class="forward"><i class="fas fa-angle-right"></i></button>
+                <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
+                {% if tailieu.has_previous %}
+                    <a href="?page={{ tailieu.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% else %}
+                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+                
+                {% if tailieu.has_next %}
+                    <a href="?page={{ tailieu.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                {% else %}
+                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -129,4 +70,63 @@
 </div>
 {% endblock content %}
 
+{% block bonus_content%}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style='max-width:800px;'>
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">XÉT DUYỆT TÀI LIỆU</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+            <form class="col-12" action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                <div class="form-group">
+                    <label for="MaMH" class="col-form-label">Tên tài liệu:</label>
+                    {{ form.TenTL }}
+                </div>
+                <div class="form-group">
+                    <label for="TenMH" class="col-form-label">Loại tài liệu:</label>
+                    {{ form.LoaiTL }}
+                </div>
+                <div class="form-group">
+                    <label for="KhoaQL" class="col-form-label">Mã môn học:</label>
+                    {{ form.MaMH }}
+                </div>
+                <div class="form-group">
+                    <label for="NhomMH" class="col-form-label">Tác giả: </label>
+                    {{ form.TacGia }}
+                </div>
+
+                <div class="form-group">
+                    <label for="NhomMH" class="col-form-label">Mô tả: </label>
+                    {{ form.MoTa }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button  class="btn btn-primary" type="submit" >Send message</button>
+                </div>
+
+            </form>
             
+        </div>
+        
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block script_body %}
+
+<script language="javascript">
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 500);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1000);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1500);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 2000);
+    
+</script>
+{% endblock script_body %}

@@ -23,8 +23,8 @@
         border-radius: 3px;
     }
 	.signup-form {
-		width: 390px;
-		margin: 0 auto;
+		max-width: 700px;
+		margin: 50px auto;
 		padding: 30px 0;
 	}
     .signup-form form {
@@ -48,10 +48,13 @@
 	}
 	.signup-form label {
 		font-weight: normal;
-		font-size: 13px;
+		font-size: 16px;
+	}
+	.form-control{
+		font-size: 16px;
 	}
 	.signup-form .form-control {
-		min-height: 38px;
+		min-height: 50px;
 		box-shadow: none !important;
 	}	
 	.signup-form .input-group-addon {
@@ -62,7 +65,7 @@
 		margin-top: 2px;
 	}   
     .signup-form .btn{        
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
 		background: #19aa8d;
 		border: none;
@@ -105,7 +108,10 @@
 <div class="signup-form">
     <form method="POST">
         {% csrf_token %}
-		<h2>Sign Up</h2>
+		{% for key, value in form.errors.items %}
+		{{value}}
+		{% endfor %}
+		<h2 style="font-size: 50px; text-align: center;">Đăng Nhập</h2>
 		<p><ul class="messages">
             {% for item in form_error %}
             <li>{{ item }}</li>
@@ -116,41 +122,26 @@
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-user"></i></span>
                 {{ form.username }}
-				<!-- <input type="text" class="form-control" name="username" placeholder="Username" required="required"> -->
-			</div>
-        </div>
-        <div class="form-group">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
-                {{ form.email}}
-				<!-- <input type="email" class="form-control" name="email" placeholder="Email Address" required="required"> -->
 			</div>
         </div>
 		<div class="form-group">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                {{ form.password1 }}
-				<!-- <input type="text" class="form-control" name="password" placeholder="Password" required="required"> -->
+                {{ form.password }}
 			</div>
         </div>
 		<div class="form-group">
-			<div class="input-group">
-				<span class="input-group-addon">
-					<i class="fa fa-lock"></i>
-					<i class="fa fa-check"></i>
-				</span>
-                {{ form.password2 }}
-				<!-- <input type="text" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required"> -->
-			</div>
-        </div>
-        <div class="form-group">
-			<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
-		</div>
-		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+			<input type="hidden" name='next' value="/">
+            <button type="submit" class="btn btn-primary btn-lg">Đăng nhập</button>
         </div>
     </form>
-	<div class="text-center">Already have an account? <a href="#">Login here</a></div>
+	<div class="text-center" style="font-size: 16px;">Bạn đã có tài khoản chưa? Đăng ký <a href="{% url 'DangKy_view' %}">tại đây</a></div>
 </div>
+<script>
+	document.getElementById("id_username").className='form-control';
+	document.getElementById("id_password").className='form-control';
+	document.getElementById("id_username").placeholder='Tài khoản';
+	document.getElementById("id_password").placeholder='Mật khẩu';
+</script>
 </body>
 </html>

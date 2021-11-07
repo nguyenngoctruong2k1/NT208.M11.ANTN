@@ -156,8 +156,8 @@ def dashboard_view(request):
     page = request.GET.get('page')
     monhoc = p.get_page(page)
     overview = {
-            'new_doc': TaiLieu.objects.filter(KiemDuyet=True).count(),
-            'old_doc': TaiLieu.objects.filter(KiemDuyet=False).count(),
+            'new_doc': TaiLieu.objects.filter(KiemDuyet=False).count(),
+            'old_doc': TaiLieu.objects.filter(KiemDuyet=True).count(),
             'num_user': User.objects.filter(is_active=True).count()
         }
     return render(
@@ -172,10 +172,23 @@ def dashboard_view(request):
 
 
 def DuyetTL_view(request):
+    p = Paginator(TaiLieu.objects.filter(KiemDuyet=False),15)
+    page = request.GET.get('page')
+    tailieu = p.get_page(page)
+    form = ThemTaiLieu()
     return render(
         request,
-        'db_DuyetTL.html', {'data': FileUpload.objects.all()}
+        'db_DuyetTL.html', 
+        {
+            'tailieu': tailieu,
+            'form': form
+        }
     )
+def TaiLieu_Duyet(request, slug):
+    tailieu = TaiLieu.objects.get(MaTL=slug)  
+    if tailieu: tailieu.KiemDuyet=True
+    tailieu.save()
+    return redirect('DuyetTL_view') 
 
 
 def DongGopTL_view(request):
@@ -242,3 +255,9 @@ def BinhLuan_view(request):
         'db_BinhLuan.html',
     )
 
+
+def ThongTinCaNhan_view(request):
+    return render(
+        request,
+        'db_ThongTinCaNhan.html',
+    )

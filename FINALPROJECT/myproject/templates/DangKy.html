@@ -13,7 +13,7 @@
                             style="font-family: Overpass; font-size: 36px; padding-top: 40px; color: black; text-shadow: none;">CREATE
                             AN ACCOUNT</b>
                     </label>
-                    <p style="font-size: 18px;">Đã có tài khoản, <a href="{% url 'DangNhap_view' %}">Sign in</a></p>
+                    <p style="font-size: 18px;">Đã có tài khoản, <a href="{% url DangNhap_view %}">Sign in</a></p>
                     <div class="container py-5" style="padding: 0px;">
                         <ul class="messages">
                             {% for item in form_error %}

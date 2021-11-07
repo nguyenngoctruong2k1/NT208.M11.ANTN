@@ -1,0 +1,71 @@
+{% extends "dashboard_base.html" %} 
+{% block title %}Thông tin cá nhân{% endblock title %}
+{% block TrangTT %}horizontal{% endblock%}
+{% block TieuDe %}Thông tin cá nhân{% endblock %}
+{% block content %}
+<div class="row col-12 list-subject justify-content-center" style="margin-bottom: 30px">
+    <div class="col-10 row justify-content-center" style="padding-top: 30px;" >
+        <form class="col-8">
+            
+
+
+
+            <div class="form-group row">
+                <label for="TenTL" class="col-sm-2 col-form-label">Họ và tên:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="TenTL" placeholder="Nguyễn Ngọc Trưởng">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="TenTG" class="col-sm-2 col-form-label">MSSV:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="TenTG" placeholder="19522440">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="MaMH" class="col-sm-2 col-form-label">Lớp:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="MaMH" placeholder="NT208">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="TenTL" class="col-sm-2 col-form-label">Facebook:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="TenTL" placeholder="Nguyễn Ngọc Trưởng">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="TenTG" class="col-sm-2 col-form-label">Github:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="TenTG" placeholder="19522440">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="MaMH" class="col-sm-2 col-form-label">Email:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="MaMH" placeholder="NT208">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Tự bạch:</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+              </div>
+            </div>
+        </form>
+        <div class="col-3" style="font-size: 30px;">
+            <img src="./image/avt.jpg" alt="" width="100%" style="border-radius:50%" class="pull-right img-responsive">
+            <i class="fas fa-camera"></i>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
