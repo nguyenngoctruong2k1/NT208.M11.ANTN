@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load mon_hoc_tags %}
+{% block title %}Trang Chủ{% endblock %}
+{% block title_MH %}TOÁN TIN KHTN{% endblock %}
+{% block content %}
+<div class="row">
+	{% get_toan_tin_khtn as khtn %}
+	{% for item in khtn%}
+	<div class="col-3">
+		<div class="bg-image card shadow-1-strong">
+			<div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+				<div class="card-body text-white">
+					<h3 class="card-title">{{item.name}}</h3>
+					<a href="{% url 'mon_cu_the' %}" class="btn btn-outline-light">Chi tiết</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

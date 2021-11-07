@@ -83,7 +83,7 @@ class TaiLieu(models.Model):
     MoTa = RichTextField(blank=True,null=True)
     LuotTai = models.DecimalField(max_digits=6,decimal_places=1,default=0)
     LuotXem = models.DecimalField(max_digits=6,decimal_places=1,default=0)
-    Path = models.FileField()
+    KiemDuyet = models.BooleanField(default=False)
 
 class FileUpload(models.Model):
     MaTL = models.CharField(max_length=30)

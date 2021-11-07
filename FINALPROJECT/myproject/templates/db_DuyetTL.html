@@ -52,24 +52,26 @@
         <div class="list-subject-header row">
             <ul class="subject-header row justify-content-center">
                 <li class="col-1">STT</li>
-                <li class="col-1">Mã TL</li>
-                <li class="col-3">Tên Tài liệu</li>
+                <li class="col-4">Tên Tài liệu</li>
                 <li class="col-2">Người gởi</li>
-                <li class="col-3">Thông tin</li>
-                <li class="col-1">Xét duyệt</li>
+                <li class="col-2">Loại TL</li>
+                <li class="col-1">SL File</li>
+                <li class="col-1">Kiểm duyệt</li>
             </ul>
         </div>
         <div class="list-subject-item row">
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row justify-content-center">
-                    <li class="col-1" name="SoTT">1</li>
-                    <li class="col-1" name="MaTL">NT208847</li>
-                    <li class="col-3" name="TenTL">Slide lập trình ứng dụng web</li>
-                    <li class="col-2" name="NGoi">19522440</li>
-                    <li class="col-3" name="NoiDung">Môn học chuyên ngành</li>
-                    <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button>
+            <!-- {% for item in tailieu %}
+            <ul id="{{ item.MaTL }}" class="subject-item" >
+                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                    <li class="col-1" name="SoTT">{{ tailieu.number| sub:1| mul:15| add:forloop.counter }}</li>
+                    <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
+                    <li class="col-1" name="MaMH">{{ item.MaMH.MaMH }}</li>
+                    <li class="col-2" name="LoaiTaiLieu">{{ item.LoaiTL }}</li>
+                    <li class="col-2" name="NguoiGoi">{{ item.MSSV }}</li>
+                    <li class="col-1" name="SLFile">{{ item.MSSV }}</li>
                 </div>
             </ul>
+            {% endfor %} -->
             <ul id="item-0" class="subject-item" >
                 <div class="subject-item-show row justify-content-center">
                     <li class="col-1" name="SoTT">1</li>

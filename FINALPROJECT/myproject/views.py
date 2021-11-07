@@ -9,6 +9,7 @@ from django.views.generic.edit import ModelFormMixin
 from myproject.forms import ThemMonHoc,ThemTaiLieu,TL
 from myproject.models import MonHoc,FileUpload, TaiLieu
 from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm
+from django.contrib.auth.models import User
 import random
 import hashlib
 import time
@@ -52,13 +53,18 @@ def dashboard_view(request):
     p = Paginator(MonHoc.objects.all(), 3)
     page = request.GET.get('page')
     monhoc = p.get_page(page)
-
+    overview = {
+            'new_doc': TaiLieu.objects.filter(KiemDuyet=True).count(),
+            'old_doc': TaiLieu.objects.filter(KiemDuyet=False).count(),
+            'num_user': User.objects.filter(is_active=True).count()
+        }
     return render(
         request,
         'dashboard.html',
         {
             'form': form,
-            'monhoc': monhoc
+            'monhoc': monhoc,
+            'overview':overview
         }
     )
 
@@ -77,6 +83,7 @@ def DongGopTL_view(request):
         if form.is_valid():
             instan = form.save(commit=False)
             instan.MaTL = hashlib.sha1(str(time.time()).encode()).hexdigest()[:15]
+            instan.KiemDuyet = False
             instan.MSSV = request.user.username
             # Lưu file vào cơ sở dữ liệu
             if request.FILES and request.FILES['myfile']:
@@ -99,7 +106,7 @@ def DongGopTL_view(request):
 def TaiLieu_view(request):
     ic(request.user.username)
 
-    p = Paginator(TaiLieu.objects.all(),15)
+    p = Paginator(TaiLieu.objects.filter(KiemDuyet=True),15)
     page = request.GET.get('page')
     tailieu = p.get_page(page)
 

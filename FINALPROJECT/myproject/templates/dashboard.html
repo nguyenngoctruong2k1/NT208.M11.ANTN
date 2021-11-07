@@ -8,19 +8,19 @@
     <div class="col-md-3">
         <a class="overview" href="#">
             <span class="name" >Tài liệu mới</span>
-            <span class="number">60</span>
+            <span class="number">{{ overview.new_doc }}</span>
         </a>
     </div>
     <div class="col-md-3 ">
         <a class="overview" href="#">
             <span class="name" >Số tài liệu</span>
-            <span class="number">16</span>
+            <span class="number">{{ overview.old_doc }}</span>
         </a>
     </div>
     <div class="col-md-3">
         <a class="overview" href="#">
             <span class="name" >Số người dùng</span>
-            <span class="number">43</span>
+            <span class="number">{{ overview.num_user }}</span>
         </a>
     </div>
     <div class="col-md-3" class="overview">
@@ -66,8 +66,8 @@
             {% endfor %}
         </div>
         <div class="list-subject-footer row">
-            <div class="so-bai col-10">
-                <p style="display: inline;">Số bài hiển thị tối đa</p>
+            <div class="so-bai col-9">
+                <!-- <p style="display: inline;">Số bài hiển thị tối đa</p>
                 <select id="maximum-number" name="maximum-number" style="border: none;">
                     <option value="10">10</option>
                     <option value="15">15</option>
@@ -75,20 +75,21 @@
                     <option value="25">25</option>
                     <option value="25">30</option>
                     <option value="25">35</option>
-                </select>
+                </select> -->
             </div>
             <div class="tong-bai col-2" style="min-width: 200px;">
                 <p style="display: inline;">Page {{ monhoc.number }} of {{ monhoc.paginator.num_pages }}</p>
+                &ensp;
                 {% if monhoc.has_previous %}
-                    <a href="?page={{ monhoc.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" href="?page={{ monhoc.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left">&nbsp;</i></a>
                 {% else %}
-                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" class="backward" ><i class="fas fa-angle-left"></i></a>
                 {% endif %}
-                
+                &ensp;
                 {% if monhoc.has_next %}
-                    <a href="?page={{ monhoc.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" href="?page={{ monhoc.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% else %}
-                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" class="forward" ><i class="fas fa-angle-right"></i></a>
                 {% endif %}
             </div>
         </div>
