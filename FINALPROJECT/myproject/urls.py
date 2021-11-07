@@ -1,10 +1,16 @@
 from django.urls import path
-
-
 from myproject import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('', views.home_view, name='home'),
+    path('Toan_Tin_KHTN',views.Toan_Tin_KHTN,name='Toan_Tin_KHTN'),
+    path('slide',views.SlideListview.as_view(),name='slide'),
+    path('DeThi',views.DeThiListview.as_view(),name='DeThi'),
+    path('BaiTap',views.BaiTapListview.as_view(),name='BaiTap'),
+    path('<int:MaTL>/',views.one_document_view),
+    path('<int:MaMH>/',views.comment, name='mon_cu_the'),
+
     path('dashboard/', views.dashboard_view, name='dashboard_view'),
     path('dashboard/a/', views.MonHocListView.as_view(), name='dashboard_view2'),
     path('dashboard/DuyetTL/', views.DuyetTL_view, name='DuyetTL_view'),
@@ -20,3 +26,6 @@ urlpatterns = [
     path('DangXuat/', auth_views.LogoutView.as_view(next_page='/'),
          name='DangXuat_view')
 ]
+
+
+

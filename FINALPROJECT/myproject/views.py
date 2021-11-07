@@ -1,26 +1,26 @@
-from django.db import models
-from django.core.files.storage import FileSystemStorage
-from django.shortcuts import redirect, render
-from icecream import ic
-from django.views.generic import ListView
-from django.core.paginator import Paginator
+from django.db.models import query
+from django.http import request
+from django.shortcuts import redirect, render, get_object_or_404
+import datetime
+from django.urls import reverse
 from django.views.generic.edit import ModelFormMixin
+from django.views.generic import ListView, DetailView
 
-from myproject.forms import ThemMonHoc,ThemTaiLieu,TL
-from myproject.models import MonHoc,FileUpload, TaiLieu
-from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm
+from myproject.models import MonHoc,FileUpload, TaiLieu,CommentMH
+from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
+from django.core.files.storage import FileSystemStorage
 import random
 import hashlib
 import time
 from django.contrib import messages
-from django.http import HttpResponseRedirect
 
-# from myproject.forms import TaoTaiLieu
-class MonHocListView(ListView, ModelFormMixin):
-    model = MonHoc
-    template_name = 'dashboard.html'
-    paginate_by = 2
+from icecream import ic
+
+from django.http import HttpResponseRedirect,HttpResponse
+# Create your views here.
+
 
 def home_view(request):
     return render(
@@ -28,17 +28,12 @@ def home_view(request):
         'home.html',
     )
 
-def DangKy_view(request):
-    form = RegisterForm()
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/')
+def one_document_view(request, MaTL):
+    tai_lieu = TaiLieu.objects.get(MaTL=MaTL)
     return render(
         request,
-        'DangKy.html',
-        {'form': form}
+        'onedocument.html',
+        {'tai_lieu': tai_lieu},
     )
 
 def dashboard_view(request):
@@ -68,13 +63,17 @@ def dashboard_view(request):
         }
     )
 
-
-def DuyetTL_view(request):
+def mon_cu_the(request):
     return render(
         request,
-        'db_DuyetTL.html', {'data': FileUpload.objects.all()}
+        'mon_cu_the.html',
     )
 
+def Toan_Tin_KHTN(request):
+    return render(
+        request,
+        'Toan_Tin_KHTN.html',
+    )
 
 def DongGopTL_view(request):
     if request.method == 'POST':
@@ -97,11 +96,6 @@ def DongGopTL_view(request):
             instan.save()
 
     form = ThemTaiLieu()
-    return render(
-        request,
-        'db_DongGopTL.html', {'form': form}
-    )
-
 
 def TaiLieu_view(request):
     ic(request.user.username)
@@ -110,51 +104,35 @@ def TaiLieu_view(request):
     page = request.GET.get('page')
     tailieu = p.get_page(page)
 
+class SlideListview(ListView):
+    queryset = TaiLieu.objects.filter(LoaiTL='Slide')
+    template_name = 'Slide.html'
+    context_object_name = 'Slide'
+    paginate_by = 8
+
+class DeThiListview(ListView):
+    queryset = TaiLieu.objects.filter(LoaiTL='DT')
+    template_name = 'DeThi.html'
+    context_object_name = 'DeThi'
+    #paginate_by = 4
+
+class BaiTapListview(ListView):
+    queryset = TaiLieu.objects.filter(LoaiTL='BT')
+    template_name = 'BaiTap.html'
+    context_object_name = 'BaiTap'
+    #paginate_by = 4
+""" def error(request,*args, **kwargs):
     return render(
         request,
-        'db_TaiLieu.html',
-        {
-            'tailieu':tailieu
-        }
-    )
+        'error.html'
+    ) """
 
-def TaiLieu_delete(request, slug):  
-    tailieu = TaiLieu.objects.get(MaTL=slug)  
-    if tailieu: tailieu.delete() 
-    fileUp = FileUpload.objects.get(MaTL=slug)
-    if fileUp: fileUp.delete()
-    return redirect('TaiLieu_view')  
-
-def ThanhVien_view(request):
-    return render(
-        request,
-        'db_ThanhVien.html',
-    )
-
-
-def BinhLuan_view(request):
-    return render(
-        request,
-        'db_BinhLuan.html',
-    )
-
-# def DangTaiLieu(request):
-#     if request.method == 'POST':
-#         form = TaoTaiLieu(request.POST)
-#         form.save()
-#         if form.is_valid():
-#             instance = form.save()
-#             instance.birth_place ='HCM'
-#             instance.save()
-#             # ok_url = reversed('new_student_form_ok')
-#             # return redirect('new_student_form_ok.html')
-#     else:
-#         form = TaoTaiLieu
-
-#     return render(
-#         request,
-#         'new_student_form.html',
-#         {
-#             'form':form,
-#         }
-#     )
+def comment(request,MaMH):
+    monhoc = get_object_or_404(MonHoc, MaMH=MaMH)
+    form = CommentMHForm()
+    if request.method == 'POST':
+        form = CommentMHForm(request.POST,MSSV=None, MaMH=monhoc)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path)
+    return render(request, 'mon_cu_the.html',{"monhoc":monhoc, "form":form})
