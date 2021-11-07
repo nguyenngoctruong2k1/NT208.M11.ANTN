@@ -2,6 +2,7 @@
 {% block title %} Đăng ký {% endblock %}
 {% block content %}
 <!--Register-->
+
 <section>
     <div class="container-fluid padding ">
         <div id="background" class="row justify-content-center" style="min-height: 60vh;">
@@ -22,6 +23,8 @@
                         <form method="POST">
                             {% csrf_token %}
                             {{form.as_p}}
+                            {{ form.media }}
+                            
                             <button class="btn btn-primary" type="submit">Register</button>
                         </form>
                     </div>

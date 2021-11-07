@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myproject.apps.MyprojectConfig',
-    'django_social_share'
+    'django_social_share',
+    'mathfilters',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [

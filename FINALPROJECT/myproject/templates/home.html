@@ -1,22 +1,71 @@
 {% extends 'base.html' %}
-{% load mon_hoc_tags %}
-{% block title %}MÔN ĐẠI CƯƠNG{% endblock %}
-{% block title_MH %}MÔN ĐẠI CƯƠNG{% endblock %}
-{% block content %}
-<div class="row">
-	{% get_mon_hoc as mon_hoc %}
-	{% for item in mon_hoc %}
-	<div class="col-3">
-		<div class="bg-image card shadow-1-strong">
-			<div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-				<div class="card-body text-white">
-					<h3 class="card-title">{{item.name}}</h3>
-					<a href="{% url 'Toan_Tin_KHTN' %}" class="btn btn-outline-light">Chi tiết</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endfor %}
-</div>
+{% block title %} Trang chủ {% endblock %}
+{% load static %}
+{% block script_head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/web.css' %}">
+
+<!-- Link Font chữ Open Sans-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;900&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,400;1,600;1,700;1,800;1,900&family=Overpass:wght@600;900&display=swap"
+    rel="stylesheet">
+  
+{% endblock script_head %}
+{% block content_top %}
+        <!-- Navbar -->
+        
+        <!--Nội dung-->
+        <section>
+            <div class="container-fluid padding">
+                <div id="background" class="row justify-content-center" style="min-height: 60vh;">
+                    <div class="col-md-5">
+                        <h2 style="font-size: 54px; line-height: 85px; padding-top: 50px; padding-left: 76px;"> 
+                            CHIA SẺ VÀ TÌM KIẾM TÀI LIỆU HỌC TẬP UIT
+                        </h2>
+                        <!-- Thanh tìm kiếm-->
+                        <div class="Search">
+                            <input type="Text" name="search" placeholder="TÌM KIẾM MÔN HỌC">
+                            <a href="#"> <i class="fas fa-search"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4 backgroundimage">
+                    </div>
+                    
+                </div>
+                <section class="footer row justify-content-center">
+                    <div class="col-2">
+                        <p>Slide bài giảng</p>
+                        <img src="{% static 'Image/pp-removebg-preview.png' %}" alt="ảnh powerpoint" style="width:217px; height: 134px">
+                        <i class="far fa-check-circle" style="margin-left: -78px;"></i>
+                    </div>
+                    <div class="col-2">
+                        <p>Tài liệu tham khảo</p>
+                        <img src="{% static 'Image/thamkhao-removebg-preview.png' %}" alt="icon tài liệu tham khảo"
+                            style="width: 154px; height: 154px">
+                        <i class="far fa-check-circle" style="margin-left: -40px;"></i>
+                    </div>
+                    <div class="col-2">
+                        <p>Đề thi các năm</p>
+                        <img src="{% static 'Image/dethi-removebg-preview.png' %}" alt="icon đề thi" style="width: 149px; height: 149px">
+                        <i class="far fa-check-circle" style="margin-left: -40px;"></i>
+                    </div >
+                    <div class="col-2">
+                        <p>Đóng góp và feedback</p>
+                        <img src="{% static 'Image/feedback.png' %}" alt="icon đóng góp và feedback" style="width: 139px; height: 139px">
+                        <i class="far fa-check-circle" style="margin-left: -35px;"></i>
+                    </div>
+                </section>
+            </div>
+        </section>
 {% endblock %}
- 
+{% block content_main %}
+
+{% endblock content_main %}

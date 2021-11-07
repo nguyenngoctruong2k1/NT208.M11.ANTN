@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	{%load mon_hoc_tags %}
 	{% load social_share %}
 	{% load static %}
 	<meta charset="utf-8" />
@@ -14,6 +15,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="{% static 'style.css' %}">
+	{% block script_head %}
+	  
+	{% endblock script_head %}
+
+	<!-- <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/web.css' %}"> -->
 </head>
 <body>
 	<!--banner-->
@@ -53,112 +61,130 @@
 						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"style="color: rgb(255, 255, 255);">&nbsp; Môn đại cương</a>
 						<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="{% url 'Toan_Tin_KHTN' %}">Lý luận chính trị</a>
-							<a class="dropdown-item" href="{% url 'Toan_Tin_KHTN' %}">Toán-Tin-KHTN</a>
-							<a class="dropdown-item" href="{% url 'Toan_Tin_KHTN' %}">Ngoại ngữ</a>
-							<a class="dropdown-item" href="{% url 'Toan_Tin_KHTN' %}">Kỹ năng nghề nghiệp</a>
+							<a class="dropdown-item" href="/category/GiaoDucDaiCuong/LyLuanChinhTri">Lý luận chính trị</a>
+							<a class="dropdown-item" href="/category/GiaoDucDaiCuong/ToanTinKHTN">Toán-Tin-KHTN</a>
+							<a class="dropdown-item" href="/category/GiaoDucDaiCuong/NgoaiNgu">Ngoại ngữ</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"style="color: rgb(255, 255, 255);">&nbsp; Môn cơ sở nhóm ngành</a>
+						
 						<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">Lập trình hướng đối tượng</a>
-							<a class="dropdown-item" href="#">Cấu trúc dữ liệu và giải thuật</a>
-							<a class="dropdown-item" href="#">Cơ sở dữ liệu</a>
-							<a class="dropdown-item" href="#">Nhập môn mạng máy tính</a>
-							<a class="dropdown-item" href="#">Kiến trúc máy tính</a>
-							<a class="dropdown-item" href="#">Hệ điều hành</a>
-							<a class="dropdown-item" href="#">Nhập môn mạch số</a>
-							<a class="dropdown-item" href="#">Giới thiệu ngành</a>
+							{% GetMonHocCSNN as csnn%}
+							{% for item in csnn %}
+								<a class="dropdown-item" href="/subjects/{{item.MaMH}}/">{{item.TenMH}}</a>
+							{% endfor %}
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"style="color: rgb(255, 255, 255);">&nbsp; Môn cơ sở ngành</a>
 						<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">Khoa Công nghệ phần mềm</a>
-							<a class="dropdown-item" href="#">Khoa Hệ thống thông tin</a>
-							<a class="dropdown-item" href="#">Khoa MMT&TT </a>
-							<a class="dropdown-item" href="#">Khoa Kĩ thuật máy tính</a>
-							<a class="dropdown-item" href="#">Khoa Khoa học máy tính</a>
-							<a class="dropdown-item" href="#">Khoa KH&KTTT</a>
+							<a class="dropdown-item" href="/category/CoSoNganh/CongNghePhanMem">Khoa Công nghệ phần mềm</a>
+							<a class="dropdown-item" href="/category/CoSoNganh/HeThongThongTin">Khoa Hệ thống thông tin</a>
+							<a class="dropdown-item" href="/category/CoSoNganh/MangMayTinhTruyenThong">Khoa MMT&TT </a>
+							<a class="dropdown-item" href="/category/CoSoNganh/KyThuatMayTinh">Khoa Kĩ thuật máy tính</a>
+							<a class="dropdown-item" href="/category/CoSoNganh/KhoaHocMayTinh">Khoa Khoa học máy tính</a>
+							<a class="dropdown-item" href="/category/CoSoNganh/KyThuatThongTin">Khoa KH&KTTT</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"style="color: rgb(255, 255, 255);">&nbsp; Môn chuyên ngành</a>
 						<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">Bảo mật ứng dụng web</a>
-							<a class="dropdown-item" href="#">An toàn mạng máy tính</a>
-							<a class="dropdown-item" href="#">Lập trình an toàn và khai thác lỗ hổng phần mềm</a>
-							<a class="dropdown-item" href="#">Nhập môn mạng máy tính</a>
-							<a class="dropdown-item" href="#">Kiến trúc máy tính</a>
+							<a class="dropdown-item" href="/category/ChuyenNganh/CongNghePhanMem">Khoa Công nghệ phần mềm</a>
+							<a class="dropdown-item" href="/category/ChuyenNganh/HeThongThongTin">Khoa Hệ thống thông tin</a>
+							<a class="dropdown-item" href="/category/ChuyenNganh/MangMayTinhTruyenThong">Khoa MMT&TT </a>
+							<a class="dropdown-item" href="/category/ChuyenNganh/KyThuatMayTinh">Khoa Kĩ thuật máy tính</a>
+							<a class="dropdown-item" href="/category/ChuyenNganh/KhoaHocMayTinh">Khoa Khoa học máy tính</a>
+							<a class="dropdown-item" href="/category/ChuyenNganh/KyThuatThongTin">Khoa KH&KTTT</a>
 						</div>
 					</li>
 				</ul>
 			</div>
 			<!-- Center elements -->
 			<!-- Right elements -->
-			<div class="menu">
-				<ul class="navbar-nav flex-row">
-					<li class="nav-item me-3 me-lg-1">
-						<a class="nav-link d-sm-flex align-items-sm-center" href="#">
-							<img src="{% static 'images/avatar.jpg' %}" class="rounded-circle" height="22" alt="" loading="lazy" />
-							<strong class="d-none d-sm-block ms-1" style="color: rgb(255, 255, 255);">&nbsp; NhanLee</strong>
-						</a>
-					</li>
-					<li class="nav-item me-3 me-lg-1">
-						<a class="nav-link" href="#">
-							<span><i class="fas fa-plus-circle fa-lg" style="color: rgb(255, 255, 255);"></i></span>
-						</a>
-					</li>
-					<li class="nav-item dropdown me-3 me-lg-1">
-						<a class="nav-link" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">
-							<i class="fas fa-bell fa-lg" style="color: rgb(255, 255, 255);"></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right dropdown-default"
-							aria-labelledby="navbarDropdownMenuLink-333">
-							<a class="dropdown-item" href="#">1 bộ slide ĐSTT vừa được cập nhật</a>
-							<a class="dropdown-item" href="#">Đề thi 2019-2020 vừa được cập nhật</a>
-						</div>
-					</li>
-					<li class="nav-item dropdown me-3 me-lg-1">
-						<a class="nav-link" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">
-							<i class="fas fa-chevron-circle-down fa-lg" style="color: rgb(255, 255, 255);"></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right dropdown-default"
-							aria-labelledby="navbarDropdownMenuLink-333">
-							<a class="dropdown-item" href="#">Thông tin cá nhân</a>
-							<a class="dropdown-item" href="#">Dashboard</a>
-							<a class="dropdown-item" href="#">Đăng xuất</a>
-						</div>
-					</li>
-				</ul>
-			</div>
+			<div class="menu menu-right">
+                {% if user.username %}
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item me-3 me-lg-1">
+                        <a class="nav-link d-sm-flex align-items-sm-center" href="#">
+
+                            <img src="{% static 'images/avatar.jpg'%}" class="rounded-circle" height="22" alt=""
+                                loading="lazy" />
+                            <strong class="d-none d-sm-block ms-1" style="color: rgb(255, 255, 255);">&nbsp;
+                                {{user.username}}</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item me-3 me-lg-1">
+                        <a class="nav-link" href="#">
+                            <span><i class="fas fa-plus-circle fa-lg" style="color: rgb(255, 255, 255);"></i></span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown me-3 me-lg-1">
+                        <a class="nav-link" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="fas fa-bell fa-lg" style="color: rgb(255, 255, 255);"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                            aria-labelledby="navbarDropdownMenuLink-333">
+                            <a class="dropdown-item" href="#">1 bộ slide ĐSTT vừa được cập nhật</a>
+                            <a class="dropdown-item" href="#">Đề thi 2019-2020 vừa được cập nhật</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown me-3 me-lg-1">
+                        <a class="nav-link" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="fas fa-chevron-circle-down fa-lg" style="color: rgb(255, 255, 255);"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                            aria-labelledby="navbarDropdownMenuLink-333">
+                            <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+                            <a class="dropdown-item" href="/dashboard/">Dashboard</a>
+                            <a class="dropdown-item" href="{% url 'DangXuat_view' %}">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+                {% else %}
+                <li id="nav-item me-3 me-lg-1">
+                    <a href="{% url 'DangNhap_view' %}" style="color: rgb(255, 255, 255); font-size: 18px;">
+                        Login/Join <i class=" fas
+                                    fa-sign-in-alt"></i></a>
+                </li>
+                {% endif %}
+            </div>
+            <!-- Right elements -->
 			<!-- Right elements -->
 		</div>
 	</nav>
 	<!-- Navbar -->
-	<!--Môn đại cương-->
-	<section>
-		<div class="container-fluid padding">
-			<div class="row welcome text-center" style="margin-bottom: 1rem;margin-top: 1rem;">
-				<hr class="light-contact" />
-				<div class="col-12">
-					<h1 class="display-5">{% block title_MH %}{% endblock%}</h1>
+
+	
+	{% block content_top %}
+	  <!-- Trưởng thêm!!! -->
+
+		<!--Tiêu đề-->
+		<section>
+			<div class="container-fluid padding">
+				<div class="row welcome text-center" style="margin-bottom: 1rem;margin-top: 1rem;">
+					<hr class="light-contact" />
+					<div class="col-12">
+						<h1 class="display-5">{% block title_MH %}{% endblock%}</h1>
+					</div>
+					<hr class="light-contact" />
 				</div>
-				<hr class="light-contact" />
 			</div>
-		</div>
-	</section>
-	<!--menu-->
-	<section>
+		</section>
+		<!--menu-->
+	
+	{% endblock content_top %}
+
+	{% block content_main %}
+	<section style="min-height: 600px;">
 		<div class="container-fluid padding">
-			<div class="row text">
-				<div class="col-2">
+			<div class="row text justify-content-center">
+				<!-- <div class="col-2">
 					<div class="cent-review-left sticky-top" style="margin-right: 2rem;">
 						<div class="list-group" style="margin-bottom: 2rem;font-size: 16px;">
 							<a href="#" class="list-group-item" style="background-color: rgba(169, 170, 172, 0.6);">
@@ -205,12 +231,12 @@
 							</button>
 						</form>
 					</div>
-				</div>
+				</div> -->
 				<!-- card -->
-				<div class="col-8">
+				<div class="col-12 col-sm-10 col-md-8">
                     {% block content %}{% endblock %}
 				</div>
-				<div class="col-2">
+				<!-- <div class="col-2">
 					<div class="comment sticky-top">
 						<div class="cent-review-left sticky-top" style="margin-right: 3rem;">
 							<div class="list-group" style="margin-bottom: 2rem;font-size: 16px;">
@@ -240,113 +266,12 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</section>
-	<!--st-3-->
-	<div id="st-3" class=" st-sticky-share-buttons st-right st-toggleable st-show-total ">
-		<div class="st-total st-hidden">
-			<span class="st-label"></span>
-			<span class="st-shares">
-				Shares
-			</span>
-		</div>
-		<div class="st-btn st-first" data-network="sharethis" style="display: inline-block;">
-			<img alt="sharethis sharing button" src="{% static '/images/sharethis.svg' %}">
-		</div>
-		<div class="st-btn" data-network="facebook" style="display: inline-block;">
-			<img alt="facebook sharing button" src="{% static '/images/facebook.svg' %}">
-		</div>
-		<div class="st-btn" data-network="twitter" style="display: inline-block;">
-			<img alt="twitter sharing button" src="{% static '/images/twitter.svg' %}">
-		</div>
-		<div class="st-btn" data-network="pinterest" style="display: inline-block;">
-			<img alt="pinterest sharing button" src="{% static '/images/pinterest.svg' %}">
-		</div>
-		<div class="st-btn" data-network="email" style="display: inline-block;">
-			<img alt="email sharing button" src="{% static '/images/email.svg' %}">
-		</div>
-		<div class="st-btn" data-network="vk" style="display: inline-block;">
-			<img alt="vk sharing button" src="{% static '/images/vk.svg' %}">
-		</div>
-		<div class="st-btn" data-network="odnoklassniki" style="display: inline-block;">
-			<img alt="odnoklassniki sharing button" src="{% static '/images//odnoklassniki.svg' %}">
+	{% endblock content_main %}
 
-		</div>
-		<div class="st-btn" data-network="blogger" style="display: inline-block;">
-			<img alt="blogger sharing button" src="{% static '/images/blogger.svg' %}">
-		</div>
-		<div class="st-btn" data-network="linkedin" style="display: inline-block;">
-			<img alt="linkedin sharing button" src="{% static '/images/linkedin.svg' %}">
-		</div>
-		<div class="st-btn" data-network="googlebookmarks" style="display: inline-block;">
-			<img alt="googlebookmarks sharing button" src="{% static '/images/googlebookmarks.svg' %}">
-
-		</div>
-		<div class="st-btn st-last" data-network="reddit" style="display: inline-block;">
-			<img alt="reddit sharing button" src="{% static '/images/reddit.svg' %}">
-		</div>
-		<div class="st-toggle">
-			<div class="st-left">
-				<img alt="arrow_left sharing button" src="{% static '/images/arrow_left.svg' %}">
-			</div>
-			<div class="st-right">
-				<img alt="arrow_right sharing button" src="{% static '/images/arrow_right.svg' %}">
-			</div>
-		</div>
-	</div>
-	<!--Chú ý-->
-	<table cellspacing="0" cellpadding="0" class="gstl_50 gssb_c"
-		style="width: 168px; display: none; top: 49px; position: absolute; left: 1191px;">
-		<tbody>
-			<tr>
-				<td class="gssb_f"></td>
-				<td class="gssb_e" style="width: 100%;"></td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- style-switcher/ghi chú-->
-	<!-- off style="right: -310px" -->
-	<div id="style-switcher" style="right: -310px;" class="active">
-		<div id="style-switcher-panel">
-			<h3>Mục lục</h3>
-			<div class="item-toc-data">
-				<div class="content-toc-container">
-					<a name="top"> </a>
-					<ol>
-						<li>
-							<a class="internal-page-anchor" data-href="#">Bootstrap Embed</a>
-						</li>
-						<li>
-							<a class="internal-page-anchor" data-href="#">Tùy biến .embed-responsive-*by*</a>
-						</li>
-					</ol>
-
-				</div>
-
-			</div>
-			<div class="style-switcher-footer">
-				<ul>
-					<li><a target="_blank" href="#" class="target-blank-url">Các hướng dẫn Bootstrap</a>
-					</li>
-				</ul>
-			</div>
-			<div id="style-switcher-toggle" class="off"></div>
-			<!--on-->
-		</div>
-	</div>
-	<!--điều khiển về đầu-giữa-cuối trang -->
-	<div id="nav-controls">
-		<a href="javascript:top.window.scrollTo(0,0)" title="Top">
-			<img alt="Top" src="{% static 'images/top.png' %}" width="40" height="40"></a>
-		<br>
-		<a href="javascript:window.scrollTo(document.body.clientWidth,document.body.clientHeight/2)" title="Center">
-			<img alt="Middle page" src="{% static 'images/center.png' %}" width="40" height="40"></a>
-		<br>
-		<a href="javascript:window.scrollTo(document.body.clientWidth,document.body.clientHeight)" title="Bottom">
-			<img alt="Bottom" src="{% static 'images/bottom.png' %}" width="40" height="40"></a>
-	</div>
 	<!--Footer-->
 	<footer>
 		<div class="container-fluid p-3">

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load mon_hoc_tags %}
+{% block title %}MÔN ĐẠI CƯƠNG{% endblock %}
+{% block title_MH %}
+	{% if nhom_mh %}
+		{{ nhom_mh }} >>
+	{% endif %}
+	{{khoa}}
+{% endblock %}
+{% block content %}
+<div class="row">
+	<!-- {% get_mon_hoc as mon_hoc %} -->
+	{% for item in monhoc %}
+	<div class="col-3">
+		<div class="bg-image card shadow-1-strong">
+			<div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+				<div class="card-body text-white">
+					<h3 class="card-title">{{item.TenMH}}</h3>
+					<a href="/subjects/{{item.MaMH}}" class="btn btn-outline-light">Chi tiết</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
+ 

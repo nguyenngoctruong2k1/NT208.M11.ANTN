@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% load mon_hoc_tags %}
 {% load static %}
-{% block title %}Môn Cụ Thể{% endblock %}
-{% block title_MH %}ĐẠI SỐ TUYẾN TÍNH{% endblock %}
+{% block title %}{{ monhoc.TenMH }}{% endblock %}
+{% block title_MH %}
+    {{ monhoc.TenMH }}
+{% endblock %}
 {% block content %}
+
 <div class="row">
     <div class="col-3">
         <div class="bg-image card shadow-1-strong">
@@ -21,19 +24,20 @@
             <ol class="list-group list-group-numbered">
                 {% get_tai_lieu_Slide as tai_lieu %}
                 {% for item in tai_lieu %}
-                <a href="{{item.MaTL}}"
+           
+                <a href="/document/{{item.MaTL}}"
                     class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold" style="font-size: 17px;">{{item.MoTa}}
+                        <div class="fw-bold" style="font-size: 17px;">{{item.TenTL}}
                         </div>
-                        Tác giả: NhanLee
+                        Người đăng: {{item.user}}
                     </div>
                     <span class="badge badge-primary badge-pill"
-                        style="background-color: rgba(37, 165, 32, 0.6); margin-left: 32rem; margin-top: 1rem; margin-right:1rem">{{item.date}}</span>
-                    <button type="button" class="btn btn-primary btn-floating"
-                        style="background-color: rgb(153, 153, 153);">
+                        style="background-color: rgba(37, 165, 32, 0.6); margin-top: 1rem; margin-right:1rem">{{item.date}}</span>
+                    <a  href="downloadfile" class="btn btn-primary btn-floating"
+                        style="background-color: #3a3939">
                         <i class="fas fa-download"></i>
-                    </button>
+                    </a>
                 </a>
                 {% endfor %}
             </ol>
@@ -57,20 +61,23 @@
             <ol class="list-group list-group-numbered">
                 {% get_tai_lieu_De_Thi as tai_lieu %}
                 {% for item in tai_lieu %}
-                <a href="{{item.MaTL}}"
+                
+                
+                <a href="/document/{{item.MaTL}}"
                     class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold" style="font-size: 17px;">{{item.MoTa}}
+                        <div class="fw-bold" style="font-size: 17px;">{{item.TenTL}}
                         </div>
-                        Tác giả: NhanLee
+                        Người đăng: {{item.user}}
                     </div>
                     <span class="badge badge-primary badge-pill"
-                        style="background-color: rgba(37, 165, 32, 0.6); margin-left: 32rem; margin-top: 1rem; margin-right:1rem">{{item.date}}</span>
-                    <button type="button" class="btn btn-primary btn-floating"
-                        style="background-color: rgb(153, 153, 153);">
+                        style="background-color: rgba(37, 165, 32, 0.6); margin-top: 1rem; margin-right:1rem">{{item.date}}</span>
+                    <a  href="downloadfile" class="btn btn-primary btn-floating"
+                        style="background-color: #3a3939">
                         <i class="fas fa-download"></i>
-                    </button>
+                    </a>
                 </a>
+                
                 {% endfor %}
             </ol>
         </div>
@@ -81,7 +88,7 @@
         <div class="bg-image card shadow-1-strong">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                 <div class="card-body text-white">
-                    <h3 class="card-title">Bài tập</h3>
+                    <h3 class="card-title">Bài Tập</h3>
                     <a href="{% url 'BaiTap' %}" class="btn btn-outline-light active" style="margin-left: 8rem;">Chi
                         tiết</a>
                 </div>
@@ -93,25 +100,29 @@
             <ol class="list-group list-group-numbered">
                 {% get_tai_lieu_Bai_Tap as tai_lieu %}
                 {% for item in tai_lieu %}
-                <a href="{{item.MaTL}}"
+                <a href="/document/{{item.MaTL}}"
                     class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold" style="font-size: 17px;">{{item.MoTa}}
+                        <div class="fw-bold" style="font-size: 17px;">{{item.TenTL}}
                         </div>
-                        Tác giả: NhanLee
+                        Người đăng: {{item.user}}
                     </div>
                     <span class="badge badge-primary badge-pill"
-                        style="background-color: rgba(37, 165, 32, 0.6); margin-left: 32rem; margin-top: 1rem; margin-right:1rem">{{item.date}}</span>
-                    <button type="button" class="btn btn-primary btn-floating"
-                        style="background-color: rgb(153, 153, 153);">
+                        style="background-color: rgba(37, 165, 32, 0.6); margin-top: 1rem; margin-right:1rem">{{item.date}}</span>
+                    <a  href="downloadfile" class="btn btn-primary btn-floating"
+                        style="background-color: #3a3939">
                         <i class="fas fa-download"></i>
-                    </button>
+                    </a>
                 </a>
                 {% endfor %}
             </ol>
         </div>
     </div>
 </div>
+
+
+
+
 <div class="row">
     <hr class="light-contact" />
     <div class="cmt col-12" style="background-color: rgba(191, 191, 192, 0.6);">
@@ -127,19 +138,19 @@
     <hr class="light-contact" />
 </div>
 <div class="row">
-{% for comment in MaMH.comments.all %}
+<!-- {% for comment in MaMH.comments.all %}
 <h4>{{comment.MSSV}}</h4>
 <h4>{{comment.date}}</h4>
 <p>{{comment.body|linebreaks}}}</p>
-{% endfor %}
+{% endfor %} -->
 <!-- {% if user.MSSV %} -->
-    <form action="{% url 'mon_cu_the'%}" method='POST'>
+    <!-- <form action="{% url 'mon_cu_the'%}" method='POST'>
         {% csrf_token %}
         <p><label>Bình Luận</label></p>
         {{form.body}}
         <br/>
         <input type="submit" value="Bình Luận"/>
-    </form>
+    </form> -->
 <!-- {% endif%} -->
 </div>
 <div class="row">
