@@ -13,8 +13,8 @@
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                 <div class="card-body text-white">
                     <h3 class="card-title">Slide</h3>
-                    <a href="{% url 'slide' %}" class="btn btn-outline-light active" style="margin-left: 8rem;">Chi
-                        tiết</a>
+                    {% comment %} <a href="{% url 'slide' %}" class="btn btn-outline-light active" style="margin-left: 8rem;">Chitiết</a> {% endcomment %}
+                    <a href="Slide" class="btn btn-outline-light active" style="margin-left: 8rem;">Chitiết</a>
                 </div>
             </div>
         </div>
@@ -24,7 +24,6 @@
             <ol class="list-group list-group-numbered">
                 {% get_tai_lieu_Slide as tai_lieu %}
                 {% for item in tai_lieu %}
-           
                 <a href="/document/{{item.MaTL}}"
                     class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
@@ -44,6 +43,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 <div class="row">
     <div class="col-3">
         <div class="bg-image card shadow-1-strong">

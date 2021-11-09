@@ -41,7 +41,7 @@ def MonHocList_view(request,NhomMH,Khoa):
         nhom_mh = monhoc[0].get_NhomMH_display()
     return render(
         request,
-        'MonHoc_List.html',
+        'show_MonHoc_List.html',
         {
             'khoa': khoa,
             'monhoc': monhoc,
@@ -49,14 +49,36 @@ def MonHocList_view(request,NhomMH,Khoa):
         },
     )
 def MonHoc_show(request,MaMH):
-    
+    data = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
+    tailieu ={ 
+        data.filter(LoaiTL='Slide').order_by("-date")[:4],
+        data.filter(LoaiTL='DeThi').order_by("-date")[:4], 
+        data.filter(LoaiTL='BaiTap').order_by("-date")[:4], 
+        data.filter(LoaiTL='TaiLieuTK').order_by("-date")[:4]
+    }
+    ic(tailieu)
     # tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
     # ic(tailieu)
 
     return render(
         request,
-        'mon_cu_the.html',
-        {'monhoc': MonHoc.objects.get(MaMH=MaMH)},
+        'show_mon_cu_the.html',
+        {
+            'monhoc': MonHoc.objects.get(MaMH=MaMH),
+            'tailieu': tailieu
+        },
+    )
+def MonHoc_LoaiTL_show(request,MaMH,LoaiTL):
+    tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
+    if not tailieu:
+        return HttpResponseRedirect(reverse('error'))
+    return render(
+        request,
+        'show_MonHoc_LoaiTL.html',
+        {
+            'monhoc': MonHoc.objects.get(MaMH=MaMH),
+            'tailieu': TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
+        },
     )
 
 def one_document_view(request, slug):
@@ -65,7 +87,7 @@ def one_document_view(request, slug):
     tai_lieu.save()
     return render(
         request,
-        'onedocument.html',
+        'show_onedocument.html',
         {'tai_lieu': tai_lieu},
     )
 
@@ -112,11 +134,11 @@ class BaiTapListview(ListView):
     template_name = 'BaiTap.html'
     context_object_name = 'BaiTap'
     #paginate_by = 4
-""" def error(request,*args, **kwargs):
+def error(request,*args, **kwargs):
     return render(
-        request,
-        'error.html'
-    ) """
+    request,
+    'show_error.html'
+)
 
 def comment(request,MaMH):
     monhoc = get_object_or_404(MonHoc, MaMH=MaMH)
@@ -139,7 +161,7 @@ def DangKy_view(request):
     return render(
         request,
         # 'DangKy.html',
-        'DangKyTruong.html',
+        'global_DangKy.html',
         {'form': form}
     )
 
@@ -162,7 +184,7 @@ def dashboard_view(request):
         }
     return render(
         request,
-        'dashboard.html',
+        'db_home.html',
         {
             'form': form,
             'monhoc': monhoc,

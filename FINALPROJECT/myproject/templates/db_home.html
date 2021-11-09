@@ -58,8 +58,8 @@
                     <li class="col-1" name="SoTT">{{ monhoc.number| sub:1| mul:15| add:forloop.counter }}</li>
                     <li class="col-1" name="MaMH">{{ item.MaMH }}</li>
                     <li class="col-3" name="TenMH">{{ item.TenMH }}</li>
-                    <li class="col-3" name="KhoaQL">{{ item.Khoa }}</li>
-                    <li class="col-2" name="NhomMH">{{ item.NhomMH }}</li>
+                    <li class="col-3" name="KhoaQL">{{ item.get_Khoa_display }}</li>
+                    <li class="col-2" name="NhomMH">{{ item.get_NhomMH_display }}</li>
                     <li class="col-1" name="SLTL">12</li>
                 </div>
             </ul>

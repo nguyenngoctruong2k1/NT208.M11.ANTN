@@ -47,9 +47,9 @@ class TaiLieu(models.Model):
     TacGia = models.CharField(max_length=30, help_text="Nguyễn Văn A")
     LoaiTL_Choices = (
         ('Slide','Slide bài giảng'),
-        ('DT','Đề thi'),
-        ('BT','Bài tập'),
-        ('TLTK','Sách tham khảo')
+        ('DeThi','Đề thi'),
+        ('BaiTap','Bài tập'),
+        ('TaiLieuTK','Tài liệu tham khảo')
     )
     LoaiTL = models.CharField(max_length=10, choices=LoaiTL_Choices, default='Slide')
     MoTa = RichTextField(blank=True,null=True, help_text="Thông tin về tài liệu")
