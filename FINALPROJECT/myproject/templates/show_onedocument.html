@@ -7,10 +7,10 @@
 <div class="tailieucuthe row">
 	<div class="col-3">
 		<div class="creator">
-			<p style="margin-bottom: 2rem; font-size: 24px;">Người cung cấp</p>
+			<p style="margin-bottom: 2rem; font-size: 24px;">Thông tin cơ bản</p>
 			<div id="avatar" style="margin-bottom: 1rem;">
 				<img src="{% static 'images/avatar1.jpg' %}" alt="">&nbsp;
-				<span style="font-size: 16px;"><b>NhanLee</b></span>
+				<span style="font-size: 16px;"><b>{{ tai_lieu.user }}</b></span>
 			</div>
 			<div id="tải xuống" style="margin-bottom: 1rem;">
 				<i class="fas fa-download"></i>&nbsp;
@@ -24,31 +24,17 @@
 	</div>
 	<div class="col-9">
 		<div class="mô tả">
-			<p class="text-center" style="font-size: 26px;">{{tai_lieu.TenTL}}</p>
-			<p style="font-size: 20px;">Mô tả tài liệu</p>
-			<p style="font-size: 16px;">Đại số tuyến tính là trung tâm của hầu hết các lĩnh vực toán học. Ví dụ, đại số
-				tuyến tính là cơ bản trong các bài thuyết trình hiện đại về hình học, bao gồm cả việc xác định các đối
-				tượng cơ bản như đường thẳng, mặt phẳng và phép quay. Ngoài ra, giải tích hàm, một nhánh của giải tích
-				toán học, về cơ bản có thể được xem là ứng dụng của đại số tuyến tính vào không gian của các hàm.
-			</p>
-			<p style="font-size: 16px;">Đại số tuyến tính là trung tâm của hầu hết các lĩnh vực toán học. Ví dụ, đại số
-				tuyến tính là cơ bản trong các bài thuyết trình hiện đại về hình học, bao gồm cả việc xác định các đối
-				tượng cơ bản như đường thẳng, mặt phẳng và phép quay. Ngoài ra, giải tích hàm, một nhánh của giải tích
-				toán học, về cơ bản có thể được xem là ứng dụng của đại số tuyến tính vào không gian của các hàm.
-			</p>
-			<!-- <p style="font-size: 20px;">Chương 2</p>
-			<p style="font-size: 16px;">Đại số tuyến tính là trung tâm của hầu hết các lĩnh vực toán học. Ví dụ, đại số
-				tuyến tính là cơ bản trong các bài thuyết trình hiện đại về hình học, bao gồm cả việc xác định các đối
-				tượng cơ bản như đường thẳng, mặt phẳng và phép quay. Ngoài ra, giải tích hàm, một nhánh của giải tích
-				toán học, về cơ bản có thể được xem là ứng dụng của đại số tuyến tính vào không gian của các hàm.
-			</p> -->
-			<p style="font-size: 20px;">Danh sách File tài liệu đính kèm</p>
+			
+			{% comment %} <p class="text-center" style="font-size: 26px;">{{tai_lieu.TenTL}}</p> {% endcomment %}
+			
+			<h2 style="font-size: 20px;">Mô tả tài liệu</h2>
+			{{ tai_lieu.MoTa | safe }}
+			<h2 style="font-size: 20px;">Danh sách File tài liệu đính kèm</h2>
 			<p style="font-size: 16px;">
 				<ul>
-					<li>Tài liệu 1</li>
-					<li>Tài liệu 2</li>
-					<li>Tài liệu 3</li>
-					<li>Tài liệu 4</li>
+ 					{% for item in FileDinhKem %}
+					<li><a href="{{ item.Path }}">{{ item.filename }}</a></li>
+					{% endfor %}
 				</ul>
 			</p>
 		</div>

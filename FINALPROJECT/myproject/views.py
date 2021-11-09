@@ -85,10 +85,14 @@ def one_document_view(request, slug):
     tai_lieu = TaiLieu.objects.get(MaTL=slug)
     tai_lieu.LuotXem = tai_lieu.LuotXem + 1
     tai_lieu.save()
+    FileDinhKem = FileUpload.objects.filter(MaTL=slug)
     return render(
         request,
         'show_onedocument.html',
-        {'tai_lieu': tai_lieu},
+        {
+            'tai_lieu': tai_lieu,
+            'FileDinhKem':FileDinhKem
+        },
     )
 
 def downloadfile(req):
