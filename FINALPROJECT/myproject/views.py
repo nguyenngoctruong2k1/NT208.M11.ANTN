@@ -20,7 +20,9 @@ import hashlib
 import time
 from django.contrib import messages
 import os
+from django.conf import settings
 from PIL import Image
+from django.db.models import Count
 
 from icecream import ic
 
@@ -98,49 +100,49 @@ def one_document_view(request, slug):
         },
     )
 
-def downloadfile(req):
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    filename = 'text.txt'
-    filepath = base_dir + '\\myproject\\Files\\' + filename
-    # filepath = 
-    thefile = filepath
-    filename = os.path.basename(thefile)
-    chunk_size = 8192
-    response = StreamingHttpResponse(FileWrapper(open(thefile,'rb'),chunk_size),content_type=mimetypes.guess_type(thefile)[0])
-    response['Content-Length'] = os.path.getsize(thefile)
-    response['Content-Disposition'] = "Attachment;filename=%s" % filename
-    return response
+# def downloadfile(req):
+#     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#     filename = 'text.txt'
+#     filepath = base_dir + '\\myproject\\Files\\' + filename
+#     # filepath = 
+#     thefile = filepath
+#     filename = os.path.basename(thefile)
+#     chunk_size = 8192
+#     response = StreamingHttpResponse(FileWrapper(open(thefile,'rb'),chunk_size),content_type=mimetypes.guess_type(thefile)[0])
+#     response['Content-Length'] = os.path.getsize(thefile)
+#     response['Content-Disposition'] = "Attachment;filename=%s" % filename
+#     return response
 
-def mon_cu_the(request):
-    return render(
-        request,
-        'mon_cu_the.html',
+# def mon_cu_the(request):
+#     return render(
+#         request,
+#         'mon_cu_the.html',
 
-    )
+#     )
 
-def Toan_Tin_KHTN(request):
-    return render(
-        request,
-        'Toan_Tin_KHTN.html',
-    )
+# def Toan_Tin_KHTN(request):
+#     return render(
+#         request,
+#         'Toan_Tin_KHTN.html',
+#     )
 
-class SlideListview(ListView):
-    queryset = TaiLieu.objects.filter(LoaiTL='Slide')
-    template_name = 'Slide.html'
-    context_object_name = 'Slide'
-    paginate_by = 4
+# class SlideListview(ListView):
+#     queryset = TaiLieu.objects.filter(LoaiTL='Slide')
+#     template_name = 'Slide.html'
+#     context_object_name = 'Slide'
+#     paginate_by = 4
 
-class DeThiListview(ListView):
-    queryset = TaiLieu.objects.filter(LoaiTL='DT')
-    template_name = 'DeThi.html'
-    context_object_name = 'DeThi'
-    #paginate_by = 4
+# class DeThiListview(ListView):
+#     queryset = TaiLieu.objects.filter(LoaiTL='DT')
+#     template_name = 'DeThi.html'
+#     context_object_name = 'DeThi'
+#     #paginate_by = 4
 
-class BaiTapListview(ListView):
-    queryset = TaiLieu.objects.filter(LoaiTL='BT')
-    template_name = 'BaiTap.html'
-    context_object_name = 'BaiTap'
-    #paginate_by = 4
+# class BaiTapListview(ListView):
+#     queryset = TaiLieu.objects.filter(LoaiTL='BT')
+#     template_name = 'BaiTap.html'
+#     context_object_name = 'BaiTap'
+#     #paginate_by = 4
 def error(request,*args, **kwargs):
     return render(
     request,
@@ -173,14 +175,13 @@ def DangKy_view(request):
     )
 
 def dashboard_view(request):
-    #ic(request.user.username)
+    # data = TaiLieu.objects.values('MaMH').annotate(SL=Count('MaMH'))
     if request.method == 'POST':
         form = ThemMonHoc(request.POST)
         if form.is_valid():
             form.save()
-    # ic(request.GET['p'])
+
     form = ThemMonHoc()
-    # data = MonHoc.objects.all()
     p = Paginator(MonHoc.objects.all(), 15)
     page = request.GET.get('page')
     monhoc = p.get_page(page)
@@ -242,6 +243,10 @@ def DongGopTL_view(request):
                     file_tai_lieu.save()
             instance.save()
 
+            mh = MonHoc.objects.get(MaMH = instance.MaMH)
+            mh.SoLuongTL +=1
+            mh.save()
+
     form = ThemTaiLieu()
     return render(
         request,
@@ -250,8 +255,6 @@ def DongGopTL_view(request):
 
 
 def TaiLieu_view(request):
-    ic(request.user.username)
-
     p = Paginator(TaiLieu.objects.filter(KiemDuyet=True),15)
     page = request.GET.get('page')
     tailieu = p.get_page(page)
@@ -265,10 +268,30 @@ def TaiLieu_view(request):
     )
 
 def TaiLieu_delete(request, slug):  
+    '''
+    Xử lý cho việc xóa tài liệu
+    url: dashboard/TaiLieu/delete/<Mã tài liệu>
+    '''
     tailieu = TaiLieu.objects.get(MaTL=slug)  
-    if tailieu: tailieu.delete() 
-    fileUp = FileUpload.objects.get(MaTL=slug)
-    if fileUp: fileUp.delete()
+    if tailieu:
+        # Giảm số lượng tài liệu của môn học 
+        mh = MonHoc.objects.get(MaMH = tailieu.MaMH)
+        mh.SoLuongTL -=1
+        mh.save()
+        # Xóa tài liệu khỏi CSDL
+        tailieu.delete()
+    # Lấy tất cả các file đính kèm
+    fileUp = FileUpload.objects.filter(MaTL=slug)
+    if fileUp: 
+        # Duyệt qua tất cả các tài liệu
+        for item in fileUp: 
+            # Xóa file ở hệ thống
+            try:
+                os.remove(os.path.join(settings.MEDIA_ROOT, item.filename))
+            except: pass
+            # Xóa database
+            item.delete()
+    
     return redirect('TaiLieu_view')  
 
 def ThanhVien_view(request):
@@ -293,8 +316,12 @@ def ThongTinCaNhan_view(request):
             user = User.objects.get(id = request.user.id)
             if request.FILES and request.FILES['Avatar']:
                 f = request.FILES.get('Avatar')
+                filename = user.username+os.path.splitext(f.name)[1]
+                try:
+                    os.remove(os.path.join(settings.MEDIA_ROOT, 'avatar/'+filename))
+                except: pass
                 fs = FileSystemStorage()
-                filename = fs.save('avatar/'+f.name, f)
+                filename = fs.save('avatar/'+filename, f)
                 user.last_name = fs.url(filename)
             user.first_name = request.POST['Fullname']
             user.email = request.POST['Email']
@@ -306,9 +333,6 @@ def ThongTinCaNhan_view(request):
             infoUser.Github = request.POST['Github']
             infoUser.Bio = request.POST['Bio']
             infoUser.save()
-
-            
-
 
     form = Information()
     return render(

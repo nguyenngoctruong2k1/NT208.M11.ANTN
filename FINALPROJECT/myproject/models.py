@@ -33,6 +33,7 @@ class MonHoc(models.Model):
     )
     NhomMH = models.CharField(max_length=30, choices=NhomMH_Choices, default='Khac')
     MoTa = models.CharField(max_length=1000, help_text="Mô tả tổng quan về môn học, khối kiến thức sẽ được học...")
+    SoLuongTL = models.IntegerField(default=0)
     def __str__(self):
         return self.MaMH
 

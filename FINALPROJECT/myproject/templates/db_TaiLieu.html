@@ -23,7 +23,14 @@
                 <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
                     <li class="col-1" name="SoTT">{{ tailieu.number| sub:1| mul:15| add:forloop.counter }}</li>
                     <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-2" name="MSSV">{{ item.user }}</li>
+                    <li class="col-2" name="MSSV">
+                        {% if item.user.first_name %}
+                            {{ item.user.first_name }}
+                        {% else %}
+                            {{ item.user }}
+                        {% endif %}
+                    
+                    </li>
                     <li class="col-2" name="MaMH">{{ item.MaMH.MaMH }}</li>
                     <li class="col-1" name="LuotTai">{{ item.LuotTai }}</li>
                     <li class="col-1" name="">4.6/5.0</li>

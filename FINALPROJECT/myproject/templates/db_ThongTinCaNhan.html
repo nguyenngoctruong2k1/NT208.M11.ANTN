@@ -2,77 +2,114 @@
 {% block title %}Thông tin cá nhân{% endblock title %}
 {% block TrangTT %}horizontal{% endblock%}
 {% block TieuDe %}Thông tin cá nhân{% endblock %}
+{% block script_content %}
+<style>
+    .file-upload {
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.file-upload__input {
+  display: none;
+}
+
+.file-upload__button {
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  {% comment %} padding: 0.5em 0.8em; {% endcomment %}
+  {% comment %} margin-right: 15px; {% endcomment %}
+  
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.file-upload__button:active {
+  {% comment %} background: #00745d; {% endcomment %}
+}
+
+
+</style>
+{% endblock script_content %}
 {% block content %}
 <div class="row col-12 list-subject justify-content-center" style="margin-bottom: 30px">
     <div class="col-10 row justify-content-center" style="padding-top: 30px;" >
-        <form class="col-8" method="post" enctype="multipart/form-data">
+        <form class="col-12 row" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="form-group row">
-                <label for="TenTL" class="col-sm-2 col-form-label">Họ và tên:</label>
-                <div class="col-sm-10">
-                    {{ form.Fullname }}
+            <div class="col-8">
+                <div class="form-group row">
+                    <label for="TenTL" class="col-sm-2 col-form-label">Họ và tên:</label>
+                    <div class="col-sm-10">
+                        {{ form.Fullname }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="TenTG" class="col-sm-2 col-form-label">Username:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="TenTG" disabled value="{{ user.username }} " required>
+                <div class="form-group row">
+                    <label for="TenTG" class="col-sm-2 col-form-label">Username:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="TenTG" disabled value="{{ user.username }} " required>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="MaMH" class="col-sm-2 col-form-label">Lớp:</label>
-                <div class="col-sm-10">
-                    {{ form.Class }}
+                <div class="form-group row">
+                    <label for="MaMH" class="col-sm-2 col-form-label">Lớp:</label>
+                    <div class="col-sm-10">
+                        {{ form.Class }}
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="TenTL" class="col-sm-2 col-form-label">Facebook:</label>
-                <div class="col-sm-10">
-                    {{ form.Facebook }}
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label for="TenTG" class="col-sm-2 col-form-label">Github:</label>
-                <div class="col-sm-10">
-                    {{ form.Github }}
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="MaMH" class="col-sm-2 col-form-label">Email:</label>
-                <div class="col-sm-10">
-                    {{ form.Email }}
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Tự bạch:</label>
-                <div class="col-sm-10">
-                    {{ form.Bio }}
+                <div class="form-group row">
+                    <label for="TenTL" class="col-sm-2 col-form-label">Facebook:</label>
+                    <div class="col-sm-10">
+                        {{ form.Facebook }}
+                    </div>
                 </div>
                 
-            </div>
-            <div class="form-group row">
-                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Tự bạch:</label>
-                <div class="col-sm-10">
-                    {{ form.Avatar }}
+                <div class="form-group row">
+                    <label for="TenTG" class="col-sm-2 col-form-label">Github:</label>
+                    <div class="col-sm-10">
+                        {{ form.Github }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="MaMH" class="col-sm-2 col-form-label">Email:</label>
+                    <div class="col-sm-10">
+                        {{ form.Email }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Tự bạch:</label>
+                    <div class="col-sm-10">
+                        {{ form.Bio }}
+                    </div>
+                    
                 </div>
                 
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Cập nhập</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group row">
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Cập nhập</button>
-              </div>
+            <div class="col-3" style="font-size: 30px;">
+                <div class="avatar" id="profile-avatar" style="
+                    background-image: url('{{ user.last_name }}');
+                    width:200px;
+                    height:200px;
+                    background-position: center; 
+                    background-repeat: no-repeat; 
+                    background-size: cover; 
+                    border-radius: 50% ;
+                " onchange= profile-avatar()></div>
+                <input class="file-upload__input" type="file" name="Avatar" accept="image/*" id="id_Avatar" onchange="showPreview(event);">
+                {% comment %} {{ form.Avatar }} {% endcomment %}
+                <button class="file-upload__button" type="button"><i class="fas fa-camera"></i></button>
+                
             </div>
         </form>
-        <div class="col-3" style="font-size: 30px;">
-            {% comment %} <ul class="nav-justified">
-            <li class="text-center"><img class="avatar avatar-128 img-circle img-thumbnail" src="{{ user.last_name }}"/></li>
-            </ul> {% endcomment %}
-
-            <div class="avatar" style="background: url('{{ user.last_name }}'); height:200px; width:200px; "></div>
-            
-            <i class="fas fa-camera"></i>
-        </div>
+        
+        
     </div>
     
 </div>
@@ -86,5 +123,29 @@
     document.getElementById("id_Github").value = "{{ data.0.Github }}";
     document.getElementById("id_Email").value = "{{ user.email }}";
     document.getElementById("id_Bio").value = "{{ data.0.Bio }}";
+    {% comment %} hàm tạo nút thêm ảnh {% endcomment %}
+    Array.prototype.forEach.call(
+        document.querySelectorAll(".file-upload__button"),
+        function(button) {
+            const hiddenInput = button.parentElement.querySelector(".file-upload__input");
+
+            button.addEventListener("click", function() {hiddenInput.click();});
+
+            hiddenInput.addEventListener("change", function() {
+                const filenameList = Array.prototype.map.call(hiddenInput.files, function(file) {
+                    return file.name;
+                });
+            });
+        }
+    );
+    {% comment %} hàm xem trước ảnh {% endcomment %}
+    function showPreview(event){
+    if(event.target.files.length > 0){
+        var src = URL.createObjectURL(event.target.files[0]);
+        var preview = document.getElementById("profile-avatar");
+        preview.style.backgroundImage = 'url('+src+')';
+    }
+}
+
 </script>
 {% endblock script_body %}

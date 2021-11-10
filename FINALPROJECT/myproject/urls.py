@@ -10,8 +10,8 @@ urlpatterns = [
      # path('DeThi',views.DeThiListview.as_view(),name='DeThi'),
      # path('BaiTap',views.BaiTapListview.as_view(),name='BaiTap'),
 
-     path('mon_cu_the',views.mon_cu_the,name='mon_cu_the'),
-     path('downloadfile',views.downloadfile,name='downloadfile'),
+     # path('mon_cu_the',views.mon_cu_the,name='mon_cu_the'),
+     # path('downloadfile',views.downloadfile,name='downloadfile'),
 
      # path('', views.home_view, name='home'),
      path('ERROR',views.error, name="error"),
