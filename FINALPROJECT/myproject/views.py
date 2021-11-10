@@ -1,3 +1,4 @@
+import re
 from django.db.models import query
 from django.db.models.fields import FilePathField
 from django.http import request
@@ -9,8 +10,8 @@ from django.views.generic import ListView, DetailView
 from django.http import StreamingHttpResponse
 from wsgiref.util import FileWrapper
 import mimetypes
-from myproject.models import MonHoc,FileUpload, TaiLieu,CommentMH
-from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm
+from myproject.models import InformationUser, MonHoc,FileUpload, TaiLieu,CommentMH,InformationUser
+from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm,Information
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
@@ -19,6 +20,7 @@ import hashlib
 import time
 from django.contrib import messages
 import os
+from PIL import Image
 
 from icecream import ic
 
@@ -27,9 +29,10 @@ from django.http import HttpResponseRedirect,HttpResponse
 
 
 def home_view(request):
+    ic(User._meta.get_fields())
     return render(
         request,
-        'home.html',
+        'global_home.html',
     )
 
 def MonHocList_view(request,NhomMH,Khoa):
@@ -283,7 +286,36 @@ def BinhLuan_view(request):
 
 
 def ThongTinCaNhan_view(request):
+    if request.method == 'POST':
+        form = Information(request.POST)
+        ic(request.POST)
+        if form.is_valid:
+            user = User.objects.get(id = request.user.id)
+            if request.FILES and request.FILES['Avatar']:
+                f = request.FILES.get('Avatar')
+                fs = FileSystemStorage()
+                filename = fs.save('avatar/'+f.name, f)
+                user.last_name = fs.url(filename)
+            user.first_name = request.POST['Fullname']
+            user.email = request.POST['Email']
+            user.save()
+
+            infoUser = InformationUser.objects.get(User = request.user)
+            infoUser.Class = request.POST['Class']
+            infoUser.Facebook = request.POST['Facebook']
+            infoUser.Github = request.POST['Github']
+            infoUser.Bio = request.POST['Bio']
+            infoUser.save()
+
+            
+
+
+    form = Information()
     return render(
         request,
         'db_ThongTinCaNhan.html',
+        {
+            "form":form,
+            "data":InformationUser.objects.get_or_create(User=request.user),
+        }
     )

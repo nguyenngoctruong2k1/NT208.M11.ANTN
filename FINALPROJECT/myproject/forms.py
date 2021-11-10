@@ -1,5 +1,6 @@
 
-from myproject.models import CommentMH
+from django.http import request
+from myproject.models import CommentMH, InformationUser
 from django import forms
 from django.db import models
 from django.forms import fields
@@ -9,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import re
+from icecream import ic
 
 class CommentMHForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -57,6 +59,8 @@ class RegisterForm(forms.Form):
         User.objects.create_user(username=self.cleaned_data['username'],
                                  email=self.cleaned_data['email'],
                                  password=self.cleaned_data['password1'])
+        tmp = User.objects.get(username=self.cleaned_data['username'])
+        InformationUser.objects.create(User=tmp)
 
 
 class ThemMonHoc(forms.ModelForm):
@@ -73,7 +77,6 @@ class ThemMonHoc(forms.ModelForm):
             'MoTa': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
-
 class ThemTaiLieu(forms.ModelForm):
     class Meta:
         model = TaiLieu
@@ -86,9 +89,21 @@ class ThemTaiLieu(forms.ModelForm):
             'MoTa': forms.Textarea(attrs={'class': 'form-control'})
         }
 
-
 class TL(forms.ModelForm):
     class Meta:
         model = FileUpload
         fields =('MaTL','filename','Path')
 
+class Information(forms.Form):
+    Avatar = forms.ImageField()
+    Fullname = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản" }))
+    Gender_Choices = (
+        ('Nam','Nam'),
+        ('Nu','Nữ'),
+        ('Khac','Khác'),
+    )
+    Class = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
+    Facebook = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
+    Github = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
+    Email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
+    Bio = forms.CharField(max_length=1000,widget=forms.Textarea(attrs={'class': 'form-control','placeholder':"Tài khoản"}))

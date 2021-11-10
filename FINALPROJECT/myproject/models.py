@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.fields import TimeField
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
+from django.http import request
 
 class MonHoc(models.Model):
     """
@@ -79,3 +80,16 @@ class CommentMH(models.Model):
     MaMH = models.ForeignKey(MonHoc,on_delete=models.CASCADE, related_name='comments')
     ThoiGian = models.DateTimeField(blank=True,null=True)
     NoiDung = models.TextField()
+
+class InformationUser(models.Model):
+    User = models.ForeignKey(User,on_delete=models.CASCADE)
+    Class = models.CharField(max_length=20)
+    Gender_Choices = (
+        ('Nam','Nam'),
+        ('Nu','Nữ'),
+        ('Khac','Khác'),
+    )
+    Gender = models.CharField(max_length=10, choices=Gender_Choices, default='Nam')
+    Facebook = models.CharField(max_length=100, default="")
+    Github = models.CharField(max_length=100, default="")
+    Bio = models.TextField()

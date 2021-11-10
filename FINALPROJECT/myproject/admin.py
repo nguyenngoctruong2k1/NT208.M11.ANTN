@@ -1,5 +1,5 @@
 from django.contrib import admin
-from myproject.models import MonHoc, TaiLieu, CommentMH, CommentTL,FileUpload
+from myproject.models import InformationUser, MonHoc, TaiLieu, CommentMH, CommentTL,FileUpload
 # from myproject.models import MonHoc, Student, TaiLieu, User, CommentMH, CommentTL
 
 # @admin.register(Student)
@@ -31,3 +31,7 @@ class CommentMHAdmin(admin.ModelAdmin):
 @admin.register(FileUpload)
 class FileUploadAdmin(admin.ModelAdmin):
     list_display = ('MaTL','filename','Path')
+
+@admin.register(InformationUser)
+class InformationUserAdmin(admin.ModelAdmin):
+    list_display = ('User', 'Bio')
