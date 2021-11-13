@@ -38,7 +38,7 @@
                         {% endif %}
                     </li>
                     <li class="col-4" name="Thông tin cơ bản">{{ item.get_LoaiTL_display }}, {{ item.TacGia }}, {{ item.date|date:"M d, Y" }}</li>
-                    <a class="btn btn-success col-1" style="border-radius: 25px;" href="/dashboard/DuyetTL/XetDuyet/{{ item.MaTL }}">Duyệt</a>
+                    <a class="btn btn-success col-1" style="border-radius: 25px;" href="/dashboard/DuyetTL/Preview/{{ item.MaTL }}">Duyệt</a>
                     {% comment %} <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button> {% endcomment %}
                 </div>
             </ul>

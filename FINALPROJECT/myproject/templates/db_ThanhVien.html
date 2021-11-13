@@ -3,58 +3,79 @@
 {% block TrangTV %}horizontal{% endblock%}
 {% block TieuDe %}Thành viên{% endblock %}
 {% block content %}
-<div class="row col-12" style="margin-bottom: 30px">
-    <div class="col-12 list-subject row justify-content-center" style="padding-top: 30px;" >
-        <form class="col-10">
-            <div class="form-group row">
-                <label for="TenTL" class="col-sm-2 col-form-label">Tên tài liệu</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="TenTL" placeholder="Giáo trình Lập trình web và ứng dụng">
+<div class="row col-12 justify-content-center row" style="margin-bottom: 30px;">
+    <div class="col-12 list-subject">
+        <div class="list-subject-header">
+            <ul class="subject-header row">
+                <li class="col-1">STT</li>
+                <li class="col-4">Tên tài liệu</li>
+                <li class="col-2">Người gởi</li>
+                <li class="col-2">Thông tin</li>
+                <li class="col-1">Lượt tải</li>
+                <li class="col-1">Đánh giá</li>
+            </ul>
+        </div>
+        <div class="list-subject-item row ">
+            {% for item in data %}
+
+            <ul id="{{ item.MaTL }}" class="subject-item" >
+                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+                    <li class="col-1" name="SoTT">{{ data.number| sub:1| mul:15| add:forloop.counter }}</li>
+                    <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
+                    <li class="col-2" name="MSSV">
+                        {% if item.user.first_name %}
+                            {{ item.user.first_name }}
+                        {% else %}
+                            {{ item.user }}
+                        {% endif %}
+                    
+                    </li>
+                    <li class="col-2" name="MaMH">{{ item.MaMH.MaMH }}</li>
+                    <li class="col-1" name="LuotTai">{{ item.LuotTai }}</li>
+                    <li class="col-1" name="">4.6/5.0</li>
+                    <div class="col-1">
+                        <div class="user" rule="button" style="text-align: right;">
+                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
+                                &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
+                            </a>
+                            <ul class="dropdown-menu" >
+                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
+                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="./delete/{{ item.MaTL }}">Xóa</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+            </ul>
+            {% endfor %}
+        
+        </div>
+        <div class="list-subject-footer row">
+            <div class="so-bai col-10">
+                <p style="display: inline;">Số bài hiển thị tối đa</p>
+                <select id="maximum-number" name="maximum-number" style="border: none;">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
             </div>
-            <div class="form-group row">
-                <label for="LoaiTL" class="col-sm-2 col-form-label">Loại tài liệu</label>
-                <div class="col-sm-10">
-                    <select class="form-control" id="LoaiTL">
-                        <option>Slide bài giảng</option>
-                        <option>Giáo trình</option>
-                        <option>Sách tham khảo</option>
-                        <option>Tài liệu thực hành</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="TenTG" class="col-sm-2 col-form-label">Tác giả</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="TenTG" placeholder="Nguyễn Văn A">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="MaMH" class="col-sm-2 col-form-label">Mã môn học</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MaMH" placeholder="NT208">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Upload</label>
-                <div class="col-sm-10">
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1" multiple>
-                </div>
+            <div class="tong-bai col-2" style="min-width: 200px;">
+                <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
+                {% if tailieu.has_previous %}
+                    <a href="?page={{ tailieu.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% else %}
+                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% endif %}
                 
+                {% if tailieu.has_next %}
+                    <a href="?page={{ tailieu.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                {% else %}
+                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                {% endif %}
             </div>
-            <div class="form-group row">
-                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Mô tả tài liệu</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-                
-            </div>
-            <div class="form-group row">
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Sign in</button>
-              </div>
-            </div>
-          </form>
+        </div>
     </div>
     
 </div>

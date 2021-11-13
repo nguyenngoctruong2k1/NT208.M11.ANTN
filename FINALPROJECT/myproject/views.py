@@ -169,7 +169,6 @@ def DangKy_view(request):
             return HttpResponseRedirect('/')
     return render(
         request,
-        # 'DangKy.html',
         'global_DangKy.html',
         {'form': form}
     )
@@ -220,37 +219,51 @@ def TaiLieu_Duyet(request, slug):
     tailieu.save()
     return redirect('DuyetTL_view') 
 
+def TaiLieu_Preview(request, MaTL):
+    tailieu = TaiLieu.objects.get(MaTL=MaTL) 
+    fileTL = FileUpload.objects.filter(MaTL=MaTL)
+    return render(
+        request,
+        'db_TaiLieu_Preview.html', 
+        {
+            'form': tailieu,
+            'file': fileTL
+        }
+    ) 
 
 def DongGopTL_view(request):
     if request.method == 'POST':
-        ic(request.POST)
+        # Lấy thông tin từ form
         form = ThemTaiLieu(request.POST)
         if form.is_valid():
+            # Thêm vào các trường thông tin cần thiết cho dữ liệu
             instance = form.save(commit=False)
             instance.MaTL = hashlib.sha1(str(time.time()).encode()).hexdigest()[:15]
             instance.KiemDuyet = False
             instance.date = datetime.datetime.now()
-            ic(instance.date)
             instance.user = request.user
             # Lưu file vào cơ sở dữ liệu
             if request.FILES and request.FILES['myfile']:
                 myfile = request.FILES.getlist('myfile')
                 fs = FileSystemStorage()
+                # Duyệt qua từng file
                 for f in myfile:
+                    # Lưu vào hệ thống
                     filename = fs.save(f.name, f)
                     uploaded_file_url = fs.url(filename)
+                    # Lưu thông tin của file vào csdl
                     file_tai_lieu = TL({'MaTL':instance.MaTL,'filename':filename,'Path':uploaded_file_url})
                     file_tai_lieu.save()
             instance.save()
-
+            # Cập nhập số lượng tài liệu cho môn học
             mh = MonHoc.objects.get(MaMH = instance.MaMH)
             mh.SoLuongTL +=1
             mh.save()
-
     form = ThemTaiLieu()
     return render(
         request,
-        'db_DongGopTL.html', {'form': form}
+        'db_DongGopTL.html', 
+        {'form': form}
     )
 
 
@@ -258,7 +271,6 @@ def TaiLieu_view(request):
     p = Paginator(TaiLieu.objects.filter(KiemDuyet=True),15)
     page = request.GET.get('page')
     tailieu = p.get_page(page)
-
     return render(
         request,
         'db_TaiLieu.html',
@@ -291,13 +303,18 @@ def TaiLieu_delete(request, slug):
             except: pass
             # Xóa database
             item.delete()
-    
     return redirect('TaiLieu_view')  
 
 def ThanhVien_view(request):
+    p = Paginator(InformationUser.objects.all(),15)
+    page = request.GET.get('page')
+    data = p.get_page(page)
     return render(
         request,
         'db_ThanhVien.html',
+        {
+            'data':data
+        }
     )
 
 
@@ -310,11 +327,13 @@ def BinhLuan_view(request):
 
 def ThongTinCaNhan_view(request):
     if request.method == 'POST':
+        # Lấy thông tin về form
         form = Information(request.POST)
-        ic(request.POST)
         if form.is_valid:
+            # Lấy thông tin người dùng
             user = User.objects.get(id = request.user.id)
             if request.FILES and request.FILES['Avatar']:
+                # Cập nhập avatar nếu có
                 f = request.FILES.get('Avatar')
                 filename = user.username+os.path.splitext(f.name)[1]
                 try:
@@ -322,18 +341,19 @@ def ThongTinCaNhan_view(request):
                 except: pass
                 fs = FileSystemStorage()
                 filename = fs.save('avatar/'+filename, f)
+                # Lưu lại thông tin của đường dẫn ảnh
                 user.last_name = fs.url(filename)
+            # Cập nhập người dùng
             user.first_name = request.POST['Fullname']
             user.email = request.POST['Email']
             user.save()
-
+            # Cập nhập thông tin người dùng
             infoUser = InformationUser.objects.get(User = request.user)
             infoUser.Class = request.POST['Class']
             infoUser.Facebook = request.POST['Facebook']
             infoUser.Github = request.POST['Github']
             infoUser.Bio = request.POST['Bio']
             infoUser.save()
-
     form = Information()
     return render(
         request,

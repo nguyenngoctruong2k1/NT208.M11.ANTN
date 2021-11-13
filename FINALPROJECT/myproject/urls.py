@@ -22,6 +22,7 @@ urlpatterns = [
 
      path('dashboard/', views.dashboard_view, name='dashboard_view'),
      path('dashboard/DuyetTL/', views.DuyetTL_view, name='DuyetTL_view'),
+     path('dashboard/DuyetTL/Preview/<slug:MaTL>', views.TaiLieu_Preview, name='TaiLieu_Preview'),
      path('dashboard/DuyetTL/XetDuyet/<slug:slug>', views.TaiLieu_Duyet, name='TaiLieu_Duyet'),
      path('dashboard/DongGopTL/', views.DongGopTL_view, name='DongGopTL_view'),
      path('dashboard/TaiLieu/', views.TaiLieu_view, name='TaiLieu_view'),

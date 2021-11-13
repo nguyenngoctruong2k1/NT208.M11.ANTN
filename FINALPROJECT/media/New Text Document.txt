@@ -1,3 +1,0 @@
-Ý tưởng: chỉnh sửa bộ sinh data, chừa max min ra, rồi cho nó tăng giảm để biết chiều ...
-max(|tổng - tổng|, |avg-avg|)-> i
-x =+- int(i/n) 
