@@ -34,7 +34,8 @@ urlpatterns = [
      path('DangKy/', views.DangKy_view, name='DangKy_view'),
      path('', views.home_view, name='home_view'),
      path('DangNhap/', auth_views.LoginView.as_view(template_name='global_DangNhap.html'),name='DangNhap_view'),
-     path('DangXuat/', auth_views.LogoutView.as_view(next_page='/'),name='DangXuat_view')
+     path('DangXuat/', auth_views.LogoutView.as_view(next_page='/'),name='DangXuat_view'),
+     path('search/', views.search_view, name='search'),
 
      
 ]

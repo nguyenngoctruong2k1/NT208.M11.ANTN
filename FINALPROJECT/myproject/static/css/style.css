@@ -379,6 +379,7 @@ div {
 .gssb_c {
     border: 0;
 }
+
 tbody {
     display: table-row-group;
     vertical-align: middle;
@@ -391,11 +392,11 @@ table {
 }
 tr {
     display: table-row;
-    vertical-align: inherit;
+    vertical-align: middle;
 }
 td {
     display: table-cell;
-    vertical-align: inherit;
+    vertical-align: middle;
 }
 #st-el-22 {
     font-family: "Helvetica Neue", Verdana, Helvetica, Arial, sans-serif;
@@ -630,7 +631,6 @@ footer {
 	border-top: 1px solid #fdfdfd;
 	width: 100%;
 }
-
 
 
 
