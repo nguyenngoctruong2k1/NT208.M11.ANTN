@@ -11,7 +11,7 @@ from django.http import StreamingHttpResponse
 from wsgiref.util import FileWrapper
 import mimetypes
 from myproject.models import CommentTL, InformationUser, MonHoc,FileUpload, TaiLieu,CommentMH,InformationUser
-from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm,Information
+from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm,Information, CommentTLForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
@@ -87,7 +87,8 @@ def MonHocList_view(request, NhomMH, Khoa):
     )
 
 
-def MonHoc_show(request, MaMH):
+def MonHoc_show(request,MaMH):
+    comment = CommentMH.objects.filter(MaMH=MaMH)
     data = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
     tailieu = {
         data.filter(LoaiTL='Slide').order_by("-date")[:4],
@@ -95,16 +96,24 @@ def MonHoc_show(request, MaMH):
         data.filter(LoaiTL='BaiTap').order_by("-date")[:4],
         data.filter(LoaiTL='TaiLieuTK').order_by("-date")[:4]
     }
-    ic(tailieu)
+    #ic(tailieu)
     # tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
     # ic(tailieu)
-
+    monhoc = get_object_or_404(MonHoc,MaMH=MaMH)
+    form = CommentMHForm()
+    if request.method == 'POST':
+        form = CommentMHForm(request.POST, user=request.user,MaMH=monhoc)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path)
     return render(
         request,
         'show_mon_cu_the.html',
         {
             'monhoc': MonHoc.objects.get(MaMH=MaMH),
-            'tailieu': tailieu
+            'tailieu': tailieu,
+            'comment':comment,
+            'form':form,
         },
     )
 
@@ -124,16 +133,26 @@ def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
 
 
 def one_document_view(request, slug):
+    comment = CommentTL.objects.filter(MaTL=slug)
     tai_lieu = TaiLieu.objects.get(MaTL=slug)
     tai_lieu.LuotXem = tai_lieu.LuotXem + 1
     tai_lieu.save()
     FileDinhKem = FileUpload.objects.filter(MaTL=slug)
+    tl = get_object_or_404(TaiLieu,MaTL=slug)
+    form = CommentTLForm()
+    if request.method == 'POST':
+        form = CommentTLForm(request.POST, user=request.user,MaTL=tl)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path)
     return render(
         request,
         'show_onedocument.html',
         {
             'tai_lieu': tai_lieu,
-            'FileDinhKem': FileDinhKem
+            'FileDinhKem':FileDinhKem,
+            'comment':comment,
+            'form':form,
         },
     )
 
@@ -142,18 +161,6 @@ def error(request, *args, **kwargs):
         request,
         'show_error.html'
     )
-
-
-def comment(request, MaMH):
-    monhoc = get_object_or_404(MonHoc, MaMH=MaMH)
-    form = CommentMHForm()
-    if request.method == 'POST':
-        form = CommentMHForm(request.POST, MSSV=None, MaMH=monhoc)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.path)
-    return render(request, 'mon_cu_the.html', {"monhoc": monhoc, "form": form})
-
 
 def DangKy_view(request):
     form = RegisterForm()
@@ -332,7 +339,7 @@ def TaiLieu_view(request):
 
     data = TaiLieu.objects.filter(KiemDuyet=True)
     if not request.user.is_staff:
-        data = data.filter(user = request.user)
+        data = TaiLieu.objects.filter(user = request.user)
 
     num = 10
     if request.GET.get('num'): num = int(request.GET.get('num'))

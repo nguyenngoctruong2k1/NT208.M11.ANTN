@@ -92,9 +92,9 @@ class CommentTL(models.Model):
     """
     Lưu dữ liệu về những comment dữ liệu 
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    MaTL = models.ForeignKey(TaiLieu, on_delete=models.CASCADE)
-    ThoiGian = models.DateTimeField(blank=True, null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    MaTL = models.ForeignKey(TaiLieu,on_delete=models.CASCADE)
+    ThoiGian = models.DateTimeField(auto_now_add=True)
     NoiDung = models.TextField()
 
 
@@ -102,10 +102,9 @@ class CommentMH(models.Model):
     """
     Lưu dữ liệu về những comment môn học 
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    MaMH = models.ForeignKey(
-        MonHoc, on_delete=models.CASCADE, related_name='comments')
-    ThoiGian = models.DateTimeField(blank=True, null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    MaMH = models.ForeignKey(MonHoc,on_delete=models.CASCADE)
+    ThoiGian = models.DateTimeField(auto_now_add=True)
     NoiDung = models.TextField()
 
 

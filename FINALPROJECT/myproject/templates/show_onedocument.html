@@ -9,8 +9,14 @@
 		<div class="creator">
 			<p style="margin-bottom: 2rem; font-size: 24px;">Thông tin cơ bản</p>
 			<div id="avatar" style="margin-bottom: 1rem;">
-				<img src="{% static 'images/avatar1.jpg' %}" alt="">&nbsp;
-				<span style="font-size: 16px;"><b>{{ tai_lieu.user }}</b></span>
+				<img src="{{ tai_lieu.user.last_name}}" alt="">&nbsp;
+				<span style="font-size: 16px;"><b>
+				{% if tai_lieu.user.first_name %}
+                    {{tai_lieu.user.first_name}}
+                    {% else %}
+                    {{tai_lieu.user.username}}
+                    {% endif %}
+</b></span>
 			</div>
 			<div id="tải xuống" style="margin-bottom: 1rem;">
 				<i class="fas fa-download"></i>&nbsp;
@@ -41,46 +47,50 @@
 		<!-- <a href="#!" class="btn btn-outline-light active" style="margin-bottom: 1rem; margin-left: 50rem;">xem thêm</a> -->
 	</div>
 </div>
+{% if user.username %}
 <div class="row">
-	<hr class="light-contact" />
-	<div class="cmt col-12" style="background-color: rgba(191, 191, 192, 0.6);">
-		<h4 style="padding-top: 1rem;">Viết bình luận ... <span class="fas fa-plus-circle"></span>
-		</h4>
-		<form role="form">
-			<div class="form-group">
-				<textarea class="form-control" rows="3"></textarea>
-			</div>
-			<a href="#!" class="btn btn-outline-light active" style="margin-bottom: 1rem;">Gửi</a>
-		</form>
-	</div>
-	<hr class="light-contact" />
+    <hr class="light-contact" />
+    <div class="cmt col-12" style="background-color: rgba(191, 191, 192, 0.6);">
+        <h4 style="padding-top: 1rem;">Viết bình luận ... <span class="fas fa-plus-circle"></span>
+        </h4>
+        <form method='POST'>
+            {% csrf_token %}
+            <div class="form-group">
+                {{form.NoiDung}}
+            </div>
+            <button type="submit" class="btn btn-outline-light active" style="margin-bottom: 1rem;">Gửi</button>
+        </form>
+    </div>
+    <hr class="light-contact" />
 </div>
-<div class="row">
-	<div class="col-1">
-		<img src="{% static 'images/avatar.jpg' %}" alt="avatar">
-	</div>
-	<div class="col-11">
-		<div class="card1" style="margin-bottom: 1rem;  background-color: rgb(235, 235, 235);">
-			<div class="ms-2 me-auto" style="font-size: 16px; padding: 10px;">
-				<div class="fw-bold" style="font-size: 16px;"><b>NhanLee </b>24/10/2021 10:23
-				</div>
-				Tài liệu rất hữu ích
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-1">
-		<img src="{% static 'images/avatar.jpg' %}" alt="avatar">
-	</div>
-	<div class="col-11">
-		<div class="card1" style="margin-bottom: 1rem;  background-color: rgb(235, 235, 235);">
-			<div class="ms-2 me-auto" style="font-size: 16px; padding: 10px;">
-				<div class="fw-bold" style="font-size: 16px;"><b>NhanLee </b>24/10/2021 10:23
-				</div>
-				Tài liệu rất hữu ích
-			</div>
-		</div>
-	</div>
-</div>
+{% endif%}
+{% if not comment.all %}
+    <h2> Không có bình luận nào </h2>
+{% else %}
+{% for cmt in comment %}
+    <div class="row">
+        <div class="col-1">
+            <img src="{{ cmt.user.last_name}}" class="rounded-circle" width="70px" height="70px" alt=""
+                            loading="lazy">
+        </div>
+        <div class="col-11">
+            <div class="card1" style="margin-bottom: 1rem;  background-color: rgb(235, 235, 235);">
+                <div class="ms-2 me-auto" style="font-size: 16px; padding: 10px;">
+                    <div class="fw-bold" style="font-size: 16px;"><b style="font-size: 20px;">
+					{% if cmt.user.first_name %}
+                    {{cmt.user.first_name}}
+                    {% else %}
+                    {{cmt.user.username}}
+                    {% endif %}
+					
+					
+					</b>{{cmt.ThoiGian}}
+                    </div>
+                    {{cmt.NoiDung|linebreaks}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endif%}
 {% endblock %}
