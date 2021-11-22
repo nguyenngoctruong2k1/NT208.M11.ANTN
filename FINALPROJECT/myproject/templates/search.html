@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %} Tìm kiếm {% endblock %}
+{% load static %}
+{% block script_head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/web.css' %}" type="text/css">
+
+<!-- Link Font chữ Open Sans-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;900&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,400;1,600;1,700;1,800;1,900&family=Overpass:wght@600;900&display=swap"
+    rel="stylesheet">
+<style>
+    p{
+        margin: 0;
+    }
+</style>
+{% endblock script_head %}
+{% block content_top %}
+<!-- Navbar -->
+
+<!--Nội dung-->
+
+
+<div class="container">
+    <div class="row">
+        <h2>Môn học</h2>
+        <table class="table table-hover;">
+            <thead class="thead-light">
+                <tr style="text-align: center;">
+                    <th>STT</th>
+                    <th>Mã môn học</th>
+                    <th>Tên môn học</th>
+                    <th>Mô tả</th>
+                    <th>Số tài liệu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in monhoc %}
+                <tr>
+
+                    <td>
+                        {{forloop.counter}}
+                    </td>
+                    <td>
+                        <a href="/subjects/{{item.MaMH}}">{{item.MaMH}}</a>
+                    </td>
+                    <td>
+                        <p>{{item.TenMH}}</p>
+                    </td>
+                    <td>
+                        <p>{{item.MoTa}}</p>
+                    </td>
+                    <td>
+                        <p>{{item.SoLuongTL}}</p>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <h2>Tài liệu</h2>
+        <div class="col-sm-12">
+            <a href="/document/{{item.MaTL}}" class="card-title">{{item.TenTL}}</a>
+        </div>
+        <table class="table table-hover;">
+            <thead class="thead-light">
+                <tr style="text-align: center;">
+                    <th>STT</th>
+                    <th>Tên tài liệu</th>
+                    <th>Mã MH</th>
+                    <th>Ngày</th>
+                    <th>Tác giả</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in tailieu %}
+                <tr>
+                    <td>
+                        {{forloop.counter}}
+                    </td>
+                    <td>
+                        <a href="/document/{{item.MaTL}}">{{item.TenTL}}</a>
+                    </td>
+                    <td>
+                        <a href="/subjects/{{item.MaMH}}">{{item.MaMH}}</a>
+                    </td>
+                    <td class='align-self-center'>
+                        <p>{{item.date}}</p>
+                    </td>
+                    <td>
+                        <p>{{item.TacGia}}</p>
+                    </td>
+                    <td>
+                        <p>{{item.MoTa|safe}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock content_top %}
+{% block content_main %}
+
+
+
+{% endblock content_main %}

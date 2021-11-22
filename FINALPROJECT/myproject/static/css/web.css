@@ -185,22 +185,22 @@
     font-size: 24px;
     float: left;
     width: 90%;
-    height: 76px;
+    height: 50px;
     border-radius: 40px;
-    margin-left: 81px;
     padding-left: 32px;
     padding-right: 80px;
 }
 
-.Search > a > i{
+.Search > button{
     float: left;
     font-size: 45px;
     color: #535555;
-    font-weight: 900;
-    height: 76px;
+    font-weight: 600;
+    height: 60px;
     text-align: center;
-    margin-left: -70px;
-    padding-top: 18px;
+    margin-left: -100px;
+    padding-top: 5px;
+    margin-top: 2px;
 }
 /*============== END OF BACKGROUND===========*/
 

@@ -1,6 +1,6 @@
 import re
 from django.db.models import query
-from django.db.models.fields import FilePathField
+from django.db.models.fields import FilePathField, NullBooleanField
 from django.http import request
 from django.shortcuts import redirect, render, get_object_or_404
 import datetime
@@ -22,12 +22,11 @@ from django.contrib import messages
 import os
 from django.conf import settings
 from PIL import Image
-from django.db.models import Count
+from django.db.models import Count, Q
 from zipfile import ZipFile
 from icecream import ic
-
+from unidecode import unidecode
 import shutil
-
 from django.http import HttpResponseRedirect,HttpResponse
 # Create your views here.
 
@@ -39,7 +38,38 @@ def home_view(request):
         'global_home.html',
     )
 
-def MonHocList_view(request,NhomMH,Khoa):
+
+def search_view(request):
+    if(request.GET.get("search") == None):
+        return render(
+            request,
+            '#',
+        )
+    if request.method == 'GET' and request.GET.get("search") != None:
+        searched = request.GET.get('search')
+        searched = unidecode(searched)
+
+        if searched:
+            monhoc = MonHoc.objects.filter(Q(search__icontains=searched))
+            tailieu = TaiLieu.objects.filter(KiemDuyet=True).filter(Q(search__icontains=searched))
+            result = {
+                'monhoc': monhoc,
+                'tailieu': tailieu,
+            }
+            return render(
+                request,
+                'search.html',
+                result,
+            )
+
+    else:
+        return render(
+            request,
+            'search.html',
+        )
+
+
+def MonHocList_view(request, NhomMH, Khoa):
     monhoc = MonHoc.objects.filter(NhomMH=NhomMH).filter(Khoa=Khoa)
     khoa = ''
     nhom_mh = ''
@@ -52,15 +82,17 @@ def MonHocList_view(request,NhomMH,Khoa):
         {
             'khoa': khoa,
             'monhoc': monhoc,
-            'nhom_mh':nhom_mh
+            'nhom_mh': nhom_mh
         },
     )
-def MonHoc_show(request,MaMH):
+
+
+def MonHoc_show(request, MaMH):
     data = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
-    tailieu ={ 
+    tailieu = {
         data.filter(LoaiTL='Slide').order_by("-date")[:4],
-        data.filter(LoaiTL='DeThi').order_by("-date")[:4], 
-        data.filter(LoaiTL='BaiTap').order_by("-date")[:4], 
+        data.filter(LoaiTL='DeThi').order_by("-date")[:4],
+        data.filter(LoaiTL='BaiTap').order_by("-date")[:4],
         data.filter(LoaiTL='TaiLieuTK').order_by("-date")[:4]
     }
     ic(tailieu)
@@ -75,7 +107,9 @@ def MonHoc_show(request,MaMH):
             'tailieu': tailieu
         },
     )
-def MonHoc_LoaiTL_show(request,MaMH,LoaiTL):
+
+
+def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
     tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
     if not tailieu:
         return HttpResponseRedirect(reverse('error'))
@@ -88,6 +122,7 @@ def MonHoc_LoaiTL_show(request,MaMH,LoaiTL):
         },
     )
 
+
 def one_document_view(request, slug):
     tai_lieu = TaiLieu.objects.get(MaTL=slug)
     tai_lieu.LuotXem = tai_lieu.LuotXem + 1
@@ -98,68 +133,26 @@ def one_document_view(request, slug):
         'show_onedocument.html',
         {
             'tai_lieu': tai_lieu,
-            'FileDinhKem':FileDinhKem
+            'FileDinhKem': FileDinhKem
         },
     )
 
-# def downloadfile(req):
-#     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     filename = 'text.txt'
-#     filepath = base_dir + '\\myproject\\Files\\' + filename
-#     # filepath = 
-#     thefile = filepath
-#     filename = os.path.basename(thefile)
-#     chunk_size = 8192
-#     response = StreamingHttpResponse(FileWrapper(open(thefile,'rb'),chunk_size),content_type=mimetypes.guess_type(thefile)[0])
-#     response['Content-Length'] = os.path.getsize(thefile)
-#     response['Content-Disposition'] = "Attachment;filename=%s" % filename
-#     return response
-
-# def mon_cu_the(request):
-#     return render(
-#         request,
-#         'mon_cu_the.html',
-
-#     )
-
-# def Toan_Tin_KHTN(request):
-#     return render(
-#         request,
-#         'Toan_Tin_KHTN.html',
-#     )
-
-# class SlideListview(ListView):
-#     queryset = TaiLieu.objects.filter(LoaiTL='Slide')
-#     template_name = 'Slide.html'
-#     context_object_name = 'Slide'
-#     paginate_by = 4
-
-# class DeThiListview(ListView):
-#     queryset = TaiLieu.objects.filter(LoaiTL='DT')
-#     template_name = 'DeThi.html'
-#     context_object_name = 'DeThi'
-#     #paginate_by = 4
-
-# class BaiTapListview(ListView):
-#     queryset = TaiLieu.objects.filter(LoaiTL='BT')
-#     template_name = 'BaiTap.html'
-#     context_object_name = 'BaiTap'
-#     #paginate_by = 4
-def error(request,*args, **kwargs):
+def error(request, *args, **kwargs):
     return render(
-    request,
-    'show_error.html'
-)
+        request,
+        'show_error.html'
+    )
 
-def comment(request,MaMH):
+
+def comment(request, MaMH):
     monhoc = get_object_or_404(MonHoc, MaMH=MaMH)
     form = CommentMHForm()
     if request.method == 'POST':
-        form = CommentMHForm(request.POST,MSSV=None, MaMH=monhoc)
+        form = CommentMHForm(request.POST, MSSV=None, MaMH=monhoc)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(request.path)
-    return render(request, 'mon_cu_the.html',{"monhoc":monhoc, "form":form})
+    return render(request, 'mon_cu_the.html', {"monhoc": monhoc, "form": form})
 
 
 def DangKy_view(request):
@@ -175,6 +168,7 @@ def DangKy_view(request):
         # 'global_DangKy copy.html',
         {'form': form}
     )
+
 
 def dashboard_view(request):
     # nếu không có tài khoản thì trả về trang đăng nhập
@@ -194,7 +188,10 @@ def dashboard_view(request):
         if request.method == 'POST':
             form = ThemMonHoc(request.POST)
             if form.is_valid():
-                form.save()
+                instance = form.save(commit=False)
+                instance.search = unidecode(
+                    instance.TenMH + ' ' + instance.get_Khoa_display()+' ' + instance.MaMH)
+                instance.save()
     else:
         tailieu = TaiLieu.objects.filter(user=request.user)
         # Nếu là người dùng thông thường cần phải đổi lại thông tin
@@ -239,13 +236,15 @@ def DuyetTL_view(request):
     form = ThemTaiLieu()
     return render(
         request,
-        'db_DuyetTL.html', 
+        'db_DuyetTL.html',
         {
             'tailieu': tailieu,
             'form': form,
             'num':num
         }
     )
+
+
 def TaiLieu_Duyet(request, slug):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
@@ -255,7 +254,8 @@ def TaiLieu_Duyet(request, slug):
     tailieu = TaiLieu.objects.get(MaTL=slug)  
     if tailieu: tailieu.KiemDuyet=True
     tailieu.save()
-    return redirect('DuyetTL_view') 
+    return redirect('DuyetTL_view')
+
 
 def TaiLieu_Preview(request, MaTL):
     if not request.user.is_active:
@@ -267,27 +267,32 @@ def TaiLieu_Preview(request, MaTL):
     fileTL = FileUpload.objects.filter(MaTL=MaTL)
     return render(
         request,
-        'db_TaiLieu_Preview.html', 
+        'db_TaiLieu_Preview.html',
         {
             'form': tailieu,
             'file': fileTL
         }
-    ) 
+    )
+
 
 def DongGopTL_view(request):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
 
     if request.method == 'POST':
+
         # Lấy thông tin từ form
         form = ThemTaiLieu(request.POST)
         if form.is_valid():
             # Thêm vào các trường thông tin cần thiết cho dữ liệu
             instance = form.save(commit=False)
-            instance.MaTL = hashlib.sha1(str(time.time()).encode()).hexdigest()[:15]
+            instance.MaTL = hashlib.sha1(
+                str(time.time()).encode()).hexdigest()[:15]
             instance.KiemDuyet = False
             instance.date = datetime.datetime.now()
             instance.user = request.user
+            instance.search = unidecode(
+                instance.TenTL + ' ' + instance.get_LoaiTL_display() + ' ' + MonHoc.objects.get(MaMH=instance.MaMH).TenMH + ' ' + (str)(instance.MaMH))
             # Lưu file vào cơ sở dữ liệu
             if request.FILES and request.FILES['myfile']:
                 myfile = request.FILES.getlist('myfile')
@@ -304,18 +309,19 @@ def DongGopTL_view(request):
                     zipName = os.path.join(settings.MEDIA_ROOT,os.path.join(basePath,f.name))
                     zipObj.write(zipName,os.path.basename(zipName))
                     # Lưu thông tin của file vào csdl
-                    file_tai_lieu = TL({'MaTL':instance.MaTL,'filename':filename,'Path':uploaded_file_url})
+                    file_tai_lieu = TL(
+                        {'MaTL': instance.MaTL, 'filename': filename, 'Path': uploaded_file_url})
                     file_tai_lieu.save()
                 zipObj.close()
             instance.save()
             # Cập nhập số lượng tài liệu cho môn học
-            mh = MonHoc.objects.get(MaMH = instance.MaMH)
-            mh.SoLuongTL +=1
+            mh = MonHoc.objects.get(MaMH=instance.MaMH)
+            mh.SoLuongTL += 1
             mh.save()
     form = ThemTaiLieu()
     return render(
         request,
-        'db_DongGopTL.html', 
+        'db_DongGopTL.html',
         {'form': form}
     )
 
@@ -331,6 +337,7 @@ def TaiLieu_view(request):
     num = 10
     if request.GET.get('num'): num = int(request.GET.get('num'))
     p = Paginator(data,num)
+
     page = request.GET.get('page')
     tailieu = p.get_page(page)
     return render(
@@ -342,21 +349,24 @@ def TaiLieu_view(request):
         }
     )
 
-def TaiLieu_delete(request, slug):  
+
+def TaiLieu_delete(request, slug):
     '''
     Xử lý cho việc xóa tài liệu
     url: dashboard/TaiLieu/delete/<Mã tài liệu>
     '''
+
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('dashboard_view'))
 
     tailieu = TaiLieu.objects.get(MaTL=slug)  
+
     if tailieu:
-        # Giảm số lượng tài liệu của môn học 
-        mh = MonHoc.objects.get(MaMH = tailieu.MaMH)
-        mh.SoLuongTL -=1
+        # Giảm số lượng tài liệu của môn học
+        mh = MonHoc.objects.get(MaMH=tailieu.MaMH)
+        mh.SoLuongTL -= 1
         mh.save()
         # Xóa tài liệu khỏi CSDL
         tailieu.delete()
@@ -368,6 +378,7 @@ def TaiLieu_delete(request, slug):
         shutil.rmtree(paths)
         os.remove(paths+'.zip')
     return redirect('TaiLieu_view')  
+
 
 def ThanhVien_Active(request, username):
     if not request.user.is_active:
@@ -399,6 +410,7 @@ def ThanhVien_view(request):
     if request.GET.get('num'): num = int(request.GET.get('num'))
 
     p = Paginator(InformationUser.objects.all(),num)
+
     page = request.GET.get('page')
     data = p.get_page(page)
     for i in range(len(data)):
@@ -436,14 +448,16 @@ def ThongTinCaNhan_view(request):
         form = Information(request.POST)
         if form.is_valid:
             # Lấy thông tin người dùng
-            user = User.objects.get(id = request.user.id)
+            user = User.objects.get(id=request.user.id)
             if request.FILES and request.FILES['Avatar']:
                 # Cập nhập avatar nếu có
                 f = request.FILES.get('Avatar')
                 filename = user.username+os.path.splitext(f.name)[1]
                 try:
-                    os.remove(os.path.join(settings.MEDIA_ROOT, 'avatar/'+filename))
-                except: pass
+                    os.remove(os.path.join(
+                        settings.MEDIA_ROOT, 'avatar/'+filename))
+                except:
+                    pass
                 fs = FileSystemStorage()
                 filename = fs.save('avatar/'+filename, f)
                 # Lưu lại thông tin của đường dẫn ảnh
@@ -453,7 +467,7 @@ def ThongTinCaNhan_view(request):
             user.email = request.POST['Email']
             user.save()
             # Cập nhập thông tin người dùng
-            infoUser = InformationUser.objects.get(User = request.user)
+            infoUser = InformationUser.objects.get(User=request.user)
             infoUser.Class = request.POST['Class']
             infoUser.Facebook = request.POST['Facebook']
             infoUser.Github = request.POST['Github']
@@ -464,7 +478,7 @@ def ThongTinCaNhan_view(request):
         request,
         'db_ThongTinCaNhan.html',
         {
-            "form":form,
-            "data":InformationUser.objects.get_or_create(User=request.user),
+            "form": form,
+            "data": InformationUser.objects.get_or_create(User=request.user),
         }
     )

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'myproject.apps.MyprojectConfig',
     'django_social_share',
     'mathfilters',
-    'ckeditor'
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

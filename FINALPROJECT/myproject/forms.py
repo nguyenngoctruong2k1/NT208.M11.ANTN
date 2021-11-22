@@ -1,40 +1,49 @@
 
+from django.db.models import query
 from django.http import request
+from django.template.defaultfilters import slugify
 from myproject.models import CommentMH, InformationUser
 from django import forms
 from django.db import models
 from django.forms import fields
 from myproject.models import MonHoc, TaiLieu, FileUpload
-
+from django.views.generic.list import ListView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import re
+from unidecode import unidecode
 from icecream import ic
+
 
 class CommentMHForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.MSSV = kwargs.pop('MSSV',None)
-        self.MaMH = kwargs.pop('MaMH',None)
+        self.MSSV = kwargs.pop('MSSV', None)
+        self.MaMH = kwargs.pop('MaMH', None)
         super().__init__(*args, **kwargs)
+
     def save(self, commit=True):
         comment = super().save(commit=False)
         comment.MSSV = self.MSSV
         comment.MaMH = self.MaMH
         comment.save()
+
     class Meta:
-        model = CommentMH 
+        model = CommentMH
         fields = ["NoiDung"]
 
 # Create your forms here.
 
+
 class RegisterForm(forms.Form):
-    username = forms.CharField(label='Tài khoản', max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản", 'required':"required"}))
-    email = forms.EmailField(label='Email',widget=forms.EmailInput(attrs={'class': 'form-control','placeholder':"Email", 'required':"required"}))
+    username = forms.CharField(label='Tài khoản', max_length=30, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản", 'required': "required"}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'placeholder': "Email", 'required': "required"}))
     password1 = forms.CharField(
-        label='Mật khẩu', widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder':"Mật khẩu", 'required':"required"}))
+        label='Mật khẩu', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': "Mật khẩu", 'required': "required"}))
     password2 = forms.CharField(
-        label='Nhập lại mật khẩu', widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder':"Nhập lại mật khẩu", 'required':"required"}))
+        label='Nhập lại mật khẩu', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': "Nhập lại mật khẩu", 'required': "required"}))
 
     def clean_password2(self):
         cleaned_data = super(RegisterForm, self).clean()
@@ -67,7 +76,7 @@ class ThemMonHoc(forms.ModelForm):
     class Meta:
         model = MonHoc
         fields = (
-            'MaMH', 'TenMH', 'Khoa', 'NhomMH', 'MoTa'
+            'MaMH', 'TenMH', 'Khoa', 'NhomMH', 'MoTa',
         )
         widgets = {
             'MaMH': forms.TextInput(attrs={'class': 'form-control'}),
@@ -76,6 +85,12 @@ class ThemMonHoc(forms.ModelForm):
             'NhomMH': forms.Select(attrs={'class': 'form-control'}),
             'MoTa': forms.Textarea(attrs={'class': 'form-control'}),
         }
+    # search = models.CharField(max_length=150, null=True,)
+
+    # def save(self):
+    #     self.search = unidecode(self.TenMH)
+    #     super.save(self)
+
 
 class ThemTaiLieu(forms.ModelForm):
     class Meta:
@@ -86,24 +101,32 @@ class ThemTaiLieu(forms.ModelForm):
             'TacGia': forms.TextInput(attrs={'class': 'form-control'}),
             'MaMH': forms.Select(attrs={'class': 'form-control'}),
             'LoaiTL': forms.Select(attrs={'class': 'form-control'}),
-            'MoTa': forms.Textarea(attrs={'class': 'form-control'})
+            'MoTa': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
 
 class TL(forms.ModelForm):
     class Meta:
         model = FileUpload
-        fields =('MaTL','filename','Path')
+        fields = ('MaTL', 'filename', 'Path')
+
 
 class Information(forms.Form):
     Avatar = forms.ImageField()
-    Fullname = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản" }))
+    Fullname = forms.CharField(max_length=30, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản"}))
     Gender_Choices = (
-        ('Nam','Nam'),
-        ('Nu','Nữ'),
-        ('Khac','Khác'),
+        ('Nam', 'Nam'),
+        ('Nu', 'Nữ'),
+        ('Khac', 'Khác'),
     )
-    Class = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
-    Facebook = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
-    Github = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
-    Email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
-    Bio = forms.CharField(max_length=1000,widget=forms.Textarea(attrs={'class': 'form-control','placeholder':"Tài khoản"}))
+    Class = forms.CharField(max_length=30, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản"}))
+    Facebook = forms.CharField(max_length=30, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản"}))
+    Github = forms.CharField(max_length=30, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản"}))
+    Email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản"}))
+    Bio = forms.CharField(max_length=1000, widget=forms.Textarea(
+        attrs={'class': 'form-control', 'placeholder': "Tài khoản"}))
