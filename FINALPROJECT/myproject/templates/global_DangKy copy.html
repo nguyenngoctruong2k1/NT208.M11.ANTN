@@ -108,7 +108,7 @@
 <div class="signup-form">
     <form method="POST">
         {% csrf_token %}
-		<h2 style="font-size: 50px; text-align: center;">Đăng ký tài khoản</h2>
+		{% comment %} <h2 style="font-size: 50px; text-align: center;">Đăng ký tài khoản</h2>
 		<p><ul class="messages">
             {% for item in form_error %}
             <li>{{ item }}</li>
@@ -117,11 +117,9 @@
 		<hr>
         <div class="form-group">
 			<div class="input-group">
-			{% comment %} {{form.as_p}} {% endcomment %}
 				<span class="input-group-addon"><i class="fa fa-user"></i></span>
                 {{ form.username }}
 				<!-- <input type="text" class="form-control" name="username" placeholder="Username" required="required"> -->
-				{% comment %} <input type="text" name="username" placeholder="Username" required="required"> {% endcomment %}
 			</div>
         </div>
         <div class="form-group">
@@ -153,7 +151,10 @@
 		</div>
 		<div class="form-group">
             <button type="submit" class="btn btn-primary btn-lg">Đăng Ký</button>
-        </div>
+        </div> {% endcomment %}
+		<form method="POST">
+			{% csrf_token %}
+			{{form.as_p}}
     </form>
 	<div class="text-center" style="font-size: 16px;">Nếu bạn đã có tài khoản? Đăng nhập tại<a href="{% url 'DangNhap_view' %}"> tại đây</a></div>
 </div>

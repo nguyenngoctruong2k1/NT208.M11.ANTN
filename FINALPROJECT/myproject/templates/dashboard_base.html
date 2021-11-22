@@ -45,30 +45,34 @@
                         <p>Đóng góp tài liệu</p>
                     </a>
                 </li>
+                {% if user.is_staff %}
                 <li class="item {% block TrangDTL %}{% endblock %}">
                     <a class="nav-link" href="{% url 'DuyetTL_view' %}">
                         <i class="fas fa-ticket-alt"></i>
                         <p>Duyệt tài liệu</p>
                     </a>
-                </li>         
+                </li>    
+                {% endif %}     
                 <li class="item {% block TrangTL %}{% endblock %}">
                     <a class="nav-link" href="{% url 'TaiLieu_view' %}">
                         <i class="fas fa-book"></i>
                         <p>Tài Liệu</p>
                     </a>
                 </li>
-                <li class="item {% block TrangBL %}{% endblock %}">
+                <!-- <li class="item {% block TrangBL %}{% endblock %}">
                     <a class="nav-link" href="{% url 'BinhLuan_view' %}">
                         <i class="fas fa-comments"></i>
                         <p>Bình luận</p>
                     </a>
-                </li>
+                </li> -->
+                {% if user.is_staff %}
                 <li class="item {% block TrangTV %}{% endblock %}">
                     <a class="nav-link" href="{% url 'ThanhVien_view' %}">
                         <i class="fas fa-users-cog"></i>
                         <p>Thành viên</p>
                     </a>
                 </li>
+                {% endif %} 
                 <li class="item {% block TrangTT %}{% endblock %}">
                     <a class="nav-link" href="{% url 'ThongTinCaNhan_view' %}">
                         <i class="fas fa-user"></i>

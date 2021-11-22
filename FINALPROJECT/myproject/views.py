@@ -10,7 +10,7 @@ from django.views.generic import ListView, DetailView
 from django.http import StreamingHttpResponse
 from wsgiref.util import FileWrapper
 import mimetypes
-from myproject.models import InformationUser, MonHoc,FileUpload, TaiLieu,CommentMH,InformationUser
+from myproject.models import CommentTL, InformationUser, MonHoc,FileUpload, TaiLieu,CommentMH,InformationUser
 from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm,Information
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -23,8 +23,10 @@ import os
 from django.conf import settings
 from PIL import Image
 from django.db.models import Count
-
+from zipfile import ZipFile
 from icecream import ic
+
+import shutil
 
 from django.http import HttpResponseRedirect,HttpResponse
 # Create your views here.
@@ -170,38 +172,68 @@ def DangKy_view(request):
     return render(
         request,
         'global_DangKy.html',
+        # 'global_DangKy copy.html',
         {'form': form}
     )
 
 def dashboard_view(request):
-    # data = TaiLieu.objects.values('MaMH').annotate(SL=Count('MaMH'))
-    if request.method == 'POST':
-        form = ThemMonHoc(request.POST)
-        if form.is_valid():
-            form.save()
-
-    form = ThemMonHoc()
-    p = Paginator(MonHoc.objects.all(), 15)
-    page = request.GET.get('page')
-    monhoc = p.get_page(page)
+    # nếu không có tài khoản thì trả về trang đăng nhập
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    # lấy dữ liệu môn học
+    data = MonHoc.objects.all()
     overview = {
             'new_doc': TaiLieu.objects.filter(KiemDuyet=False).count(),
             'old_doc': TaiLieu.objects.filter(KiemDuyet=True).count(),
             'num_user': User.objects.filter(is_active=True).count()
         }
+    # Kết quả trả về với người dùng thường
+    
+    if request.user.is_staff:
+        # Nếu là quản trị viên
+        if request.method == 'POST':
+            form = ThemMonHoc(request.POST)
+            if form.is_valid():
+                form.save()
+    else:
+        tailieu = TaiLieu.objects.filter(user=request.user)
+        # Nếu là người dùng thông thường cần phải đổi lại thông tin
+        for i in range(len(data)):
+            data[i].SoLuongTL = tailieu.filter(MaMH = data[i]).count()
+        overview = {
+                'new_doc': tailieu.filter(KiemDuyet=False).count(),
+                'old_doc': tailieu.filter(KiemDuyet=True).count(),
+                'num_user': User.objects.filter(is_active=True).count()
+            }
+    
+    # phần xử lý chung
+    form = ThemMonHoc()
+    num = 10
+    if request.GET.get('num'): num = int(request.GET.get('num'))
+    p = Paginator(data, num)
+    page = request.GET.get('page')
+    monhoc = p.get_page(page)
     return render(
         request,
         'db_home.html',
         {
             'form': form,
             'monhoc': monhoc,
-            'overview':overview
+            'overview':overview,
+            'num':num
         }
     )
 
 
 def DuyetTL_view(request):
-    p = Paginator(TaiLieu.objects.filter(KiemDuyet=False),15)
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+    
+    num = 10
+    if request.GET.get('num'): num = int(request.GET.get('num'))
+    p = Paginator(TaiLieu.objects.filter(KiemDuyet=False),num)
     page = request.GET.get('page')
     tailieu = p.get_page(page)
     form = ThemTaiLieu()
@@ -210,16 +242,27 @@ def DuyetTL_view(request):
         'db_DuyetTL.html', 
         {
             'tailieu': tailieu,
-            'form': form
+            'form': form,
+            'num':num
         }
     )
 def TaiLieu_Duyet(request, slug):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+    
     tailieu = TaiLieu.objects.get(MaTL=slug)  
     if tailieu: tailieu.KiemDuyet=True
     tailieu.save()
     return redirect('DuyetTL_view') 
 
 def TaiLieu_Preview(request, MaTL):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+
     tailieu = TaiLieu.objects.get(MaTL=MaTL) 
     fileTL = FileUpload.objects.filter(MaTL=MaTL)
     return render(
@@ -232,6 +275,9 @@ def TaiLieu_Preview(request, MaTL):
     ) 
 
 def DongGopTL_view(request):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+
     if request.method == 'POST':
         # Lấy thông tin từ form
         form = ThemTaiLieu(request.POST)
@@ -246,14 +292,21 @@ def DongGopTL_view(request):
             if request.FILES and request.FILES['myfile']:
                 myfile = request.FILES.getlist('myfile')
                 fs = FileSystemStorage()
+                
+                basePath = os.path.join('document',instance.MaTL)
+                zipObj = ZipFile(os.path.join(settings.MEDIA_ROOT,basePath+'.zip'), 'w')
                 # Duyệt qua từng file
                 for f in myfile:
                     # Lưu vào hệ thống
-                    filename = fs.save(f.name, f)
+                    filename = fs.save(os.path.join(basePath,f.name), f)
                     uploaded_file_url = fs.url(filename)
+                    # Lưu file vào tập zip
+                    zipName = os.path.join(settings.MEDIA_ROOT,os.path.join(basePath,f.name))
+                    zipObj.write(zipName,os.path.basename(zipName))
                     # Lưu thông tin của file vào csdl
                     file_tai_lieu = TL({'MaTL':instance.MaTL,'filename':filename,'Path':uploaded_file_url})
                     file_tai_lieu.save()
+                zipObj.close()
             instance.save()
             # Cập nhập số lượng tài liệu cho môn học
             mh = MonHoc.objects.get(MaMH = instance.MaMH)
@@ -268,14 +321,24 @@ def DongGopTL_view(request):
 
 
 def TaiLieu_view(request):
-    p = Paginator(TaiLieu.objects.filter(KiemDuyet=True),15)
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+
+    data = TaiLieu.objects.filter(KiemDuyet=True)
+    if not request.user.is_staff:
+        data = data.filter(user = request.user)
+
+    num = 10
+    if request.GET.get('num'): num = int(request.GET.get('num'))
+    p = Paginator(data,num)
     page = request.GET.get('page')
     tailieu = p.get_page(page)
     return render(
         request,
         'db_TaiLieu.html',
         {
-            'tailieu':tailieu
+            'tailieu':tailieu,
+            'num':num
         }
     )
 
@@ -284,6 +347,11 @@ def TaiLieu_delete(request, slug):
     Xử lý cho việc xóa tài liệu
     url: dashboard/TaiLieu/delete/<Mã tài liệu>
     '''
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+
     tailieu = TaiLieu.objects.get(MaTL=slug)  
     if tailieu:
         # Giảm số lượng tài liệu của môn học 
@@ -294,31 +362,65 @@ def TaiLieu_delete(request, slug):
         tailieu.delete()
     # Lấy tất cả các file đính kèm
     fileUp = FileUpload.objects.filter(MaTL=slug)
-    if fileUp: 
-        # Duyệt qua tất cả các tài liệu
-        for item in fileUp: 
-            # Xóa file ở hệ thống
-            try:
-                os.remove(os.path.join(settings.MEDIA_ROOT, item.filename))
-            except: pass
-            # Xóa database
-            item.delete()
+    if fileUp:
+        basePath = os.path.join('document',slug)
+        paths = os.path.join(settings.MEDIA_ROOT,basePath)
+        shutil.rmtree(paths)
+        os.remove(paths+'.zip')
     return redirect('TaiLieu_view')  
 
+def ThanhVien_Active(request, username):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+    user = User.objects.get(username=username)
+    user.is_active = not user.is_active
+    user.save()
+    return HttpResponseRedirect(reverse('ThanhVien_view'))
+
+def ThanhVien_Staff(request, username):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+    user = User.objects.get(username=username)
+    user.is_staff = not user.is_staff
+    user.save()
+    return HttpResponseRedirect(reverse('ThanhVien_view'))
+        
 def ThanhVien_view(request):
-    p = Paginator(InformationUser.objects.all(),15)
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('dashboard_view'))
+    
+    num = 10
+    if request.GET.get('num'): num = int(request.GET.get('num'))
+
+    p = Paginator(InformationUser.objects.all(),num)
     page = request.GET.get('page')
     data = p.get_page(page)
+    for i in range(len(data)):
+        data[i].ThoiGianTG= (datetime.datetime.now(datetime.timezone.utc)- data[i].User.date_joined).days
+        data[i].TaiLieu = TaiLieu.objects.filter(user=data[i].User).count()
+        data[i].Comment = CommentMH.objects.filter(user=data[i].User).count()
+        data[i].Comment += CommentTL.objects.filter(user=data[i].User).count()
+
+    # ic(InformationUser.objects.all())
     return render(
         request,
         'db_ThanhVien.html',
         {
-            'data':data
+            'data':data,
+            'num':num
         }
     )
 
 
 def BinhLuan_view(request):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
     return render(
         request,
         'db_BinhLuan.html',
@@ -326,6 +428,9 @@ def BinhLuan_view(request):
 
 
 def ThongTinCaNhan_view(request):
+    if not request.user.is_active:
+        return HttpResponseRedirect(reverse('DangNhap_view'))
+
     if request.method == 'POST':
         # Lấy thông tin về form
         form = Information(request.POST)

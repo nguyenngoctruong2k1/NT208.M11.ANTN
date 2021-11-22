@@ -8,12 +8,12 @@
     <div class="col-12 list-subject">
         <div class="list-subject-header">
             <ul class="subject-header row">
-                <li class="col-1">STT</li>
-                <li class="col-4">Tên tài liệu</li>
-                <li class="col-2">Người gởi</li>
-                <li class="col-2">Thông tin</li>
-                <li class="col-1">Lượt tải</li>
-                <li class="col-1">Đánh giá</li>
+                <li class="col-1 align-self-center">STT</li>
+                <li class="col-4 align-self-center">Tên tài liệu</li>
+                <li class="col-2 align-self-center">Người gởi</li>
+                <li class="col-2 align-self-center">Thông tin</li>
+                <li class="col-1 align-self-center">Lượt tải</li>
+                <li class="col-1 align-self-center">Đánh giá</li>
             </ul>
         </div>
         <div class="list-subject-item row ">
@@ -21,9 +21,9 @@
 
             <ul id="{{ item.MaTL }}" class="subject-item" >
                 <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                    <li class="col-1" name="SoTT">{{ tailieu.number| sub:1| mul:15| add:forloop.counter }}</li>
-                    <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-2" name="MSSV">
+                    <li class="col-1 align-self-center" name="SoTT">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</li>
+                    <li class="col-4 align-self-center" name="TenTL">{{ item.TenTL }}</li>
+                    <li class="col-2 align-self-center" name="MSSV">
                         {% if item.user.first_name %}
                             {{ item.user.first_name }}
                         {% else %}
@@ -31,17 +31,22 @@
                         {% endif %}
                     
                     </li>
-                    <li class="col-2" name="MaMH">{{ item.MaMH.MaMH }}</li>
-                    <li class="col-1" name="LuotTai">{{ item.LuotTai }}</li>
-                    <li class="col-1" name="">4.6/5.0</li>
-                    <div class="col-1">
+                    <li class="col-2 align-self-center" name="MaMH">{{ item.MaMH.MaMH }}</li>
+                    <li class="col-1 align-self-center" name="LuotTai">{{ item.LuotTai }}</li>
+                    <li class="col-1 align-self-center" name="">4.6/5.0</li>
+                    <div class="col-1 align-self-center">
                         <div class="user" rule="button" style="text-align: right;">
                             <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
                                 &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
                             </a>
                             <ul class="dropdown-menu" >
                                 <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="./delete/{{ item.MaTL }}">Xóa</a></li>
+                                {% if user.is_staff %}
+                                <li style="width:100%;text-align: center;">
+                                    <button class="dropdown-item" onclick=FuncDelete("./delete/{{ item.MaTL }}")>Xóa</button>
+                                
+                                </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -53,7 +58,8 @@
         <div class="list-subject-footer row">
             <div class="so-bai col-10">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
-                <select id="maximum-number" name="maximum-number" style="border: none;">
+                <select id="maximum-number" name="maximum-number" style="border: none;" onchange= "window.location.href='?num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
                     <option value="20">20</option>
@@ -65,15 +71,15 @@
             <div class="tong-bai col-2" style="min-width: 200px;">
                 <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
                 {% if tailieu.has_previous %}
-                    <a href="?page={{ tailieu.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
                 {% else %}
-                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
                 {% endif %}
                 
                 {% if tailieu.has_next %}
-                    <a href="?page={{ tailieu.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% else %}
-                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" class="forward" >&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% endif %}
             </div>
         </div>
@@ -83,6 +89,11 @@
 {% endblock content %}
 {% block script_content %}
 <script>
+    function FuncDelete(link) {
+        if (confirm("Xác nhận xóa tài liệu: ")) {
+            location.href = link;
+        }
+    }
     $('.dropdown-menu user').on('click', function(e) {
         if (!$(this).next().hasClass('show')) {
             $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");

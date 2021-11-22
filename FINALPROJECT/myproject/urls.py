@@ -28,6 +28,8 @@ urlpatterns = [
      path('dashboard/TaiLieu/', views.TaiLieu_view, name='TaiLieu_view'),
      path('dashboard/TaiLieu/delete/<slug:slug>', views.TaiLieu_delete, name='TaiLieu_delete'),
      path('dashboard/ThanhVien/', views.ThanhVien_view, name='ThanhVien_view'),
+     path('dashboard/ThanhVien/Active/<slug:username>', views.ThanhVien_Active, name='ThanhVien_Active'),
+     path('dashboard/ThanhVien/Staff/<slug:username>', views.ThanhVien_Staff, name='ThanhVien_Staff'),
      path('dashboard/BinhLuan/', views.BinhLuan_view, name='BinhLuan_view'),
      path('ThongTinCaNhan/', views.ThongTinCaNhan_view, name='ThongTinCaNhan_view'),
 

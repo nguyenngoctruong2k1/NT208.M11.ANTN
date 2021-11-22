@@ -28,16 +28,16 @@
             {% for item in tailieu %}
             <ul id="{{ item.MaTL }}" class="subject-item" >
                 <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                    <li class="col-1" name="SoTT">{{ tailieu.number| sub:1| mul:15| add:forloop.counter }}</li>
-                    <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-2" name="NguoiGoi">
+                    <li class="col-1 align-self-center" name="SoTT">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</li>
+                    <li class="col-4 align-self-center" name="TenTL">{{ item.TenTL }}</li>
+                    <li class="col-2 align-self-center" name="NguoiGoi">
                         {% if item.user.first_name %}
                             {{ item.user.first_name }}
                         {% else %}
                             {{ item.user }}
                         {% endif %}
                     </li>
-                    <li class="col-4" name="Thông tin cơ bản">{{ item.get_LoaiTL_display }}, {{ item.TacGia }}, {{ item.date|date:"M d, Y" }}</li>
+                    <li class="col-4 align-self-center" name="Thông tin cơ bản">{{ item.get_LoaiTL_display }}, {{ item.TacGia }}, {{ item.date|date:"M d, Y" }}</li>
                     <a class="btn btn-success col-1" style="border-radius: 25px;" href="/dashboard/DuyetTL/Preview/{{ item.MaTL }}">Duyệt</a>
                     {% comment %} <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button> {% endcomment %}
                 </div>
@@ -45,9 +45,10 @@
             {% endfor %}          
         </div>
         <div class="list-subject-footer row">
-            <div class="so-bai col-10">
+            <div class="so-bai col-10 align-self-center">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
-                <select id="maximum-number" name="maximum-number" style="border: none;">
+                <select id="maximum-number" name="maximum-number" style="border: none;" onchange= "window.location.href='?num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
                     <option value="20">20</option>
@@ -59,15 +60,15 @@
             <div class="tong-bai col-2" style="min-width: 200px;">
                 <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
                 {% if tailieu.has_previous %}
-                    <a href="?page={{ tailieu.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
                 {% else %}
-                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
                 {% endif %}
                 
                 {% if tailieu.has_next %}
-                    <a href="?page={{ tailieu.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% else %}
-                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" class="forward" >&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% endif %}
             </div>
         </div>

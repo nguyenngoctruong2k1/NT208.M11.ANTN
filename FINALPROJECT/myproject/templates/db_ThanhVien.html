@@ -1,4 +1,5 @@
 {% extends "dashboard_base.html" %} 
+{% load mathfilters %}
 {% block title %}Thành Viên{% endblock title %}
 {% block TrangTV %}horizontal{% endblock%}
 {% block TieuDe %}Thành viên{% endblock %}
@@ -6,41 +7,74 @@
 <div class="row col-12 justify-content-center row" style="margin-bottom: 30px;">
     <div class="col-12 list-subject">
         <div class="list-subject-header">
-            <ul class="subject-header row">
+            <ul class="subject-header row justify-content-center">
                 <li class="col-1">STT</li>
-                <li class="col-4">Tên tài liệu</li>
-                <li class="col-2">Người gởi</li>
-                <li class="col-2">Thông tin</li>
-                <li class="col-1">Lượt tải</li>
-                <li class="col-1">Đánh giá</li>
+                <li class="col-3">Người dùng</li>
+                <li class="col-2">Thời gian tham gia</li>
+                <li class="col-2">Vai trò</li>
+                <li class="col-1">Trạng thái</li>
+                <li class="col-1">Đóng góp</li>
+                <li class="col-1"></li>
             </ul>
         </div>
         <div class="list-subject-item row ">
             {% for item in data %}
-
-            <ul id="{{ item.MaTL }}" class="subject-item" >
-                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                    <li class="col-1" name="SoTT">{{ data.number| sub:1| mul:15| add:forloop.counter }}</li>
-                    <li class="col-4" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-2" name="MSSV">
-                        {% if item.user.first_name %}
-                            {{ item.user.first_name }}
-                        {% else %}
-                            {{ item.user }}
+            
+            <ul id="{{ item.User }}" class="subject-item" >
+                <div class="subject-item-show row justify-content-center">
+                    <li class="col-1 align-self-center" name="SoTT">{{ data.number| sub:1| mul:num| add:forloop.counter }}</li>
+                    <li class="col-3 align-self-center" name="TenTL">
+                        {% if item.User.first_name %}
+                            {{ item.User.first_name }}
+                            </br>
                         {% endif %}
-                    
+                        {{ item.User.username }}
                     </li>
-                    <li class="col-2" name="MaMH">{{ item.MaMH.MaMH }}</li>
-                    <li class="col-1" name="LuotTai">{{ item.LuotTai }}</li>
-                    <li class="col-1" name="">4.6/5.0</li>
-                    <div class="col-1">
+                    <li class="col-2 align-self-center" name="MaMH">
+                        {{ item.ThoiGianTG }} ngày 
+                        </br>
+                        {{ item.User.date_joined }}
+                    </li>
+                    <li class="col-2 align-self-center" name="LuotTai">
+                        {% if item.User.is_staff %}
+                            Quản trị viên
+                        {% else %}
+                            Cộng tác viên
+                        {% endif %}
+                    </li>
+                    <li class="col-1 align-self-center" name="">
+                        {% if item.User.is_active %}
+                            Hoạt động
+                        {% else %}
+                            Bị khóa
+                        {% endif %}
+                    </li>
+                    <li class="col-1 align-self-center" name="">
+                        {{ item.TaiLieu }} tài liệu
+                        </br>
+                        {{ item.Comment }} bình luận
+                    </li>
+                    <div class="col-1 align-self-center">
                         <div class="user" rule="button" style="text-align: right;">
                             <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
                                 &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
                             </a>
                             <ul class="dropdown-menu" >
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="./delete/{{ item.MaTL }}">Xóa</a></li>
+                                <li style="width:100%;text-align: left;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem thông tin</a></li>
+                                <li style="width:100%;text-align: left;"><a class="dropdown-item" href="{% url 'ThanhVien_Active' item.User.username %}">
+                                    {% if item.User.is_active %}
+                                        Khóa tài khoản
+                                    {% else %}
+                                        Mở khóa tài khoản
+                                    {% endif %}
+                                </a></li>
+                                <li style="width:100%;text-align: left;"><a class="dropdown-item" href="{% url 'ThanhVien_Staff' item.User.username %}">
+                                    {% if item.User.is_staff %}
+                                        Bỏ vai trò quản trị
+                                    {% else %}
+                                        Thêm quản trị viên
+                                    {% endif %}
+                                </a></li>
                             </ul>
                         </div>
                     </div>
@@ -52,7 +86,8 @@
         <div class="list-subject-footer row">
             <div class="so-bai col-10">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
-                <select id="maximum-number" name="maximum-number" style="border: none;">
+                <select id="maximum-number" name="maximum-number" style="border: none;"onchange= "window.location.href='?num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
                     <option value="20">20</option>
@@ -62,17 +97,17 @@
                 </select>
             </div>
             <div class="tong-bai col-2" style="min-width: 200px;">
-                <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
-                {% if tailieu.has_previous %}
-                    <a href="?page={{ tailieu.previous_page_number }}" class="backward" ><i class="fas fa-angle-left"></i></a>
+                <p style="display: inline;">Page {{ data.number }} of {{ data.paginator.num_pages }}</p>
+                {% if data.has_previous %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ data.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
                 {% else %}
-                    <a class="backward" ><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
                 {% endif %}
                 
-                {% if tailieu.has_next %}
-                    <a href="?page={{ tailieu.next_page_number }}" class="forward"><i class="fas fa-angle-right"></i></a>
+                {% if data.has_next %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ data.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% else %}
-                    <a class="forward" ><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" class="forward" >&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% endif %}
             </div>
         </div>
