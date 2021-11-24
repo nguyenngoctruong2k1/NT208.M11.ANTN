@@ -2,6 +2,7 @@ import re
 from django.db.models import query
 from django.db.models.fields import FilePathField, NullBooleanField
 from django.http import request
+from django.http.response import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 import datetime
 from django.urls import reverse
@@ -28,6 +29,8 @@ from icecream import ic
 from unidecode import unidecode
 import shutil
 from django.http import HttpResponseRedirect,HttpResponse
+from wsgiref.util import FileWrapper
+from django.db.models import Sum
 # Create your views here.
 
 
@@ -186,7 +189,8 @@ def dashboard_view(request):
     overview = {
             'new_doc': TaiLieu.objects.filter(KiemDuyet=False).count(),
             'old_doc': TaiLieu.objects.filter(KiemDuyet=True).count(),
-            'num_user': User.objects.filter(is_active=True).count()
+            'num_user': User.objects.filter(is_active=True).count(),
+            'num_download': TaiLieu.objects.aggregate(Sum('LuotTai'))
         }
     # Kết quả trả về với người dùng thường
     
@@ -355,7 +359,18 @@ def TaiLieu_view(request):
             'num':num
         }
     )
+def TaiLieu_download(request, slug):
+    obj = TaiLieu.objects.filter(MaTL=slug)
+    if obj:
+        instance = TaiLieu.objects.get(MaTL=slug)
+        instance.LuotTai += 1
+        instance.save()
 
+        basePath = os.path.join('document',slug)
+        paths = os.path.join(settings.MEDIA_ROOT,basePath)
+        response = HttpResponse(FileWrapper(open(paths+'.zip','rb')), content_type='application/zip')
+        return response
+    return Http404
 
 def TaiLieu_delete(request, slug):
     '''

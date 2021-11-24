@@ -6,57 +6,71 @@
 {% block content %}
 <div class="row col-12 justify-content-center row" style="margin-bottom: 30px;">
     <div class="col-12 list-subject">
-        <div class="list-subject-header">
-            <ul class="subject-header row">
-                <li class="col-1 align-self-center">STT</li>
-                <li class="col-4 align-self-center">Tên tài liệu</li>
-                <li class="col-2 align-self-center">Người gởi</li>
-                <li class="col-2 align-self-center">Thông tin</li>
-                <li class="col-1 align-self-center">Lượt tải</li>
-                <li class="col-1 align-self-center">Đánh giá</li>
-            </ul>
-        </div>
-        <div class="list-subject-item row ">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th class='align-middle' style="border-top:0" scope="col">#</th>
+                <th class='align-middle' style="border-top:0" scope="col">Tên tài liệu</th>
+                <th class='align-middle' style="border-top:0" scope="col">Người gởi</th>
+                <th class='align-middle' style="border-top:0" scope="col">Thông tin</th>
+                <th class='align-middle' style="border-top:0" scope="col">Lượt tải</th>
+                {% if user.is_staff %}
+                {% else %}
+                    <th scope="col" class='align-middle' style="border-top:0">Trạng thái</th>
+                {% endif %}
+                
+                <th style="border-top:0"></th>
+                </tr>
+            </thead>
+            <tbody>
             {% for item in tailieu %}
-
-            <ul id="{{ item.MaTL }}" class="subject-item" >
-                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                    <li class="col-1 align-self-center" name="SoTT">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</li>
-                    <li class="col-4 align-self-center" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-2 align-self-center" name="MSSV">
-                        {% if item.user.first_name %}
-                            {{ item.user.first_name }}
+                <tr>
+                <th class='align-middle' scope="row">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</th>
+                <td class='align-middle'>{{ item.TenTL }}</td>
+                <td class='align-middle'>
+                    {% if item.user.first_name %}
+                        {{ item.user.first_name }}
+                    {% else %}
+                        {{ item.user }}
+                    {% endif %}
+                    <br/>
+                    <small class="font-italic mb-0 text-secondary"> {{ item.date|date:'H:i, d/m/Y' }} </small>
+                </td>
+                <td class="align-middle">{{ item.get_LoaiTL_display }} môn {{ item.MaMH.TenMH}} của tác giả <span class="text-info">{{ item.TacGia }}</span></td>
+                <td class='align-middle text-center'>{{ item.LuotTai }}</td>
+                {% if user.is_staff %}
+                {% else %}
+                    <td class='align-middle'>
+                        {% if item.KiemDuyet %}
+                            Đã duyệt
                         {% else %}
-                            {{ item.user }}
+                            Chưa duyệt
                         {% endif %}
-                    
-                    </li>
-                    <li class="col-2 align-self-center" name="MaMH">{{ item.MaMH.MaMH }}</li>
-                    <li class="col-1 align-self-center" name="LuotTai">{{ item.LuotTai }}</li>
-                    <li class="col-1 align-self-center" name="">4.6/5.0</li>
-                    <div class="col-1 align-self-center">
-                        <div class="user" rule="button" style="text-align: right;">
-                            <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
-                                &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
-                            </a>
-                            <ul class="dropdown-menu" >
-                                <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
-                                {% if user.is_staff %}
-                                <li style="width:100%;text-align: center;">
-                                    <button class="dropdown-item" onclick=FuncDelete("./delete/{{ item.MaTL }}")>Xóa</button>
-                                
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </ul>
+                    </td>
+                {% endif %}
+                <td class='align-middle'>
+                {% if user.is_staff %}
+                    <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; text-align: center; vertical-align: middle;" aria-expanded="false">
+                        &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
+                    </a>
+                    <ul class="dropdown-menu" >
+                        <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
+                        
+                        <li style="width:100%;text-align: center;">
+                            <button class="dropdown-item" onclick=FuncDelete("./delete/{{ item.MaTL }}")>Xóa</button>
+                        </li>
+                    </ul>
+                {% else %}
+                    <a class="btn btn-success" style="border-radius: 25px;" href="/document/{{ item.MaTL }}">Xem</a>
+                {% endif %}
+                </td>
+                </tr>
             {% endfor %}
-        
-        </div>
+            </tbody>
+        </table>
+
         <div class="list-subject-footer row">
-            <div class="so-bai col-10">
+            <div class="so-bai col-12 col-sm-6 pr-3 align-self-center">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
                 <select id="maximum-number" name="maximum-number" style="border: none;" onchange= "window.location.href='?num='+this.value">
                     <option value={{num}} selected>{{num}}</option>
@@ -68,7 +82,7 @@
                     <option value="25">35</option>
                 </select>
             </div>
-            <div class="tong-bai col-2" style="min-width: 200px;">
+            <div class="tong-bai col-12 col-sm-6 pl-3 text-left" style="min-width: 200px;">
                 <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
                 {% if tailieu.has_previous %}
                     <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>

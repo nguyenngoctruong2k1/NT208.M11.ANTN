@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>  {% block title %}{% endblock title %} </title>
-    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard2.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- font icon -->
@@ -25,78 +25,75 @@
       
     {% endblock script_content %}
 </head>
-<body>
+<body style="background-color: #363740;">
     <div class="container-fluid" style="padding:0px">
         <!-- <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mydropdown"><i class="fas fa-bars"></i></button> -->
-        <div class="sidebar col-md-2" id="mydropdown">
-            <div class="name" style="font-family: 'IBM Plex Serif', serif;font-size: 32px; text-align: center;">
-                    DASHBOARD
-            </div>
-            <div class="list-item">
-                <li class="item {% block TrangTQ %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'dashboard_view' %}">
-                        <i class="fas fa-chart-pie"></i>
-                        <p>Tổng quan</p>
-                    </a>
-                </li>
-                <li class="item {% block TrangDGTL %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'DongGopTL_view' %}">
-                        <i class="fas fa-lightbulb"></i>
-                        <p>Đóng góp tài liệu</p>
-                    </a>
-                </li>
-                {% if user.is_staff %}
-                <li class="item {% block TrangDTL %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'DuyetTL_view' %}">
-                        <i class="fas fa-ticket-alt"></i>
-                        <p>Duyệt tài liệu</p>
-                    </a>
-                </li>    
-                {% endif %}     
-                <li class="item {% block TrangTL %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'TaiLieu_view' %}">
-                        <i class="fas fa-book"></i>
-                        <p>Tài Liệu</p>
-                    </a>
-                </li>
-                <!-- <li class="item {% block TrangBL %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'BinhLuan_view' %}">
-                        <i class="fas fa-comments"></i>
-                        <p>Bình luận</p>
-                    </a>
-                </li> -->
-                {% if user.is_staff %}
-                <li class="item {% block TrangTV %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'ThanhVien_view' %}">
-                        <i class="fas fa-users-cog"></i>
-                        <p>Thành viên</p>
-                    </a>
-                </li>
-                {% endif %} 
-                <li class="item {% block TrangTT %}{% endblock %}">
-                    <a class="nav-link" href="{% url 'ThongTinCaNhan_view' %}">
-                        <i class="fas fa-user"></i>
-                        <p>Thông Tin cá nhân</p>
-                    </a>
-                </li>
-            </div>
-            <!--kết thúc danh sách item điều hướng-->
-            <div class="list-option">
-                <li class="item">
-                    <a class="nav-link" href="/">
-                        <i class="fas fa-home"></i>
-                        Home
-                    </a>
-                </li>
-            </div>
+        {% comment %} <div class="sidebar col-md-3 col-xl-2" id="mydropdown"> {% endcomment %}
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top sidebar col-lg-2 p-0" style='display:inline-block'>
+                <a class="navbar-brand text-center pt-lg-4 pb-lg-3 pl-lg-4 pl-xl-5 pl-3" href="#">DASHBOARD</a>
+                <button class="navbar-toggler float-right mr-3 mt-1 mb-1" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="list-item">
+                        <li class="item {% block TrangTQ %}{% endblock %}">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'dashboard_view' %}">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>Tổng quan</p>
+                            </a>
+                        </li>
+                        <li class="item {% block TrangDGTL %}{% endblock %}">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'DongGopTL_view' %}">
+                                <i class="fas fa-lightbulb"></i>
+                                <p>Đóng góp</p>
+                            </a>
+                        </li>
+                        {% if user.is_staff %}
+                        <li class="item {% block TrangDTL %}{% endblock %}">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'DuyetTL_view' %}">
+                                <i class="fas fa-ticket-alt"></i>
+                                <p>Duyệt tài liệu</p>
+                            </a>
+                        </li>    
+                        {% endif %}     
+                        <li class="item {% block TrangTL %}{% endblock %}">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'TaiLieu_view' %}">
+                                <i class="fas fa-book"></i>
+                                <p>Tài Liệu</p>
+                            </a>
+                        </li>
+                        {% if user.is_staff %}
+                        <li class="item {% block TrangTV %}{% endblock %}">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'ThanhVien_view' %}">
+                                <i class="fas fa-users-cog"></i>
+                                <p>Thành viên</p>
+                            </a>
+                        </li>
+                        {% endif %} 
+                        <li class="item {% block TrangTT %}{% endblock %}">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'ThongTinCaNhan_view' %}">
+                                <i class="fas fa-user"></i>
+                                <p>Hồ sơ</p>
+                            </a>
+                        </li>
+                        <li class="item">
+                            <a class="nav-link pl-2 p-lg-3 p-xl-4" href="/">
+                                <i class="fas fa-home"></i>
+                                Trang chủ
+                            </a>
+                        </li>
+                    </div>
+                </div>
+            </nav>
         </div>
         
-        <div class="content col-md-10">
-            <div class="row header">
-                <div class="col-md-6">
+        <div class="content col-12 col-lg-10 mt-3 pt-5 mt-lg-0 pt-xl-2">
+            <div class="row pb-2">
+                <div class="col-6">
                     <h2 class="TieuDe">{% block TieuDe %}{% endblock %}</h2>
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <div class="user" rule="button">
                         <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
 
@@ -112,7 +109,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu" >
-                            <li><a class="dropdown-item" href="{% url 'ThongTinCaNhan_view' %}">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="{% url 'ThongTinCaNhan_view' %}">Hồ sơ</a></li>
                             <li><a class="dropdown-item" href="{% url 'DongGopTL_view' %}">Đăng tài liệu</a></li>
                             <li><a class="dropdown-item" href="{% url 'DangXuat_view' %}">Đăng xuất</a></li>
                         </ul>

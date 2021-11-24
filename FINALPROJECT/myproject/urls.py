@@ -18,7 +18,8 @@ urlpatterns = [
      path("subjects/<slug:MaMH>/",views.MonHoc_show, name=""),
      path("subjects/<slug:MaMH>/<slug:LoaiTL>/",views.MonHoc_LoaiTL_show, name="MonHoc_LoaiTL_show"),
      path('category/<slug:NhomMH>/<slug:Khoa>/',views.MonHocList_view),
-     path('document/<slug:slug>/',views.one_document_view),     
+     path('document/<slug:slug>/',views.one_document_view),
+     path('download/<slug:slug>/',views.TaiLieu_download,name='TaiLieu_download'),    
 
      path('dashboard/', views.dashboard_view, name='dashboard_view'),
      path('dashboard/DuyetTL/', views.DuyetTL_view, name='DuyetTL_view'),

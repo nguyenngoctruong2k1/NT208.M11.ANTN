@@ -2,15 +2,13 @@
 body{
     margin: 0;
     font-size: 14px;
-    background-color: #F7F8FC;
+    background-color: #363740;
     font-family: 'Montserrat', sans-serif;
 }
 
 /* I. Sidebar */
 .sidebar{
     background-color: #363740;
-    height: 100%;
-    min-height: 100vh;
     float: left;
     position: fixed;
 }
@@ -43,10 +41,6 @@ body{
     background-color: #3E4049;
     color: #DDE2FF;
     /* width: 247px; */
-}
-.sidebar .nav-link{
-    display: block;
-    padding: 20px;
 }
 
 .sidebar a:-webkit-any-link {

@@ -5,28 +5,28 @@
 {% block TieuDe %}Tổng Quan{% endblock %}
 {% block content %}
 <div class="row TongQuan">
-    <div class="col-md-3">
+    <div class="col-6 col-md-3">
         <a class="overview" href="#">
             <span class="name" >Tài liệu mới</span>
             <span class="number">{{ overview.new_doc }}</span>
         </a>
     </div>
-    <div class="col-md-3 ">
+    <div class="col-6 col-md-3 ">
         <a class="overview" href="#">
             <span class="name" >Số tài liệu</span>
             <span class="number">{{ overview.old_doc }}</span>
         </a>
     </div>
-    <div class="col-md-3">
+    <div class="col-6 col-md-3 pt-2 pt-md-0">
         <a class="overview" href="#">
             <span class="name" >Số người dùng</span>
             <span class="number">{{ overview.num_user }}</span>
         </a>
     </div>
-    <div class="col-md-3" class="overview">
+    <div class="col-6 col-md-3 pt-2 pt-md-0" class="overview">
         <a class="overview" href="#">
             <span class="name" >Lươt tải</span>
-            <span class="number">64</span>
+            <span class="number">{{ overview.num_download.LuotTai__sum }}</span>
         </a>
     </div>
 </div>
@@ -42,31 +42,30 @@
 
 <div class="row col-12" style="margin-bottom: 30px;">
     <div class="col-12 list-subject">
-        <div class="list-subject-header row">
-            <ul class="subject-header row justify-content-center">
-                <li class="col-1">STT</li>
-                <li class="col-1">Mã MH</li>
-                <li class="col-3">Tên môn học</li>
-                <li class="col-3">Khoa/Bộ môn quản lý</li>
-                <li class="col-2">Nhóm môn học</li>
-                <li class="col-1">Số lượng TL</li>
-            </ul>
-        </div>
-        <div class="list-subject-item row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col" class="align-middle" style="border-top:0">#</th>
+                <th scope="col" class="align-middle" style="border-top:0">Mã MH</th>
+                <th scope="col" class="align-middle" style="border-top:0">Tên môn học</th>
+                <th scope="col" class="align-middle" style="border-top:0">Khoa/Bộ môn quản lý</th>
+                <th scope="col" class="align-middle" style="border-top:0">Nhóm môn học</th>
+                <th scope="col" class="align-middle" class="text-center" style="border-top:0">Số lượng TL</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for item in monhoc %}
-
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                    <li class="col-1" name="SoTT">{{ monhoc.number| sub:1| mul:num| add:forloop.counter }}</li>
-                    <li class="col-1" name="MaMH">{{ item.MaMH }}</li>
-                    <li class="col-3" name="TenMH">{{ item.TenMH }}</li>
-                    <li class="col-3" name="KhoaQL">{{ item.get_Khoa_display }}</li>
-                    <li class="col-2" name="NhomMH">{{ item.get_NhomMH_display }}</li>
-                    <li class="col-1" name="SLTL">{{ item.SoLuongTL }}</li>
-                </div>
-            </ul>
+                <tr>
+                    <th class="align-middle" scope="row">{{ monhoc.number| sub:1| mul:num| add:forloop.counter }}</th>
+                    <td class="align-middle" >{{ item.MaMH }}</td>
+                    <td class="align-middle" >{{ item.TenMH }}</td>
+                    <td class="align-middle" >{{ item.get_Khoa_display }}</td>
+                    <td class="align-middle">{{ item.get_NhomMH_display }}</td>
+                    <td class="text-center align-middle">{{ item.SoLuongTL }}</td>
+                </tr>
             {% endfor %}
-        </div>
+            </tbody>
+        </table>
         <div class="list-subject-footer row">
             <div class="so-bai col-9">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>

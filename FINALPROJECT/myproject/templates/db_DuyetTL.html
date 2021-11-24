@@ -15,37 +15,41 @@
 
 <div class="row col-12" style="margin-bottom: 30px;">
     <div class="col-12 list-subject">
-        <div class="list-subject-header row">
-            <ul class="subject-header row justify-content-center">
-                <li class="col-1">STT</li>
-                <li class="col-4">Tên Tài liệu</li>
-                <li class="col-2">Người gởi</li>
-                <li class="col-4">Thông tin cơ bản</li>
-                <li class="col-1">Kiểm duyệt</li>
-            </ul>
-        </div>
-        <div class="list-subject-item row">
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col" class="align-middle" style="border-top:0">#</th>
+                <th scope="col" class="align-middle" style="border-top:0">Tên Tài liệu</th>
+                <th scope="col" class="align-middle" style="border-top:0">Người gởi</th>
+                <th scope="col" class="align-middle" style="border-top:0">Thông tin cơ bản</th>
+                <th scope="col" class="align-middle" style="border-top:0">Kiểm duyệt</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for item in tailieu %}
-            <ul id="{{ item.MaTL }}" class="subject-item" >
-                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
-                    <li class="col-1 align-self-center" name="SoTT">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</li>
-                    <li class="col-4 align-self-center" name="TenTL">{{ item.TenTL }}</li>
-                    <li class="col-2 align-self-center" name="NguoiGoi">
-                        {% if item.user.first_name %}
-                            {{ item.user.first_name }}
-                        {% else %}
-                            {{ item.user }}
-                        {% endif %}
-                    </li>
-                    <li class="col-4 align-self-center" name="Thông tin cơ bản">{{ item.get_LoaiTL_display }}, {{ item.TacGia }}, {{ item.date|date:"M d, Y" }}</li>
-                    <a class="btn btn-success col-1" style="border-radius: 25px;" href="/dashboard/DuyetTL/Preview/{{ item.MaTL }}">Duyệt</a>
-                    {% comment %} <button type="button" class="btn btn-success col-1" style="border-radius: 25px;" data-toggle="modal" data-target="#exampleModal">Duyệt</button> {% endcomment %}
-                </div>
-            </ul>
-            {% endfor %}          
-        </div>
+                <th scope="row" class="align-middle">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</th>
+                <td class="align-middle" >{{ item.TenTL }}</td>
+                <td class="align-middle">
+                    {% if item.user.first_name %}
+                        {{ item.user.first_name }}
+                    {% else %}
+                        {{ item.user }} 
+                    {% endif %}
+                    <br/>
+                    <small class="font-italic mb-0 text-secondary"> {{ item.date|date:'H:i, d/m/Y' }} </small>
+                </td >
+                <td class="align-middle">{{ item.get_LoaiTL_display }} môn {{ item.MaMH.TenMH}} của tác giả <span class="text-info">{{ item.TacGia }}</span></td>
+                <td class="align-middle">
+                    <a class="btn btn-success" style="border-radius: 25px;" href="/dashboard/DuyetTL/Preview/{{ item.MaTL }}">Duyệt</a>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         <div class="list-subject-footer row">
-            <div class="so-bai col-10 align-self-center">
+            <div class="so-bai col-12 col-sm-6 pr-3 align-self-center">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
                 <select id="maximum-number" name="maximum-number" style="border: none;" onchange= "window.location.href='?num='+this.value">
                     <option value={{num}} selected>{{num}}</option>
@@ -57,7 +61,7 @@
                     <option value="25">35</option>
                 </select>
             </div>
-            <div class="tong-bai col-2" style="min-width: 200px;">
+            <div class="tong-bai col-12 col-sm-6 pl-3 text-left">
                 <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
                 {% if tailieu.has_previous %}
                     <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
@@ -77,56 +81,6 @@
 </div>
 {% endblock content %}
 
-{% block bonus_content%}
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document" style='max-width:800px;'>
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">XÉT DUYỆT TÀI LIỆU</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-
-        <div class="modal-body">
-            <form class="col-12" action="." method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.media }}
-                <div class="form-group">
-                    <label for="MaMH" class="col-form-label">Tên tài liệu:</label>
-                    {{ form.TenTL }}
-                </div>
-                <div class="form-group">
-                    <label for="TenMH" class="col-form-label">Loại tài liệu:</label>
-                    {{ form.LoaiTL }}
-                </div>
-                <div class="form-group">
-                    <label for="KhoaQL" class="col-form-label">Mã môn học:</label>
-                    {{ form.MaMH }}
-                </div>
-                <div class="form-group">
-                    <label for="NhomMH" class="col-form-label">Tác giả: </label>
-                    {{ form.TacGia }}
-                </div>
-
-                <div class="form-group">
-                    <label for="NhomMH" class="col-form-label">Mô tả: </label>
-                    {{ form.MoTa }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button  class="btn btn-primary" type="submit" >Send message</button>
-                </div>
-
-            </form>
-            
-        </div>
-        
-      </div>
-    </div>
-</div>
-{% endblock %}
 {% block script_body %}
 
 <script language="javascript">

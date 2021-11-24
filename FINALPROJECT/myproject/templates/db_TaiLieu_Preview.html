@@ -1,7 +1,7 @@
 {% extends "dashboard_base.html" %} 
 {% block title %}{{ form.TenTL }} | Duyệt tài liệu{% endblock title %}
 {% block TrangDTL %}horizontal{% endblock%}
-{% block TieuDe %}Duyệt tài liệu >> {{ form.TenTL }}{% endblock %}
+{% block TieuDe %}Xem trước tài liệu{% endblock %}
 {% block script_content %}
     <style  type="text/css">
         .django-ckeditor-widget{
@@ -15,40 +15,49 @@
     <div class="col-12 list-subject row justify-content-center" style="padding-top: 30px;" >
     <div class="col-11">
         <div class="form-group row">
-            <label class="col-sm-2  "> Tên tài liệu</label>    
-            <div class="col-sm-10">{{ form.TenTL }}</div>
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Tên tài liệu:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.TenTL }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Người gởi</label>    
-            <div class="col-sm-10">{{ form.user.first_name }}</div>
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Người gởi:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.user.first_name }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Ngày gởi</label>    
-            <div class="col-sm-10">{{ form.date }}</div>
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Thời gian:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.date |date:'H:i, d/m/Y' }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Loại tài liệu</label>    
-            <div class="col-sm-10">{{ form.get_LoaiTL_display }}</div>
+            <label class="align-self-center col-3 col-lg-2  font-weight-bold "> Loại tài liệu:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.get_LoaiTL_display }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Môn học</label>    
-            <div class="col-sm-10">{{ form.MaMH }} - {{ form.MaMH.TenMH }}</div>
+            <label class="align-self-center col-3 col-lg-2  font-weight-bold "> Môn học:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.MaMH }} - {{ form.MaMH.TenMH }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Tác giả</label>    
-            <div class="col-sm-10">{{ form.TacGia }}</div>
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Trực thuộc:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.MaMH.get_Khoa_display }}, {{ form.MaMH.get_NhomMH_display }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Mô tả</label>    
-            <div class="col-sm-10">{{ form.MoTa|safe }}</div>
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Tác giả:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.TacGia }}</div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2  "> Tệp tài liệu</label>    
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Mô tả:</label>    
+            <div class="align-self-center col-9 col-lg-10">{{ form.MoTa|safe }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 font-weight-bold "> Tệp tài liệu:</label>    
             <div class="col-sm-10">
                 <ul class="list-group" id="showFile" style="margin-top:10px">
+                {% if file %}
                     {% for item in file %}
                         <li class='list-group-item'><a href="{{ item.Path }}" alt="{{ item.filename }}">{{ item.filename }}</a></li>
                     {% endfor %}
+                {% else %}
+                    <li class='list-group-item'>Không có tệp tài liệu nào!</a></li>
+                {% endif %}
+                    
                 <ul>
             </div>
         </div>
