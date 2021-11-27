@@ -18,12 +18,33 @@
     rel="stylesheet">
 
 {% endblock script_head %}
+{% block content_thongbao %}
+{% if messages %}
+
+<div class="row justify-content-center" style="background-color: #DDEBFF;">
+    <div class="col-md-12">
+
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+
+            </div>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
+{% endif %}
+{% endblock content_thongbao %}
+
 {% block content_top %}
 <!-- Navbar -->
 
 <!--Nội dung-->
 <section>
     <div class="container-fluid padding">
+
         <div id="background" class="row justify-content-center" style="min-height: 60vh;">
             <div class="col-md-5">
                 <h2 style="font-size: 54px; line-height: 85px; padding-top: 50px; padding-left: 76px;">

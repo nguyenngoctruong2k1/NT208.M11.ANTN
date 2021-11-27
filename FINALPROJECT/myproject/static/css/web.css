@@ -13,7 +13,7 @@
 /* BANNER */
 #banner{
     height: 200px;
-    background-image: url(/Image/banner.png);
+    background-image: url('../image/banner.png');
     background-size: 1442px 200px;
     background-repeat: no-repeat;
 }
@@ -39,20 +39,6 @@
     text-shadow: 0.03em 0.03em black;
 }
 
-.ngoisao{
-    transform: rotate(20deg);
-    width: 58px;
-    height: 69px;
-    margin-left: 745px;
-}
-
-.kimcuong{
-    transform: rotate(340deg);
-    width: 71px;
-    height: 72.49px;
-    margin-top: -53px;
-    margin-left: 603px;
-}
 
 /* Menu */
 #menu{

@@ -1,43 +1,68 @@
-{% extends "dashboard_base.html" %} 
+{% extends "dashboard_base.html" %}
 {% load mathfilters %}
 {% block title %}Tổng Quan{% endblock title %}
 {% block TrangTQ %}horizontal{% endblock%}
 {% block TieuDe %}Tổng Quan{% endblock %}
 {% block content %}
+{% if messages %}
+<div class="modal" tabindex="-1" id="thongbao">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">THÔNG BÁO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="messages"></ul>
+                {% for message in messages %}
+                <li class="text-dark" {% if message.tags %} class="{{ message.tags }}" {% endif %}
+                    style="list-style: none;">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="row TongQuan">
     <div class="col-md-3">
         <a class="overview" href="#">
-            <span class="name" >Tài liệu mới</span>
+            <span class="name">Tài liệu mới</span>
             <span class="number">{{ overview.new_doc }}</span>
         </a>
     </div>
     <div class="col-md-3 ">
         <a class="overview" href="#">
-            <span class="name" >Số tài liệu</span>
+            <span class="name">Số tài liệu</span>
             <span class="number">{{ overview.old_doc }}</span>
         </a>
     </div>
     <div class="col-md-3">
         <a class="overview" href="#">
-            <span class="name" >Số người dùng</span>
+            <span class="name">Số người dùng</span>
             <span class="number">{{ overview.num_user }}</span>
         </a>
     </div>
     <div class="col-md-3" class="overview">
         <a class="overview" href="#">
-            <span class="name" >Lươt tải</span>
+            <span class="name">Lươt tải</span>
             <span class="number">64</span>
         </a>
     </div>
 </div>
 {% if user.is_staff %}
-    <div class="row subjects">
-        <div style="display: block; width: 100%;">
-            <button class="add-subject" type="submit" data-toggle="modal" data-target="#exampleModal">
-                <i class="fas fa-plus-square"></i> Thêm môn học
-            </button>
-        </div>
+<div class="row subjects">
+    <div style="display: block; width: 100%;">
+        <button class="add-subject" type="submit" data-toggle="modal" data-target="#exampleModal">
+            <i class="fas fa-plus-square"></i> Thêm môn học
+        </button>
     </div>
+</div>
 {% endif %}
 
 <div class="row col-12" style="margin-bottom: 30px;">
@@ -55,8 +80,9 @@
         <div class="list-subject-item row">
             {% for item in monhoc %}
 
-            <ul id="item-0" class="subject-item" >
-                <div class="subject-item-show row justify-content-center" onclick="show_item_hidden(this.parentNode.id)">
+            <ul id="item-0" class="subject-item">
+                <div class="subject-item-show row justify-content-center"
+                    onclick="show_item_hidden(this.parentNode.id)">
                     <li class="col-1" name="SoTT">{{ monhoc.number| sub:1| mul:num| add:forloop.counter }}</li>
                     <li class="col-1" name="MaMH">{{ item.MaMH }}</li>
                     <li class="col-3" name="TenMH">{{ item.TenMH }}</li>
@@ -70,7 +96,8 @@
         <div class="list-subject-footer row">
             <div class="so-bai col-9">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
-                <select id="maximum-number" name="maximum-number" style="border: none; " onchange= "window.location.href='?num='+this.value">
+                <select id="maximum-number" name="maximum-number" style="border: none; "
+                    onchange="window.location.href='?num='+this.value">
                     <option value={{num}} selected>{{num}}</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
@@ -84,41 +111,57 @@
                 <p style="display: inline;">Page {{ monhoc.number }} of {{ monhoc.paginator.num_pages }}</p>
                 &ensp;
                 {% if monhoc.has_previous %}
-                    <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left">&nbsp;</i></a>
+                <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.previous_page_number }}"
+                    class="backward">&nbsp;<i class="fas fa-angle-left">&nbsp;</i></a>
                 {% else %}
-                    <a style="text-decoration: none" class="backward" ><i class="fas fa-angle-left"></i></a>
+                <a style="text-decoration: none" class="backward"><i class="fas fa-angle-left"></i></a>
                 {% endif %}
                 &ensp;
                 {% if monhoc.has_next %}
-                    <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.next_page_number }}"
+                    class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% else %}
-                    <a style="text-decoration: none" class="forward" ><i class="fas fa-angle-right"></i></a>
+                <a style="text-decoration: none" class="forward"><i class="fas fa-angle-right"></i></a>
                 {% endif %}
             </div>
         </div>
     </div>
-    
+
 </div>
 {% endblock content %}
 
 {% block bonus_content%}
 
 {% if user.is_staff %}
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">THÊM MÔN HỌC MỚI</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+                <h5 class="modal-title" id="exampleModalLabel">THÊM MÔN HỌC MỚI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <div class="modal-body">
-                
+
                 <form action="." method="post">
                     {% csrf_token %}
+                    {% for key, value in form.errors.items %}
+                    <div class="alert alert-danger" role="alert">
+                        {{value}}
+                    </div>
+                    {% endfor %}
+                    <p>
+                    <ul class="messages">
+                        {% for item in form_error %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    </p>
+                    <hr>
                     <!-- {{ form.as_table }} -->
                     <!-- 'MaMH','TenMH','Khoa','NhomMH','MoTa' -->
                     <div class="form-group">
@@ -143,17 +186,25 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button  class="btn btn-primary" type="submit" >Gửi đi</button>
+                        <button class="btn btn-primary" type="submit">Gửi đi</button>
                     </div>
                 </form>
-                
+
             </div>
-            
-        </div>
+
         </div>
     </div>
+</div>
 {% endif %}
 
 {% endblock %}
 
-            
+{% block script_body %}
+<script>
+
+    var myModal = new bootstrap.Modal(document.getElementById('thongbao'), {})
+
+    myModal.toggle()
+
+</script>
+{% endblock script_body %}
