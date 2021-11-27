@@ -27,8 +27,8 @@ DEBUG = False
 # DEBUG = True
 
 
-ALLOWED_HOSTS = ["*"]
-# ALLOWED_HOSTS = ["demofinalprojectnt208.herokuapp.com"]
+# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['demofinalprojectnt208.herokuapp.com','afternoon-waters-74819.herokuapp.com']
 
 
 # Application definition
