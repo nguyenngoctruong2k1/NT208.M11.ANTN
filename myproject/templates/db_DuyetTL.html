@@ -1,0 +1,93 @@
+{% extends "dashboard_base.html" %} 
+{% load mathfilters %}
+{% block title %}Duyệt Tài Liệu{% endblock title %}
+{% block TrangDTL %}horizontal{% endblock%}
+{% block TieuDe %}Duyệt Tài Liệu{% endblock %}
+{% block script_content %}
+
+<style  type="text/css">
+    .django-ckeditor-widget{
+        width: 100%;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="row col-12" style="margin-bottom: 30px;">
+    <div class="col-12 list-subject">
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col" class="align-middle" style="border-top:0">#</th>
+                <th scope="col" class="align-middle" style="border-top:0">Tên Tài liệu</th>
+                <th scope="col" class="align-middle" style="border-top:0">Người gởi</th>
+                <th scope="col" class="align-middle" style="border-top:0">Thông tin cơ bản</th>
+                <th scope="col" class="align-middle" style="border-top:0">Kiểm duyệt</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in tailieu %}
+                <th scope="row" class="align-middle">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</th>
+                <td class="align-middle" >{{ item.TenTL }}</td>
+                <td class="align-middle">
+                    {% if item.user.first_name %}
+                        {{ item.user.first_name }}
+                    {% else %}
+                        {{ item.user }} 
+                    {% endif %}
+                    <br/>
+                    <small class="font-italic mb-0 text-secondary"> {{ item.date|date:'H:i, d/m/Y' }} </small>
+                </td >
+                <td class="align-middle">{{ item.get_LoaiTL_display }} môn {{ item.MaMH.TenMH}} của tác giả <span class="text-info">{{ item.TacGia }}</span></td>
+                <td class="align-middle">
+                    <a class="btn btn-success" style="border-radius: 25px;" href="/dashboard/DuyetTL/Preview/{{ item.MaTL }}">Duyệt</a>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="list-subject-footer row">
+            <div class="so-bai col-12 col-sm-6 pr-3 align-self-center">
+                <p style="display: inline;">Số bài hiển thị tối đa</p>
+                <select id="maximum-number" name="maximum-number" style="border: none;" onchange= "window.location.href='?num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
+            </div>
+            <div class="tong-bai col-12 col-sm-6 pl-3 text-left">
+                <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
+                {% if tailieu.has_previous %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
+                {% endif %}
+                
+                {% if tailieu.has_next %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="forward" >&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block script_body %}
+
+<script language="javascript">
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 500);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1000);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1500);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 2000);
+    {% comment %} document.forms['myform']['TenTL'].value {% endcomment %}
+</script>
+{% endblock script_body %}

@@ -1,0 +1,91 @@
+{% extends "dashboard_base.html" %} 
+{% block title %}{{ form.TenTL }} | Duyệt tài liệu{% endblock title %}
+{% block TrangDTL %}horizontal{% endblock%}
+{% block TieuDe %}Xem trước tài liệu{% endblock %}
+{% block script_content %}
+    <style  type="text/css">
+        .django-ckeditor-widget{
+            width: 100%;
+        }
+    </style>
+{% endblock script_content %}
+
+{% block content %}
+<div class="row col-12" style="margin-bottom: 30px">
+    <div class="col-12 list-subject row justify-content-center" style="padding-top: 30px;" >
+    <div class="col-11">
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Tên tài liệu:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.TenTL }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Người gởi:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.user.first_name }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Thời gian:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.date |date:'H:i, d/m/Y' }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2  font-weight-bold "> Loại tài liệu:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.get_LoaiTL_display }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2  font-weight-bold "> Môn học:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.MaMH }} - {{ form.MaMH.TenMH }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Trực thuộc:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.MaMH.get_Khoa_display }}, {{ form.MaMH.get_NhomMH_display }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Tác giả:</label>    
+            <div class="align-self-center text-dark col-9 col-lg-10">{{ form.TacGia }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="align-self-center col-3 col-lg-2 font-weight-bold "> Mô tả:</label>    
+            <div class="align-self-center col-9 col-lg-10">{{ form.MoTa|safe }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 font-weight-bold "> Tệp tài liệu:</label>    
+            <div class="col-sm-10">
+                <ul class="list-group" id="showFile" style="margin-top:10px">
+                {% if file %}
+                    {% for item in file %}
+                        <li class='list-group-item'><a href="{{ item.Path }}" alt="{{ item.filename }}">{{ item.filename }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    <li class='list-group-item'>Không có tệp tài liệu nào!</a></li>
+                {% endif %}
+                    
+                <ul>
+            </div>
+        </div>
+        <div class="form-group row justify-content-center">
+            <a class="col-sm-3 btn btn-primary" style="border-radius: 25px;" href="/dashboard/TaiLieu/delete/{{ form.MaTL }}">Xóa</a> 
+            <div class="col-sm-2"></div>
+            <a class="col-sm-3 btn btn-primary" style="border-radius: 25px;" href="/dashboard/DuyetTL/XetDuyet/{{ form.MaTL }}">Duyệt</a> 
+        </div>
+    </div>
+    </div>
+    
+</div>
+{% endblock content %}
+{% block script_body %}
+
+<script language="javascript">
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 500);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1000);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1500);
+    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 2000);
+    function showFile(){
+        document.getElementById("showFile").innerHTML =""
+        var inp = document.getElementById("myfile");
+        for (i = 0; i < inp.files.length; i++) {
+            let file = inp.files[i];
+            document.getElementById("showFile").innerHTML += "<li class='list-group-item'>"+file.name+"</li>"
+        }
+    }
+</script>
+{% endblock script_body %}
+            

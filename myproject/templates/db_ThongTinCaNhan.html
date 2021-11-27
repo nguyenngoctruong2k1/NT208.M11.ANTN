@@ -1,0 +1,198 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Thông tin cá nhân{% endblock title %}
+{% block TrangTT %}horizontal{% endblock%}
+{% block TieuDe %}Thông tin cá nhân{% endblock %}
+{% block script_content %}
+<style>
+.file-upload {
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.file-upload__input {
+  display: none;
+}
+
+.file-upload__button {
+  -webkit-appearance: none;
+  /* background: none; */
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  {% comment %} padding: 0.5em 0.8em; {% endcomment %}
+  {% comment %} margin-right: 15px; {% endcomment %}
+  
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.file-upload__button:active {
+
+    margin-right: 15px;
+
+
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.file-upload__button:active {
+        {
+        % comment %
+    }
+
+    background: #00745d;
+
+        {
+        % endcomment %
+    }
+}
+</style>
+{% endblock script_content %}
+{% block content %}
+{% if messages %}
+<div class="modal" tabindex="-1" id="thongbao">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-success">THÔNG BÁO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="messages"></ul>
+                {% for message in messages %}
+                <li class="text-dark" {% if message.tags %} class="{{ message.tags }}" {% endif %}
+                    style="list-style: none;">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row col-12 list-subject justify-content-center" style="margin-bottom: 30px">
+    <div class="col-12 col-lg-11 row justify-content-center" style="padding-top: 30px;" >
+        <form class="col-12 row" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-12 col-md-4" style="font-size: 30px;">
+                <div class="avatar" id="profile-avatar" style="
+                    background-image: url('{{ user.last_name }}');
+                    width:200px;
+                    height:200px;
+                    background-position: center; 
+                    background-repeat: no-repeat; 
+                    background-size: cover; 
+                    border-radius: 50% ;
+                    position: relative;
+                    margin:auto;
+                " onchange= profile-avatar()>
+                    <input class="file-upload__input" type="file" name="Avatar" accept="image/*" id="id_Avatar" onchange="showPreview(event);">
+                    <button class="file-upload__button btn btn-dark" type="button" style="
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        border-radius: 25%;
+                    ">
+                    <i class="fas fa-camera"></i></button>
+                </div>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="form-group row">
+                    <label for="TenTL" class="col-md-3 col-lg-2 col-form-label ">Họ và tên:</label>
+                    <div class="col-md-9 col-lg-10 align-self-center">
+                        {{ form.Fullname }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="TenTG" class="col-md-3 col-lg-2 col-form-label">Username:</label>
+                    <div class="col-md-9 col-lg-10">
+                        <input type="text" class="form-control" id="TenTG" disabled value="{{ user.username }} " required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="MaMH" class="col-md-3 col-lg-2 col-form-label">Lớp:</label>
+                    <div class="col-md-9 col-lg-10">
+                        {{ form.Class }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="TenTL" class="col-md-3 col-lg-2 col-form-label">Facebook:</label>
+                    <div class="col-md-9 col-lg-10">
+                        {{ form.Facebook }}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="TenTG" class="col-md-3 col-lg-2 col-form-label">Github:</label>
+                    <div class="col-md-9 col-lg-10">
+                        {{ form.Github }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="MaMH" class="col-md-3 col-lg-2 col-form-label">Email:</label>
+                    <div class="col-md-9 col-lg-10">
+                        {{ form.Email }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="exampleFormControlFile1" class="col-md-3 col-lg-2 col-form-label">Tự bạch:</label>
+                    <div class="col-md-9 col-lg-10">
+                        {{ form.Bio }}
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12 mb-5 justify-content-center row">
+                <button type="submit" class="btn btn-primary col-4 ">Cập nhập</button>
+            </div>
+        </form>
+
+
+    </div>
+
+</div>
+{% endblock content %}
+{% block script_body %}
+
+<script language="javascript">
+    document.getElementById("id_Fullname").value = "{{ user.first_name }}";
+    document.getElementById("id_Class").value = "{{ data.0.Class }}";
+    document.getElementById("id_Facebook").value = "{{ data.0.Facebook }}";
+    document.getElementById("id_Github").value = "{{ data.0.Github }}";
+    document.getElementById("id_Email").value = "{{ user.email }}";
+    document.getElementById("id_Bio").value = "{{ data.0.Bio }}";
+    {% comment %} hàm tạo nút thêm ảnh {% endcomment %}
+    Array.prototype.forEach.call(
+        document.querySelectorAll(".file-upload__button"),
+        function (button) {
+            const hiddenInput = button.parentElement.querySelector(".file-upload__input");
+
+            button.addEventListener("click", function () { hiddenInput.click(); });
+
+            hiddenInput.addEventListener("change", function () {
+                const filenameList = Array.prototype.map.call(hiddenInput.files, function (file) {
+                    return file.name;
+                });
+            });
+        }
+    );
+    {% comment %} hàm xem trước ảnh {% endcomment %}
+    function showPreview(event) {
+        if (event.target.files.length > 0) {
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("profile-avatar");
+            preview.style.backgroundImage = 'url(' + src + ')';
+        }
+    }
+    var myModal = new bootstrap.Modal(document.getElementById('thongbao'), {})
+
+    myModal.toggle()
+</script>
+{% endblock script_body %}

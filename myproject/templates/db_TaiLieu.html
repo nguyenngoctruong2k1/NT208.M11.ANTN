@@ -1,0 +1,153 @@
+{% extends "dashboard_base.html" %} 
+{% load mathfilters %}
+{% block title %}Tài Liệu{% endblock title %}
+{% block TrangTL %}horizontal{% endblock%}
+{% block TieuDe %}Tất cả tài liệu{% endblock %}
+{% block content %}
+<div class="row col-12 justify-content-center row" style="margin-bottom: 30px;">
+    <div class="col-12 list-subject">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th class='align-middle' style="border-top:0" scope="col">#</th>
+                <th class='align-middle' style="border-top:0" scope="col">Tên tài liệu</th>
+                <th class='align-middle' style="border-top:0" scope="col">Người gởi</th>
+                <th class='align-middle' style="border-top:0" scope="col">Thông tin</th>
+                <th class='align-middle' style="border-top:0" scope="col">Lượt tải</th>
+                {% if user.is_staff %}
+                {% else %}
+                    <th scope="col" class='align-middle' style="border-top:0">Trạng thái</th>
+                {% endif %}
+                
+                <th style="border-top:0"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in tailieu %}
+                <tr>
+                <th class='align-middle' scope="row">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</th>
+                <td class='align-middle'>{{ item.TenTL }}</td>
+                <td class='align-middle'>
+                    {% if item.user.first_name %}
+                        {{ item.user.first_name }}
+                    {% else %}
+                        {{ item.user }}
+                    {% endif %}
+                    <br/>
+                    <small class="font-italic mb-0 text-secondary"> {{ item.date|date:'H:i, d/m/Y' }} </small>
+                </td>
+                <td class="align-middle">{{ item.get_LoaiTL_display }} môn {{ item.MaMH.TenMH}} của tác giả <span class="text-info">{{ item.TacGia }}</span></td>
+                <td class='align-middle text-center'>{{ item.LuotTai }}</td>
+                {% if user.is_staff %}
+                {% else %}
+                    <td class='align-middle'>
+                        {% if item.KiemDuyet %}
+                            Đã duyệt
+                        {% else %}
+                            Chưa duyệt
+                        {% endif %}
+                    </td>
+                {% endif %}
+                <td class='align-middle'>
+                {% if user.is_staff %}
+                    <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; text-align: center; vertical-align: middle;" aria-expanded="false">
+                        &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
+                    </a>
+                    <ul class="dropdown-menu" >
+                        <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
+                        
+                        <li style="width:100%;text-align: center;">
+                            <button class="dropdown-item" onclick=FuncDelete("./delete/{{ item.MaTL }}")>Xóa</button>
+                        </li>
+                    </ul>
+                {% else %}
+                    <a class="btn btn-success" style="border-radius: 25px;" href="/document/{{ item.MaTL }}">Xem</a>
+                {% endif %}
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="list-subject-footer row">
+            <div class="so-bai col-12 col-sm-6 pr-3 align-self-center">
+                <p style="display: inline;">Số bài hiển thị tối đa</p>
+                <select id="maximum-number" name="maximum-number" style="border: none;" onchange= "window.location.href='?num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
+            </div>
+            <div class="tong-bai col-12 col-sm-6 pl-3 text-left" style="min-width: 200px;">
+                <p style="display: inline;">Page {{ tailieu.number }} of {{ tailieu.paginator.num_pages }}</p>
+                {% if tailieu.has_previous %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="backward" >&nbsp;<i class="fas fa-angle-left"></i>&nbsp;</a>
+                {% endif %}
+                
+                {% if tailieu.has_next %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ tailieu.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="forward" >&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+{% block script_content %}
+<script>
+    function FuncDelete(link) {
+        if (confirm("Xác nhận xóa tài liệu: ")) {
+            location.href = link;
+        }
+    }
+    $('.dropdown-menu user').on('click', function(e) {
+        if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+            $('.dropdown-submenu .show').removeClass("show");
+        });
+        return false;
+    });
+
+    // Sử lý sự kiện khi click subject-item 
+    function show_item_hidden(id){
+        var x = document.getElementsByClassName("object-item-hidden");
+        if (x.length>1) x[0].parentNode.innerHTML = '<div class="subject-item-show" onclick="show_item_hidden(this.parentNode.id)">'+x[0].parentNode.firstElementChild.innerHTML+'</div>';
+        else
+        {
+            var htmlObj = document.getElementById(id);
+            htmlObj.innerHTML = htmlObj.innerHTML + document.getElementById('object-item-hidden').innerHTML;
+            document.getElementById('MaMH').value = htmlObj.firstElementChild.children[1].innerHTML;
+            document.getElementById('TenMH').value = htmlObj.firstElementChild.children[2].innerHTML;
+            // document.getElementById('KhoaQL').value = htmlObj.firstElementChild.children[3].innerHTML;
+            for(var i, j = 0; i = document.getElementById('KhoaQL').options[j]; j++) {
+                if(i.value == htmlObj.firstElementChild.children[3].innerHTML) {
+                    document.getElementById('KhoaQL').selectedIndex = j;
+                    break;
+                }
+            }
+            // document.getElementById('NhomMH').value = htmlObj.firstElementChild.children[4].innerHTML;
+            for(var i, j = 0; i = document.getElementById('NhomMH').options[j]; j++) {
+                if(i.value == htmlObj.firstElementChild.children[4].innerHTML) {
+                    document.getElementById('NhomMH').selectedIndex = j;
+                    break;
+                }
+            }
+        }
+    };
+</script>
+{% endblock%}
+
+            

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} Đăng ký {% endblock %}
+{% block content %}
+<!--Register-->
+
+<section>
+    <div class="container-fluid padding ">
+        <div id="background" class="row justify-content-center" style="min-height: 60vh;">
+            <div class="signup_bg col-10 row justify-content-center">
+                <div class="col-11">
+                    <label>
+                        <b
+                            style="font-family: Overpass; font-size: 36px; padding-top: 40px; color: black; text-shadow: none;">CREATE
+                            AN ACCOUNT</b>
+                    </label>
+                    <p style="font-size: 18px;">Đã có tài khoản, <a href="{% url DangNhap_view %}">Sign in</a></p>
+                    <div class="container py-5" style="padding: 0px;">
+                        <ul class="messages">
+                            {% for item in form_error %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            {{ form.media }}
+                            
+                            <button class="btn btn-primary" type="submit">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

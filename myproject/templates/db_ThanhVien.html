@@ -1,0 +1,124 @@
+{% extends "dashboard_base.html" %} 
+{% load mathfilters %}
+{% block title %}Thành Viên{% endblock title %}
+{% block TrangTV %}horizontal{% endblock%}
+{% block TieuDe %}Thành viên{% endblock %}
+{% block content %}
+<div class="row col-12 justify-content-center row" style="margin-bottom: 30px;">
+    <div class="col-12 list-subject">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col" class='align-middle' style="border-top:0">#</th>
+                <th scope="col" class='align-middle' style="border-top:0">Người dùng</th>
+                <th scope="col" class='align-middle' style="border-top:0">Thời gian tham gia</th>
+                <th ccope='col' class='align-middle' style="border-top:0">Vai trò</th>
+                <th scope="col" class='align-middle' style="border-top:0">Trạng thái</th>
+                <th scope="col" class='align-middle' style="border-top:0">Đóng góp</th>
+                <th scope="col" class='align-middle' style="border-top:0"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in data %}
+                {% if item.User == user %}
+                <tr class='font-weight-bold'>
+                {% else %}
+                <tr class=''>
+                {% endif %}
+                    <th class='align-middle' scope="row">{{ data.number| sub:1| mul:num| add:forloop.counter }}</th>
+                    <td>
+                        {% if item.User.first_name %}
+                            {{ item.User.first_name }}
+                            </br>
+                        {% endif %}
+                        {{ item.User.username }}
+                    </td>
+                    <td class='align-middle'>
+                        {{ item.ThoiGianTG }} ngày 
+                        </br>
+                        <small class='font-italic'>đăng ký lúc {{ item.User.date_joined | date:'H:i' }} ngày {{ item.User.date_joined | date:'d/m/Y' }} </small>
+                         
+                        
+                    </td>
+                    <td class='align-middle'>
+                        {% if item.User.is_staff %}
+                            <span class='text-success font-weight-bold'>Quản trị viên</span>
+                        {% else %}
+                            Cộng tác viên
+                        {% endif %}
+                    </td>
+                    <td class='align-middle'>
+                        {% if item.User.is_active %}
+                            Hoạt động
+                        {% else %}
+                            Bị khóa
+                        {% endif %}
+                    </td>
+                    <td class='align-middle'>
+                        {{ item.TaiLieu }} tài liệu
+                        </br>
+                        {{ item.Comment }} bình luận
+                    </td>
+                    <td class='align-middle'>
+                        <div class="btn-group dropleft">
+                        <a class="nav-link" style='background:none; border:none' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem thông tin</a></li>
+                            <a class="dropdown-item" href="{% url 'ThanhVien_Active' item.User.username %}">
+                                {% if item.User.is_active %}
+                                    Khóa tài khoản
+                                {% else %}
+                                    Mở khóa tài khoản
+                                {% endif %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'ThanhVien_Staff' item.User.username %}">
+                                {% if item.User.is_staff %}
+                                    Bỏ vai trò quản trị
+                                {% else %}
+                                    Thêm quản trị viên
+                                {% endif %}
+                            </a>
+                        </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        
+            </tbody>
+        </table>
+        <div class="list-subject-footer row text-dark">
+            <div class="so-bai col-12 col-sm-6 pr-3 align-self-center ">
+                <p style="display: inline;">Số bài hiển thị tối đa</p>
+                <select id="maximum-number" class='text-dark' name="maximum-number" style="border: none;"onchange= "window.location.href='?num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
+            </div>
+            <div class="tong-bai col-12 col-sm-6 pl-3 text-left" style="min-width: 200px;">
+                <p style="display: inline;">Trang {{ data.number }} / {{ data.paginator.num_pages }}</p>
+                {% if data.has_previous %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ data.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left text-dark"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="backward" >&nbsp;<i class="fas fa-angle-left text-dark"></i>&nbsp;</a>
+                {% endif %}
+                
+                {% if data.has_next %}
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ data.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right text-dark"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="forward" >&nbsp;<i class="fas fa-angle-right text-dark"></i>&nbsp;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+            

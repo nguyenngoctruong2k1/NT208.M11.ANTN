@@ -1,0 +1,112 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Đóng góp tài liệu{% endblock title %}
+{% block TrangDGTL %}horizontal{% endblock%}
+{% block TieuDe %}Đóng góp tài liệu{% endblock %}
+{% block script_content %}
+
+<style type="text/css">
+    .django-ckeditor-widget {
+        width: 100%;
+    }
+</style>
+{% endblock script_content %}
+
+
+
+
+
+{% block content %}
+{% if messages %}
+<div class="modal" tabindex="-1" id="exampleModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-success">THÀNH CÔNG</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="messages"></ul>
+                {% for message in messages %}
+                <li class="text-dark" {% if message.tags %} class="{{ message.tags }}" {% endif %}
+                    style="list-style: none;">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row col-12 p-1 p-md-3" style="margin-bottom: 30px">
+    <div class="col-12 list-subject row justify-content-center" style="padding-top: 30px;" >
+        <form class="col-12 col-sm-11 col-lg-10" action="." method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            <!-- {{ form.as_table }} -->
+            {{ form.media }}
+            <div class="form-group row">
+                {{ form.TenTL.errors }}
+                <label class="col-md-2 col-sm-3 col-form-label"> Tên tài liệu</label>    
+                <div class="col-md-10 col-sm-9 align-self-center">{{ form.TenTL }}</div>
+            </div>
+            <div class="form-group row">
+                {{ form.TenTL.errors }}
+                <label class="col-md-2 col-sm-3 col-form-label"> Loại tài liệu</label>    
+                <div class="col-md-10 col-sm-9 align-self-center">{{ form.LoaiTL }}</div>
+            </div>
+            <div class="form-group row">
+                {{ form.TenTL.errors }}
+                <label class="col-md-2 col-sm-3 col-form-label"> Mã môn học</label>    
+                <div class="col-md-10 col-sm-9 align-self-center">{{ form.MaMH }}</div>
+            </div>
+            <div class="form-group row">
+                {{ form.TenTL.errors }}
+                <label class="col-md-2 col-sm-3 col-form-label"> Tác giả</label>    
+                <div class="col-md-10 col-sm-9 align-self-center">{{ form.TacGia }}</div>
+            </div>
+            <div class="form-group row">
+                {{ form.TenTL.errors }}
+                <label class="col-md-2 col-sm-3 col-form-label"> Mô tả</label>    
+                <div class="col-md-10 col-sm-9 align-self-center">{{ form.MoTa }}</div>
+            </div>
+            <div class="form-group row">
+                {{ form.TenTL.errors }}
+                <label class="col-md-2 col-sm-3 col-form-label"> Tệp tài liệu</label>    
+                <div class="col-md-10 col-sm-9 align-self-center">
+                    <input type="file" id="myfile" name="myfile" multiple onchange=showFile()>
+                    <ul class="list-group" id="showFile" style="margin-top:10px">
+                        <ul>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <button type="submit" class="col-sm-5 btn btn-primary">Tải lên</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock content %}
+{% block script_body %}
+
+<script language="javascript">
+    setTimeout(function () { document.getElementById("cke_id_MoTa").style.width = '100%'; }, 500);
+    setTimeout(function () { document.getElementById("cke_id_MoTa").style.width = '100%'; }, 1000);
+    setTimeout(function () { document.getElementById("cke_id_MoTa").style.width = '100%'; }, 1500);
+    setTimeout(function () { document.getElementById("cke_id_MoTa").style.width = '100%'; }, 2000);
+    function showFile() {
+        document.getElementById("showFile").innerHTML = ""
+        var inp = document.getElementById("myfile");
+        for (i = 0; i < inp.files.length; i++) {
+            let file = inp.files[i];
+            document.getElementById("showFile").innerHTML += "<li class='list-group-item'>" + file.name + "</li>"
+        }
+    }
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {})
+
+    myModal.toggle()
+</script>
+{% endblock script_body %}

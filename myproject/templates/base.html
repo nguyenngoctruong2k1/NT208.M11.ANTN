@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	{% load mon_hoc_tags %}
+	{% load social_share %}
+	
+	{% load static %}
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" type="image/x-icon" href="{% static 'abcd.png' %}" />
+	<title>{% block title %}{% endblock %}</title>	
+	<!-- Import Boostrap css, js, font awesome here -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+	<!-- Import font-->
+	<link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet" />
+
+	<link rel="stylesheet" href="{% static 'style2.css' %}">
+	{% block script_head %}
+
+	{% endblock script_head %}
+	<script>
+		function httpGet(theUrl)
+		{
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+			xmlHttp.send( null );
+			return xmlHttp.responseText;
+		}
+		function myFunction(id) {
+			httpGet(window.location.origin +"/thongbao/" + id + "/read")
+			document.getElementById(id).remove();
+			tmp = document.getElementById('number_mess')
+			tmp.innerText = tmp.innerText -1
+			if (tmp.innerText == '0'){
+				tmp.remove();
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<!--banner-->
+	<div class="banner d-xl-block d-none" style="height:200px; background-image: url('{% static 'image/banner.png' %}');
+		background-repeat: no-repeat; background-size: 100% 100%; ">
+		<!-- <img src="{% static 'images/Geometry 1 (1).png' %}" alt="geometry" class="geometry"
+			style="width:100%;height: 200px;"> -->
+		<div class="slogan-tieude">
+			<h1 class="tieude display-4" style="color: white; font-weight: normal; padding-left: 0%;">Web chia sẻ tài
+				liệu</h1>
+			<h1 class="slogan display-5" style="color: white; display: block;">Learning is sharing</h1>
+		</div>
+		<!-- <img src="{% static 'images/Circle Ice 1.png' %}" alt="ice" class="ice">
+		<img src="{% static 'images/Poster 1.png' %}" alt="poster" class="poster"> -->
+	</div>
+	<!-- Navbar-->
+	<nav class="navbar navbar-expand-xl navbar-light bg-dark text-light sticky-top">
+		<div class="container-fluid">
+			<button class="navbar-toggler text-light border-light" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<i class="fas fa-bars"></i>
+		</button>
+
+		<div class="collapse navbar-collapse text-light" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a href="/" class="nav-link text-light">Trang chủ</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Môn đại cương
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/category/GiaoDucDaiCuong/LyLuanChinhTri">Lý luận chính
+								trị</a>
+						<a class="dropdown-item" href="/category/GiaoDucDaiCuong/ToanTinKHTN">Toán-Tin-KHTN</a>
+						<a class="dropdown-item" href="/category/GiaoDucDaiCuong/NgoaiNgu">Ngoại ngữ</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Cơ sở nhóm ngành
+					</a>
+
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						{% GetMonHocCSNN as csnn%}
+						{% for item in csnn %}
+						<a class="dropdown-item" href="/subjects/{{item.MaMH}}/">{{item.TenMH}}</a>
+						{% endfor %}
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Cơ sở ngành
+					</a>
+					<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" href="/category/CoSoNganh/CongNghePhanMem">Khoa Công nghệ phần
+							mềm</a>
+						<a class="dropdown-item" href="/category/CoSoNganh/HeThongThongTin">Khoa Hệ thống thông
+							tin</a>
+						<a class="dropdown-item" href="/category/CoSoNganh/MangMayTinhTruyenThong">Khoa MMT&TT </a>
+						<a class="dropdown-item" href="/category/CoSoNganh/KyThuatMayTinh">Khoa Kĩ thuật máy
+							tính</a>
+						<a class="dropdown-item" href="/category/CoSoNganh/KhoaHocMayTinh">Khoa Khoa học máy
+							tính</a>
+						<a class="dropdown-item" href="/category/CoSoNganh/KyThuatThongTin">Khoa KH&KTTT</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Môn chuyên ngành
+					</a>
+					<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" href="/category/ChuyenNganh/CongNghePhanMem">Khoa Công nghệ phần
+							mềm</a>
+						<a class="dropdown-item" href="/category/ChuyenNganh/HeThongThongTin">Khoa Hệ thống thông
+							tin</a>
+						<a class="dropdown-item" href="/category/ChuyenNganh/MangMayTinhTruyenThong">Khoa MMT&TT
+						</a>
+						<a class="dropdown-item" href="/category/ChuyenNganh/KyThuatMayTinh">Khoa Kĩ thuật máy
+							tính</a>
+						<a class="dropdown-item" href="/category/ChuyenNganh/KhoaHocMayTinh">Khoa Khoa học máy
+							tính</a>
+						<a class="dropdown-item" href="/category/ChuyenNganh/KyThuatThongTin">Khoa KH&KTTT</a>
+					</div>
+				</li>
+			</ul>
+			
+
+		</div>
+		<form class="form-inline  flex-row my-2 my-lg-0" action="{% url 'search' %}" method="get">
+			<input class="form-control mr-sm-2 p-0 pl-2" type="search" placeholder="Tìm kiếm" aria-label="Search" name="search"> 
+			<button class="btn btn-dark d-none d-sm-inline my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+		</form>
+		{% if user.username %}
+		<ul class="navbar-nav flex-row">
+			<li class="nav-item ">
+				<a class="nav-link p-1 pt-2" href="{% url 'DongGopTL_view' %}">
+					<span><i class="fas fa-plus-circle fa-lg" style="color: rgb(255, 255, 255);"></i></span>
+				</a>
+			</li>
+			<li class="nav-item dropdown me-3 me-lg-1">
+				<a class="nav-link" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">
+					<i class="fas fa-bell fa-lg" style="color: rgb(255, 255, 255);"></i>
+					{% get_thongbao_count user as tbc %}
+					{%if tbc%}
+						<span id="number_mess" class="badge rounded-pill badge-notification bg-success">{{ tbc }}</span>
+					{% endif %}
+				</a>
+				<div class="dropdown-menu dropdown-menu-right dropdown-default"
+					aria-labelledby="navbarDropdownMenuLink-333">
+					{% get_thongbao user as tb %}
+					{% for item in tb %}
+					<!-- {% if item.user == user%} -->
+						<a id="{{item.pk}}" onclick="myFunction(id)" class="dropdown-item">{{item.NoiDung}}</a>
+					<!-- {% endif %} -->
+					{% endfor %}
+				</div>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link p-1 d-sm-flex align-items-sm-center" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">
+					<img src="{{ user.last_name}}" class="rounded-circle" width="30px" height="30px" alt=""
+						loading="lazy" />
+					<strong class="d-none d-sm-block ms-1" style="color: rgb(255, 255, 255);">&nbsp;
+						{% if user.first_name %}
+						{{user.first_name}}
+						{% else %}
+						{{user.username}}
+						{% endif %}
+					</strong>
+				</a>
+				<div class="dropdown-menu dropdown-menu-right dropdown-default"  style="position:absolute"
+					aria-labelledby="navbarDropdownMenuLink-333">
+					<a class="dropdown-item" href="{% url 'ThongTinCaNhan_view' %}">Thông tin cá nhân</a>
+					<a class="dropdown-item" href="/dashboard/">Dashboard</a>
+					<a class="dropdown-item" href="{% url 'DangXuat_view' %}">Đăng xuất</a>
+				</div>
+			</li>
+		</ul>
+		{% else %}
+			<li id="nav-item me-3 me-lg-1" style="list-style: none;">
+				<a href="{% url 'DangNhap_view' %}" style="color: rgb(255, 255, 255); font-size: 18px;">
+					Login/Join <i class=" fas fa-sign-in-alt"></i></a>
+			</li>
+		{% endif %}
+		</div>
+		
+	</nav>
+	<!-- Navbar -->
+
+	{% block content_thongbao %}
+
+	{% endblock content_thongbao %}
+	{% block content_top %}
+	<!--Tiêu đề-->
+	<section class="container-fluid">
+		<div class="container-fluid padding">
+			<div class="row welcome text-center">
+				
+				<div class="col-12 p-2 m-2 border-white border-top border-bottom">
+					<h1 class="h2 " style="text-shadow: 2px 2px 5px red;">{% block title_MH %}{% endblock%}</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--menu-->
+	{% endblock content_top %}
+
+	{% block content_main %}
+	<section style="min-height: 600px;" class="p-2" >
+		<div class="container-fluid padding">
+			<div class="row text justify-content-center">
+				<!-- card -->
+				<div class="col-12 col-md-8 bg-light rounded">
+					{% block content %}{% endblock %}
+				</div>
+				<div class="col-lg-3 col-md-4 d-none d-md-block row pr-0">
+					<div class="col-12">
+						<div class="new-document bg-white rounded p-2">
+							<div class="list-group" style="margin-bottom: 2rem;">
+								<h4 style="font-size:20px; text-align: center; text-shadow: 2px 2px 5px red;" class="p-2">Tài liệu mới nhất</h4>
+								{% get_tai_lieu as tai_lieu %}
+								{% for item in tai_lieu %}
+								<a href="/document/{{item.MaTL}}" class="list-group-item border-0 pl-2 border-top justify-content-between align-items-center" style="font-size: 12px;">
+									{{item.TenTL}}
+									<br/>
+									<span class="badge badge-primary badge-pill" style="background-color: rgba(37, 165, 32, 0.6); font-size: 9px;">{{item.date}}</span>
+								</a>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					{% if user.username %}
+					<div class="col-12">
+						<div class="recent bg-light rounded" >
+							<div class="list-group bg-white rounded p-2" style="min-height:300px" >
+								<h4 style="font-size:20px; text-align: center; text-shadow: 2px 2px 5px red;">Xem gần đây</h4>
+								{% get_recent as recent %}
+								{% for item in recent %}
+								{% if item.user == user%}
+								<a href="/document/{{item.MaTL.MaTL}}" class="list-group-item border-0 p-2  border-bottom border-top rounded-0 justify-content-between align-items-center">
+									{{item.MaTL.TenTL}}
+								</a>
+								{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					{% endif%}
+				
+				</div>
+				
+			</div>
+		</div>
+	</section>
+	{% endblock content_main %}
+
+	<!--Footer-->
+	<footer>
+		<div class="container-fluid pt-2 pb-2 bg-dark">
+			<div class="row text-center">
+				<div class="col-12">
+					<marquee style="font-size: 20px; color: white;">Xây dựng và phát triển bởi nhóm Butterflies</marquee>
+				</div>
+			</div>
+		</div>
+	</footer>
+</body>
+
+</html>

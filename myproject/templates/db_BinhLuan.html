@@ -1,0 +1,63 @@
+{% extends "dashboard_base.html" %} 
+{% block title %}Bình Luận{% endblock title %}
+{% block TrangBL %}horizontal{% endblock%}
+{% block TieuDe %}Bình Luận{% endblock %}
+{% block content %}
+<div class="row col-12" style="margin-bottom: 30px">
+    <div class="col-12 list-subject row justify-content-center" style="padding-top: 30px;" >
+        <form class="col-10">
+            <div class="form-group row">
+                <label for="TenTL" class="col-sm-2 col-form-label">Tên tài liệu</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="TenTL" placeholder="Giáo trình Lập trình web và ứng dụng">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="LoaiTL" class="col-sm-2 col-form-label">Loại tài liệu</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="LoaiTL">
+                        <option>Slide bài giảng</option>
+                        <option>Giáo trình</option>
+                        <option>Sách tham khảo</option>
+                        <option>Tài liệu thực hành</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="TenTG" class="col-sm-2 col-form-label">Tác giả</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="TenTG" placeholder="Nguyễn Văn A">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="MaMH" class="col-sm-2 col-form-label">Mã môn học</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="MaMH" placeholder="NT208">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Upload</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" multiple>
+                </div>
+                
+            </div>
+            <div class="form-group row">
+                <label for="exampleFormControlFile1" class="col-sm-2 col-form-label">Mô tả tài liệu</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>
+            </div>
+            </form>
+    </div>
+    
+</div>
+{% endblock content %}
+
+            

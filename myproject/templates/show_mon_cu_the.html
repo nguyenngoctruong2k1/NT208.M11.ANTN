@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load myfilters %}
+{% load mathfilters %}
+{% load static %}
+{% block title %}{{ monhoc.TenMH }}{% endblock %}
+{% block title_MH %}
+    {{ monhoc.TenMH }}
+{% endblock %}
+{% block content %}
+<script>
+function textAreaAdjust(element) {
+  element.style.height = "1px";
+  element.style.height = element.scrollHeight+"px";
+}
+</script>
+
+
+<div class="row pl-3 pr-3">
+    <table class="table table-borderless">
+    <h4 class="border-bottom text-dark mt-3 pb-2 col-12" style='text-shadow: 2px 2px 5px red;'>Thông tin về môn học</h4>
+    <tbody>
+        <tr>
+            <th style="white-space:nowrap" scope="row">Tên môn học</th>
+            <td>{{ monhoc.TenMH }} - {{ monhoc.MaMH }}</td>
+        </tr>
+        <tr>
+            <th style="white-space:nowrap" scope="row">Trực thuộc</th>
+            <td>{{ monhoc.get_NhomMH_display }} - {{ monhoc.get_Khoa_display }}</td>
+        </tr>
+        <tr>
+            <th style="white-space:nowrap" scope="row">Mô tả</th>
+            <td>{{ monhoc.MoTa }}</td>
+        </tr>
+        <tr>
+            <th style="white-space:nowrap" scope="row">Thống kê</th>
+            <td>{{ monhoc.len}} tài liệu, {{ monhoc.download }} lượt tải</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+{% for loaiTL in tailieu %}
+    {% if loaiTL %}
+    <div class="row p-2 border-top border-bottom">
+        <div class="col-12 col-lg-3 pb-1">
+            <div class="card shadow-1-strong h-100" style="background:#6c757d">
+                    <div class="card-body text-white m-2">
+                        <h3 class="card-title">{{ loaiTL.0.get_LoaiTL_display }}</h3>
+                        <a href="{{ loaiTL.0.LoaiTL }}" class="btn btn-outline-light active float-right">Xem tất cả</a>
+                    </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <ol class="list-group list-group-numbered ">
+                {% for item in loaiTL %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.TenTL}}</h5>
+                        <small class="card-text card-subtitle text-muted">
+                            đăng bởi
+                                <span class="text-danger">
+                                    {% if item.user.first_name %}
+                                    {{item.user.first_name}}
+                                    {% else %}
+                                    {{item.user.username}}
+                                    {% endif %}
+                                </span>
+                            lúc {{item.date |date:"H:i"}}
+                            ngày {{item.date |date:"d"}}
+                            tháng {{item.date |date:"m"}}
+                            năm {{item.date |date:"Y"}}
+                        </small>
+                        <p class="card-text">{{item.MoTa|safe_text |truncatechars:200}}</p>
+                        <a href="/document/{{item.MaTL}}" class="card-link">Xem thêm</a>
+                        <a href="/download/{{item.MaTL}}" class="card-link">Tải xuống</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+
+
+
+
+<h4 class="border-bottom text-dark mt-3 pb-2">{{comment.all|length}} bình luận </h4>
+{% if user.username %}
+<div class="row">
+    <div class="col-12 d-flex" >
+        <img src="{{ user.last_name}}" class="rounded-circle" width="70" height="70" style="min-width:70px" alt=""loading="lazy">
+        <form method='POST' class="w-100 pl-2">
+            {% csrf_token %}
+            <div class="form-group border-dark" style='border-bottom: 2px solid;'>
+                <textarea name="NoiDung" class="form-control border-0 bg-light" placeholder="Bình luận công khai..." onkeyup="textAreaAdjust(this)" style='height:36px' required="" id="id_NoiDung"></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary float-right" style="margin-bottom: 1rem;">Bình luận</button>
+        </form>
+    </div> 
+</div>
+{% endif%}
+
+{% if not comment.all %}
+    
+{% else %}
+{% for cmt in comment %}
+    <div class="p-0 col-12 d-flex" >
+        <img src="{{ cmt.user.last_name}}" class="rounded-circle" width="40" height="40" alt=""loading="lazy">
+        <div>
+            <div class="card1">
+                <div class="ms-2 me-auto" style="padding:0 10px;">
+                    <div class="">
+                    <b>
+                        {% if cmt.user.first_name %}
+                        {{cmt.user.first_name}}
+                        {% else %}
+                        {{cmt.user.username}}
+                        {% endif %}
+                        
+                    </b>
+                    <span class='font-weight-light font-italic'>
+                        {{cmt.ThoiGian | days_until }} trước
+                    <span>
+                    </div>
+                    {{cmt.NoiDung|linebreaks}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endif%}
+{% endblock %}
