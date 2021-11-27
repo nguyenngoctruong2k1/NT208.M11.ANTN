@@ -415,8 +415,9 @@ def Doc_Thong_Bao(request,slug):
     doctb = ThongBao.objects.get(pk=slug)
     doctb.Xem = True
     doctb.save()
+    request.reload()
     #return HttpResponseRedirect(request.path)
-    return render()
+    return render(request,)
 
 def ThanhVien_Active(request, username):
     if not request.user.is_active:
