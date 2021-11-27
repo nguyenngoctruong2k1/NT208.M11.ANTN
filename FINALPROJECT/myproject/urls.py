@@ -20,6 +20,7 @@ urlpatterns = [
          views.MonHoc_LoaiTL_show, name="MonHoc_LoaiTL_show"),
     path('category/<slug:NhomMH>/<slug:Khoa>/', views.MonHocList_view),
     path('document/<slug:slug>/', views.one_document_view),
+    path('thongbao/<slug:slug>/read',views.Doc_Thong_Bao),
 
     path('dashboard/', views.dashboard_view, name='dashboard_view'),
     path('dashboard/DuyetTL/', views.DuyetTL_view, name='DuyetTL_view'),

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from myproject.models import InformationUser, MonHoc, TaiLieu, CommentMH, CommentTL,FileUpload
+from myproject.models import InformationUser, MonHoc, TaiLieu, CommentMH, CommentTL,FileUpload, RecentView,ThongBao
 # from myproject.models import MonHoc, Student, TaiLieu, User, CommentMH, CommentTL
 
 # @admin.register(Student)
@@ -15,6 +15,14 @@ from myproject.models import InformationUser, MonHoc, TaiLieu, CommentMH, Commen
 @admin.register(MonHoc)
 class MonHocAdmin(admin.ModelAdmin):
     list_display = ('MaMH','TenMH','Khoa','NhomMH','MoTa')
+
+@admin.register(RecentView)
+class Recent(admin.ModelAdmin):
+    list_display = ('user','MaTL','ThoiGian')
+
+@admin.register(ThongBao)
+class ThongBaoAdmin(admin.ModelAdmin):
+    list_display = ('user','NoiDung','ThoiGian','Xem')
 
 @admin.register(TaiLieu)
 class TaiLieuAdmin(admin.ModelAdmin):

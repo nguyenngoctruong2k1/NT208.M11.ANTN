@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	{%load mon_hoc_tags %}
+	{% load mon_hoc_tags %}
 	{% load social_share %}
 	{% load static %}
 	<meta charset="utf-8" />
@@ -14,11 +14,25 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="{% static 'style.css' %}">
 	{% block script_head %}
 
 	{% endblock script_head %}
-
+	<script>
+		function httpGet(theUrl)
+		{
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+			xmlHttp.send( null );
+			return xmlHttp.responseText;
+		}
+		function myFunction(id) {
+			httpGet("http://127.0.0.1:8000/thongbao/" + id + "/read")
+			document.getElementById(id).remove();
+		}
+	</script>
 	<!-- <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/web.css' %}"> -->
@@ -133,14 +147,11 @@
 							<img src="{{ user.last_name}}" class="rounded-circle" width="30px" height="30px" alt=""
 								loading="lazy" />
 							<strong class="d-none d-sm-block ms-1" style="color: rgb(255, 255, 255);">&nbsp;
-
 								{% if user.first_name %}
 								{{user.first_name}}
 								{% else %}
 								{{user.username}}
 								{% endif %}
-
-
 							</strong>
 						</a>
 					</li>
@@ -153,11 +164,19 @@
 						<a class="nav-link" id="navbarDropdownMenuLink-333" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false">
 							<i class="fas fa-bell fa-lg" style="color: rgb(255, 255, 255);"></i>
+							{% get_thongbao_count user as tbc %}
+							{%if tbc%}
+								<span class="badge rounded-pill badge-notification bg-success">{{ tbc }}</span>
+							{% endif %}
 						</a>
 						<div class="dropdown-menu dropdown-menu-right dropdown-default"
 							aria-labelledby="navbarDropdownMenuLink-333">
-							<a class="dropdown-item" href="#">1 bộ slide ĐSTT vừa được cập nhật</a>
-							<a class="dropdown-item" href="#">Đề thi 2019-2020 vừa được cập nhật</a>
+							{% get_thongbao user as tb %}
+							{% for item in tb %}
+							<!-- {% if item.user == user%} -->
+								<a id="{{item.pk}}" onclick="myFunction(id)" class="dropdown-item">{{item.NoiDung}}</a>
+							<!-- {% endif %} -->
+							{% endfor %}
 						</div>
 					</li>
 					<li class="nav-item dropdown me-3 me-lg-1">
@@ -213,34 +232,23 @@
 	<section style="min-height: 600px;">
 		<div class="container-fluid padding">
 			<div class="row text justify-content-center">
-				<!-- <div class="col-2">
-					<div class="cent-review-left sticky-top" style="margin-right: 2rem;">
+				{% if user.username %}
+				<div class="col-12 col-2 col-sm-3 col-md-2">
+					<div class="recent">
 						<div class="list-group" style="margin-bottom: 2rem;font-size: 16px;">
-							<a href="#" class="list-group-item" style="background-color: rgba(169, 170, 172, 0.6);">
-								<h4>Xem gần đây</h4>
+							<h4 style="padding: 10px; color:black;text-align:center;">Xem gần đây</h4>
+							{% get_recent as recent %}
+							{% for item in recent %}
+							{% if item.user == user%}
+							<a href="/document/{{item.MaTL}}" class="list-group-item d-flex justify-content-between align-items-center">
+								{{item.MaTL.TenTL}}
+								<!-- <span class="badge badge-primary badge-pill"
+									style="background-color: rgba(37, 165, 32, 0.6);">{{item.ThoiGian}}</span> -->
 							</a>
-							<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-								Đại số tuyến tính
-								<span class="badge badge-primary badge-pill"
-									style="background-color: rgba(37, 165, 32, 0.6);">5</span>
-							</a>
-							<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-								Giải tích
-								<span class="badge badge-primary badge-pill"
-									style="background-color: rgba(37, 165, 32, 0.6);">4</span>
-							</a>
-							<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-								Nhập môn lập trình
-								<span class="badge badge-primary badge-pill"
-									style="background-color: rgba(37, 165, 32, 0.6);">6</span>
-							</a>
-							<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-								Nhập môn điện tử
-								<span class="badge badge-primary badge-pill"
-									style="background-color: rgba(37, 165, 32, 0.6);">5</span>
-							</a>
+							{% endif %}
+							{% endfor %}
 						</div>
-						<form class="update">
+						<!-- <form class="update">
 							<h2 style="font-size: 25px">Cập nhật thông tin mới nhất</h2>
 							<div class="form-group">
 								<label for="email">Địa chỉ email</label>
@@ -258,44 +266,31 @@
 							<button type="submit" class="btn btn-success btn-block my-3">
 								Xác nhận
 							</button>
-						</form>
+						</form> -->
 					</div>
-				</div> -->
+				</div>
+				{% endif%}
 				<!-- card -->
 				<div class="col-12 col-sm-10 col-md-8">
 					{% block content %}{% endblock %}
 				</div>
-				<!-- <div class="col-2">
-					<div class="comment sticky-top">
-						<div class="cent-review-left sticky-top" style="margin-right: 3rem;">
-							<div class="list-group" style="margin-bottom: 2rem;font-size: 16px;">
-								<a href="#" class="list-group-item" style="background-color: rgba(169, 170, 172, 0.6);">
-									<h4>Tài liệu mới nhất</h4>
-								</a>
-								<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-									Đại số tuyến tính
+				{% if user.username %}
+				<div class="col-12 col-sm-3 col-md-2">
+						<div class="new-document">
+							<div class="list-group" style="margin-bottom: 2rem;font-size: 14px;">
+								<h4 style="padding: 10px; color:black;text-align:center;">Tài liệu mới nhất</h4>
+								{% get_tai_lieu as tai_lieu %}
+								{% for item in tai_lieu %}
+								<a href="/document/{{item.MaTL}}" class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 12px;">
+									{{item.TenTL}}
 									<span class="badge badge-primary badge-pill"
-										style="background-color: rgba(37, 165, 32, 0.6);">new</span>
+										style="background-color: rgba(37, 165, 32, 0.6); font-size: 9px;">{{item.date}}</span>
 								</a>
-								<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-									Giải tích
-									<span class="badge badge-primary badge-pill"
-										style="background-color: rgba(37, 165, 32, 0.6);">new</span>
-								</a>
-								<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-									Nhập môn lập trình
-									<span class="badge badge-primary badge-pill"
-										style="background-color: rgba(37, 165, 32, 0.6);">new</span>
-								</a>
-								<a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-									Nhập môn điện tử
-									<span class="badge badge-primary badge-pill"
-										style="background-color: rgba(37, 165, 32, 0.6);">new</span>
-								</a>
+								{% endfor %}
 							</div>
 						</div>
-					</div>
-				</div> -->
+				</div>
+				{% endif%}
 			</div>
 		</div>
 	</section>

@@ -4,14 +4,17 @@ from django.db.models.fields import FilePathField, NullBooleanField
 from django.http import request
 from django.shortcuts import redirect, render, get_object_or_404
 import datetime
+from django.utils import timezone
 from django.urls import reverse
 from django.views.generic.edit import ModelFormMixin
 from django.views.generic import ListView, DetailView
 from django.http import StreamingHttpResponse
 from wsgiref.util import FileWrapper
 import mimetypes
-from myproject.models import CommentTL, InformationUser, MonHoc, FileUpload, TaiLieu, CommentMH, InformationUser
-from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm, TL, CommentMHForm, Information, CommentTLForm
+
+from myproject.models import CommentTL, MonHoc,FileUpload, TaiLieu,CommentMH,InformationUser,RecentView,ThongBao
+from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm,Information, CommentTLForm
+
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
@@ -115,15 +118,25 @@ def MonHoc_show(request, MaMH):
 
 
 def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
+    comment = CommentMH.objects.filter(MaMH=MaMH)
     tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
     if not tailieu:
         return HttpResponseRedirect(reverse('error'))
+    monhoc = get_object_or_404(MonHoc,MaMH=MaMH)
+    form = CommentMHForm()
+    if request.method == 'POST':
+        form = CommentMHForm(request.POST, user=request.user,MaMH=monhoc)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path)
     return render(
         request,
         'show_MonHoc_LoaiTL.html',
         {
             'monhoc': MonHoc.objects.get(MaMH=MaMH),
-            'tailieu': TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
+            'tailieu': TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL),
+            'comment':comment,
+            'form':form,
         },
     )
 
@@ -131,6 +144,11 @@ def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
 def one_document_view(request, slug):
     comment = CommentTL.objects.filter(MaTL=slug)
     tai_lieu = TaiLieu.objects.get(MaTL=slug)
+    RecentView.objects.get_or_create(user = request.user, MaTL_id=slug)
+    temp =  RecentView.objects.get(user = request.user, MaTL_id=slug)
+    if temp:
+        temp.ThoiGian = timezone.now()
+        temp.save()
     tai_lieu.LuotXem = tai_lieu.LuotXem + 1
     tai_lieu.save()
     FileDinhKem = FileUpload.objects.filter(MaTL=slug)
@@ -139,6 +157,10 @@ def one_document_view(request, slug):
     if request.method == 'POST':
         form = CommentTLForm(request.POST, user=request.user, MaTL=tl)
         if form.is_valid():
+            thongbao = ThongBao.objects.create(user = tai_lieu.user)
+            temp = thongbao
+            temp.NoiDung = str(request.user.first_name) + " đã bình luận về tài liệu " + tai_lieu.TenTL + " của bạn"  
+            temp.save()
             form.save()
             return HttpResponseRedirect(request.path)
     return render(
@@ -266,10 +288,13 @@ def TaiLieu_Duyet(request, slug):
         return HttpResponseRedirect(reverse('DangNhap_view'))
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('dashboard_view'))
-
-    tailieu = TaiLieu.objects.get(MaTL=slug)
-    if tailieu:
-        tailieu.KiemDuyet = True
+    tailieu = TaiLieu.objects.get(MaTL=slug) 
+    if tailieu: 
+        tailieu.KiemDuyet=True
+        thongbao = ThongBao.objects.create(user = tailieu.user)
+        temp = thongbao
+        temp.NoiDung = "Tài liệu " + tailieu.TenTL +" đã được duyệt" 
+        temp.save()
     tailieu.save()
     return redirect('DuyetTL_view')
 
@@ -402,6 +427,13 @@ def TaiLieu_delete(request, slug):
         os.remove(paths+'.zip')
     return redirect('TaiLieu_view')
 
+def Doc_Thong_Bao(request,slug):
+    doctb = ThongBao.objects.get(pk=slug)
+    doctb.Xem = True
+    doctb.save()
+    request.reload()
+    #return HttpResponseRedirect(request.path)
+    return render(request,)
 
 def ThanhVien_Active(request, username):
     if not request.user.is_active:

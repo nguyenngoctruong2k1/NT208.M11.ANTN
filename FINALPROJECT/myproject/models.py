@@ -107,6 +107,16 @@ class CommentMH(models.Model):
     ThoiGian = models.DateTimeField(auto_now_add=True)
     NoiDung = models.TextField()
 
+class RecentView(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    MaTL = models.ForeignKey(TaiLieu,on_delete=models.CASCADE)
+    ThoiGian = models.DateTimeField(auto_now_add=True)
+
+class ThongBao(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    ThoiGian = models.DateTimeField(auto_now_add=True)
+    NoiDung = models.TextField()
+    Xem = models.BooleanField(default=False)
 
 class InformationUser(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)

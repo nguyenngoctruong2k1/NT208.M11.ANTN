@@ -18,7 +18,7 @@
                     {% endif %}
 </b></span>
 			</div>
-			<div id="tải xuống" style="margin-bottom: 1rem;">
+			<div id="tai_xuong" style="margin-bottom: 1rem;">
 				<i class="fas fa-download"></i>&nbsp;
 				<span style="font-size: 16px;"> 20 lượt tải xuống</span>
 			</div>
@@ -29,10 +29,8 @@
 		</div>
 	</div>
 	<div class="col-9">
-		<div class="mô tả">
-			
+		<div class="mo_ta">
 			{% comment %} <p class="text-center" style="font-size: 26px;">{{tai_lieu.TenTL}}</p> {% endcomment %}
-			
 			<h2 style="font-size: 20px;">Mô tả tài liệu</h2>
 			{{ tai_lieu.MoTa | safe }}
 			<h2 style="font-size: 20px;">Danh sách File tài liệu đính kèm</h2>
@@ -43,15 +41,19 @@
 					{% endfor %}
 				</ul>
 			</p>
+            <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}" class="fab fa-google-plus fa-2x" style="color:#D34836;" target="_blank"></a>
+            <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" class="fab fa-whatsapp-square fa-2x" style="color:#25d366" target="_blank"></a>
+            <a href="https://www.pinterest.com/pin/create/button/?url={{ request.build_absolute_uri }}" class="fab fa-pinterest-square fa-2x" style="color:#CB2027" target="_blank"></a>
+            <a href="https://t.me/share/url?text=chiasetailieuhoctap&url={{ request.build_absolute_uri }}" class="fab fa-telegram fa-2x" style="color:#0088cc;" target="_blank"></a>
+            <a href="http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" class="fab fa-facebook-square fa-2x" style="color: #3b5998;" target="_blank"></a>
 		</div>
-		<!-- <a href="#!" class="btn btn-outline-light active" style="margin-bottom: 1rem; margin-left: 50rem;">xem thêm</a> -->
 	</div>
 </div>
 {% if user.username %}
 <div class="row">
     <hr class="light-contact" />
     <div class="cmt col-12" style="background-color: rgba(191, 191, 192, 0.6);">
-        <h4 style="padding-top: 1rem;">Viết bình luận ... <span class="fas fa-plus-circle"></span>
+        <h4 style="padding-top: 1rem;">Viết bình luận ...
         </h4>
         <form method='POST'>
             {% csrf_token %}
@@ -82,8 +84,6 @@
                     {% else %}
                     {{cmt.user.username}}
                     {% endif %}
-					
-					
 					</b>{{cmt.ThoiGian}}
                     </div>
                     {{cmt.NoiDung|linebreaks}}
