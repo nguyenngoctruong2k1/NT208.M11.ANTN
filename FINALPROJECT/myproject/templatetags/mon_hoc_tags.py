@@ -1,4 +1,5 @@
 from django import template
+from bs4 import BeautifulSoup
 # from myproject.models import Mon_Dai_Cuong, Toan_Tin_KHTN,TaiLieu
 from myproject.models import MonHoc, TaiLieu
 register = template.Library()

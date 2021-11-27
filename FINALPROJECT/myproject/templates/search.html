@@ -1,35 +1,56 @@
 {% extends 'base.html' %}
 {% block title %} Tìm kiếm {% endblock %}
+{% load myfilters %}
 {% load static %}
-{% block script_head %}
-<link rel="stylesheet" href="{% static 'css/login.css' %}">
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<link rel="stylesheet" href="{% static 'css/web.css' %}" type="text/css">
-
-<!-- Link Font chữ Open Sans-->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@600;900&display=swap" rel="stylesheet">
-<link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
-    rel="stylesheet">
-<link
-    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,400;1,600;1,700;1,800;1,900&family=Overpass:wght@600;900&display=swap"
-    rel="stylesheet">
-<style>
-    p{
-        margin: 0;
-    }
-</style>
-{% endblock script_head %}
-{% block content_top %}
+{% load mathfilters %}
+{% block content_main %}
 <!-- Navbar -->
 
 <!--Nội dung-->
 
 
-<div class="container">
-    <div class="row">
+<div class="container h-100 bg-light min-vh-100 mb-3 mt-3 pt-3 pb-3 rounded">
+
+    {% for item in monhoc %}
+	<div class="col-12 m-1">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title"><a href="/subjects/{{item.MaMH}}" alt='...'>{{item.MaMH}} - {{item.TenMH}}</a></h5>
+				<p class="card-text">{{item.MoTa |safe |truncatechars:250}}
+				<a href="/subjects/{{item.MaMH}}">Xem chi tiết...</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+    {% for item in tailieu %}
+    <div class="col-12 m-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><a href="/document/{{item.MaTL}}" alt='...'>{{item.TenTL}} - {{item.TenTL}}</a></h5>
+                <small class="card-text card-subtitle text-muted">
+                    đăng bởi
+                        <span class="text-danger">
+                            {% if user.first_name %}
+                            {{user.first_name}}
+                            {% else %}
+                            {{user.username}}
+                            {% endif %}
+                        </span>
+                    lúc {{item.date |date:"H:i"}}
+                    ngày {{item.date |date:"d"}}
+                    tháng {{item.date |date:"m"}}
+                    năm {{item.date |date:"Y"}}
+                </small>
+                <p class="card-text">{{item.get_LoaiTL_display}} môn {{item.MaMH.TenMH}} của tác giả {{item.TacGia}}, Mô tả: {{item.MoTa|safe_text |truncatechars:200}}
+                    <a href="/document/{{item.MaTL}}">Xem chi tiết...</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% comment %} <div class="row">
         <h2>Môn học</h2>
         <table class="table table-hover;">
             <thead class="thead-light">
@@ -43,6 +64,7 @@
             </thead>
             <tbody>
                 {% for item in monhoc %}
+
                 <tr>
 
                     <td>
@@ -107,14 +129,8 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+    </div> {% endcomment %}
 </div>
 
 
-
-{% endblock content_top %}
-{% block content_main %}
-
-
-
-{% endblock content_main %}
+{% endblock %}

@@ -31,11 +31,12 @@ import shutil
 from django.http import HttpResponseRedirect,HttpResponse
 from wsgiref.util import FileWrapper
 from django.db.models import Sum
+from bs4 import BeautifulSoup
 # Create your views here.
 
 
 def home_view(request):
-    ic(User._meta.get_fields())
+    ic(request.session)
     return render(
         request,
         'global_home.html',
@@ -73,7 +74,14 @@ def search_view(request):
 
 
 def MonHocList_view(request, NhomMH, Khoa):
-    monhoc = MonHoc.objects.filter(NhomMH=NhomMH).filter(Khoa=Khoa)
+    data = MonHoc.objects.filter(NhomMH=NhomMH).filter(Khoa=Khoa)
+    num = 10
+    if request.GET.get('num'): num = int(request.GET.get('num'))
+    p = Paginator(data, num)
+    page = request.GET.get('page')
+    monhoc = p.get_page(page)
+
+
     khoa = ''
     nhom_mh = ''
     if monhoc:
@@ -85,7 +93,8 @@ def MonHocList_view(request, NhomMH, Khoa):
         {
             'khoa': khoa,
             'monhoc': monhoc,
-            'nhom_mh': nhom_mh
+            'nhom_mh': nhom_mh,
+            'num':num
         },
     )
 
@@ -93,12 +102,20 @@ def MonHocList_view(request, NhomMH, Khoa):
 def MonHoc_show(request,MaMH):
     comment = CommentMH.objects.filter(MaMH=MaMH)
     data = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
+    
     tailieu = {
         data.filter(LoaiTL='Slide').order_by("-date")[:4],
         data.filter(LoaiTL='DeThi').order_by("-date")[:4],
         data.filter(LoaiTL='BaiTap').order_by("-date")[:4],
         data.filter(LoaiTL='TaiLieuTK').order_by("-date")[:4]
     }
+    # for i in range(len(tailieu)):
+    #     if tailieu[i]:
+    #         ic(tailieu[i].MoTa)
+            # tailieu[i].Mo
+            # tmp = data[i].MoTa
+            # soup=BeautifulSoup(tmp, 'html.parser')
+            # ic(soup1)
     #ic(tailieu)
     # tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
     # ic(tailieu)
@@ -109,11 +126,14 @@ def MonHoc_show(request,MaMH):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(request.path)
+    monhoc = MonHoc.objects.get(MaMH=MaMH)
+    monhoc.len = data.count
+    monhoc.download = sum(list(map(lambda item: item[0], data.values_list('LuotTai'))))
     return render(
         request,
         'show_mon_cu_the.html',
         {
-            'monhoc': MonHoc.objects.get(MaMH=MaMH),
+            'monhoc': monhoc,
             'tailieu': tailieu,
             'comment':comment,
             'form':form,
@@ -123,12 +143,20 @@ def MonHoc_show(request,MaMH):
 
 def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
     tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
+    comment = CommentMH.objects.filter(MaMH=MaMH)
+    monhoc = get_object_or_404(MonHoc,MaMH=MaMH)
+    if request.method == 'POST':
+        form = CommentMHForm(request.POST, user=request.user,MaMH=monhoc)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path)
     if not tailieu:
         return HttpResponseRedirect(reverse('error'))
     return render(
         request,
         'show_MonHoc_LoaiTL.html',
         {
+            'comment':comment,
             'monhoc': MonHoc.objects.get(MaMH=MaMH),
             'tailieu': TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
         },
@@ -321,7 +349,7 @@ def DongGopTL_view(request):
                     zipObj.write(zipName,os.path.basename(zipName))
                     # Lưu thông tin của file vào csdl
                     file_tai_lieu = TL(
-                        {'MaTL': instance.MaTL, 'filename': filename, 'Path': uploaded_file_url})
+                        {'MaTL': instance.MaTL, 'filename': os.path.basename(filename), 'Path': uploaded_file_url})
                     file_tai_lieu.save()
                 zipObj.close()
             instance.save()
