@@ -1,1 +1,1 @@
-web: gunicorn butterfliesfinalproject.wsgi
+web: gunicorn FINALPROJECT.wsgi
