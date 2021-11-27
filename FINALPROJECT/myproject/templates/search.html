@@ -3,26 +3,19 @@
 {% load myfilters %}
 {% load static %}
 {% load mathfilters %}
+{% block content_top %}
+{% endblock content_top %}
+
+
 {% block content_main %}
 <!-- Navbar -->
 
 <!--Nội dung-->
 
 
-<div class="container h-100 bg-light min-vh-100 mb-3 mt-3 pt-3 pb-3 rounded">
-
-    {% for item in monhoc %}
-	<div class="col-12 m-1">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title"><a href="/subjects/{{item.MaMH}}" alt='...'>{{item.MaMH}} - {{item.TenMH}}</a></h5>
-				<p class="card-text">{{item.MoTa |safe |truncatechars:250}}
-				<a href="/subjects/{{item.MaMH}}">Xem chi tiết...</a>
-				</p>
-			</div>
-		</div>
-	</div>
-	{% endfor %}
+<div class="container h-100  min-vh-100 mb-3 mt-3 ">
+<h4 class="border-bottom text-dark text-lowercase mt-3 pb-2">có {{length}} kết quả tìm kiếm cho "{{keyword}}"</h4>
+<div class="bg-light pt-3 pb-3 rounded">
     {% for item in tailieu %}
     <div class="col-12 m-1">
         <div class="card">
@@ -49,87 +42,38 @@
         </div>
     </div>
     {% endfor %}
+    <div class="list-subject-footer row col-12 d-flex text-right pb-2 pt-2">
+            <div class="so-bai col-7 col-sm-8 col-lg-9">
+                <p style="display: inline;">Hiển thị tối đa</p>
+                <select id="maximum-number" name="maximum-number" style="border: none; " onchange= "window.location.href='?search={{keyword}}&num='+this.value">
+                    <option value={{num}} selected>{{num}}</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="25">30</option>
+                    <option value="25">35</option>
+                </select>
+            </div>
+            <div class="tong-bai col-5 col-sm-4 col-lg-3 d-flex"
+                <p style="display: inline;">Trang {{ tailieu.number }} / {{ tailieu.paginator.num_pages }}</p>
+                &ensp;
+                {% if tailieu.has_previous %}
+                    <a style="text-decoration: none" href="?search={{keyword}}&num={{num}}&page={{ tailieu.previous_page_number }}" class="backward" >&nbsp;<i class="fas fa-angle-left">&nbsp;</i></a>
+                {% else %}
+                    <a style="text-decoration: none" class="backward" ><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+                &ensp;
+                {% if tailieu.has_next %}
+                    <a style="text-decoration: none" href="?search={{keyword}}&num={{num}}&page={{ tailieu.next_page_number }}" class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                {% else %}
+                    <a style="text-decoration: none" class="forward" ><i class="fas fa-angle-right"></i></a>
+                {% endif %}
+            </div>
+	</div>
+</div>
+    
 
-    {% comment %} <div class="row">
-        <h2>Môn học</h2>
-        <table class="table table-hover;">
-            <thead class="thead-light">
-                <tr style="text-align: center;">
-                    <th>STT</th>
-                    <th>Mã môn học</th>
-                    <th>Tên môn học</th>
-                    <th>Mô tả</th>
-                    <th>Số tài liệu</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in monhoc %}
-
-                <tr>
-
-                    <td>
-                        {{forloop.counter}}
-                    </td>
-                    <td>
-                        <a href="/subjects/{{item.MaMH}}">{{item.MaMH}}</a>
-                    </td>
-                    <td>
-                        <p>{{item.TenMH}}</p>
-                    </td>
-                    <td>
-                        <p>{{item.MoTa}}</p>
-                    </td>
-                    <td>
-                        <p>{{item.SoLuongTL}}</p>
-                    </td>
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="row">
-        <h2>Tài liệu</h2>
-        <div class="col-sm-12">
-            <a href="/document/{{item.MaTL}}" class="card-title">{{item.TenTL}}</a>
-        </div>
-        <table class="table table-hover;">
-            <thead class="thead-light">
-                <tr style="text-align: center;">
-                    <th>STT</th>
-                    <th>Tên tài liệu</th>
-                    <th>Mã MH</th>
-                    <th>Ngày</th>
-                    <th>Tác giả</th>
-                    <th>Mô tả</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in tailieu %}
-                <tr>
-                    <td>
-                        {{forloop.counter}}
-                    </td>
-                    <td>
-                        <a href="/document/{{item.MaTL}}">{{item.TenTL}}</a>
-                    </td>
-                    <td>
-                        <a href="/subjects/{{item.MaMH}}">{{item.MaMH}}</a>
-                    </td>
-                    <td class='align-self-center'>
-                        <p>{{item.date}}</p>
-                    </td>
-                    <td>
-                        <p>{{item.TacGia}}</p>
-                    </td>
-                    <td>
-                        <p>{{item.MoTa|safe}}</p>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div> {% endcomment %}
 </div>
 
 

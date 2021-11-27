@@ -49,16 +49,29 @@ def search_view(request):
             request,
             '#',
         )
+    keyword= ''
     if request.method == 'GET' and request.GET.get("search") != None:
         searched = request.GET.get('search')
+        keyword = searched
         searched = unidecode(searched)
 
         if searched:
-            monhoc = MonHoc.objects.filter(Q(search__icontains=searched))
-            tailieu = TaiLieu.objects.filter(KiemDuyet=True).filter(Q(search__icontains=searched))
+            # monhoc = MonHoc.objects.filter(Q(search__icontains=searched))
+            data = TaiLieu.objects.filter(KiemDuyet=True).filter(Q(search__icontains=searched))
+
+            num = 10
+            if request.GET.get('num'): num = int(request.GET.get('num'))
+            p = Paginator(data, num)
+            page = request.GET.get('page')
+            tailieu = p.get_page(page)
+
+
             result = {
-                'monhoc': monhoc,
+                # 'monhoc': monhoc,
                 'tailieu': tailieu,
+                'num': num,
+                'length': len(data),
+                'keyword':keyword
             }
             return render(
                 request,
@@ -331,7 +344,7 @@ def DongGopTL_view(request):
             instance.date = datetime.datetime.now()
             instance.user = request.user
             instance.search = unidecode(
-                instance.TenTL + ' ' + instance.get_LoaiTL_display() + ' ' + MonHoc.objects.get(MaMH=instance.MaMH).TenMH + ' ' + (str)(instance.MaMH))
+                instance.TenTL + ' ' + instance.get_LoaiTL_display()+' '+instance.MaMH.TenMH + ' ' + instance.MaMH.get_Khoa_display() + instance.MaMH.get_NhomMH_display() + ' ' + (str)(instance.MaMH))
             # Lưu file vào cơ sở dữ liệu
             if request.FILES and request.FILES['myfile']:
                 myfile = request.FILES.getlist('myfile')

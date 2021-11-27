@@ -86,7 +86,8 @@ class RegisterForm(forms.Form):
     def save(self):
         User.objects.create_user(username=self.cleaned_data['username'],
                                  email=self.cleaned_data['email'],
-                                 password=self.cleaned_data['password1'])
+                                 password=self.cleaned_data['password1'],
+                                 last_name ="/media/avatar/defaut.jpg")
         tmp = User.objects.get(username=self.cleaned_data['username'])
         InformationUser.objects.create(User=tmp)
 
