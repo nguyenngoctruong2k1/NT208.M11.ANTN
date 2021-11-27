@@ -1,6 +1,6 @@
 from django import template
 # from myproject.models import Mon_Dai_Cuong, Toan_Tin_KHTN,TaiLieu
-from myproject.models import MonHoc, TaiLieu
+from myproject.models import MonHoc, TaiLieu,RecentView,ThongBao
 register = template.Library()
 
 
@@ -8,6 +8,16 @@ register = template.Library()
 def get_mon_hoc():
     return MonHoc.objects.all()
 
+@register.simple_tag()
+def get_recent():
+    return RecentView.objects.all().order_by("-ThoiGian")[:5]
+
+@register.simple_tag()
+def get_thongbao(user):
+    return ThongBao.objects.filter(Xem=False).filter(user=user).order_by("-ThoiGian")[:5]
+@register.simple_tag()
+def get_thongbao_count(user):
+    return ThongBao.objects.filter(Xem=False).filter(user=user).count()
 
 @register.simple_tag()
 def get_toan_tin_khtn():
@@ -15,7 +25,7 @@ def get_toan_tin_khtn():
 
 @register.simple_tag()
 def get_tai_lieu():
-    return TaiLieu.objects.all().order_by("-date")
+    return TaiLieu.objects.all().order_by("-date")[:5]
 
 @register.simple_tag()
 def get_tai_lieu_De_Thi():
