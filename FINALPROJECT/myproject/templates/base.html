@@ -26,15 +26,17 @@
 
 <body>
 	<!--banner-->
-	<div class="banner" style="height:200px; background-color:rgb(26, 25, 25)">
-		<img src="{% static 'images/Geometry 1 (1).png' %}" alt="geometry" class="geometry"
-			style="width:100%;height: 200px;">
+	<div class="banner" style="height:200px; background-image: url('{% static 'image/banner.png' %}');
+		background-repeat: no-repeat; background-size: 100%; ">
+		<!-- <img src="{% static 'images/Geometry 1 (1).png' %}" alt="geometry" class="geometry"
+			style="width:100%;height: 200px;"> -->
 		<div class="slogan-tieude">
-			<h1 class="tieude display-4">Web chia sẻ tài liệu</h1>
-			<h1 class="slogan display-5">Learning is sharing</h1>
+			<h1 class="tieude display-4" style="color: white; font-weight: normal; padding-left: 0%;">Web chia sẻ tài
+				liệu</h1>
+			<h1 class="slogan display-5" style="color: white; display: block;">Learning is sharing</h1>
 		</div>
-		<img src="{% static 'images/Circle Ice 1.png' %}" alt="ice" class="ice">
-		<img src="{% static 'images/Poster 1.png' %}" alt="poster" class="poster">
+		<!-- <img src="{% static 'images/Circle Ice 1.png' %}" alt="ice" class="ice">
+		<img src="{% static 'images/Poster 1.png' %}" alt="poster" class="poster"> -->
 	</div>
 	<!-- Navbar-->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -46,16 +48,9 @@
 					<img src="{% static 'images/show-quick-menu-48.png'%}" height="40" alt="" loading="lazy"
 						style="margin-top: 2px;" />
 				</a>
-				<!-- Search form -->
-				<!-- <form action="{% url 'search' %}" method="get">
-					<div class="Search" style="display: flex;">
-						<input type="text" name="search" class="form-control" placeholder="Search" name="searched">
-						<button type="submit" class="btn btn-outline-light"> <i class="fas fa-search"></i></button>
-					</div>
-				</form> -->
 				<form class="input-group w-auto my-auto d-none d-sm-flex" action="{% url 'search' %}" method="get">
 					<input autocomplete="off" type="search" class="form-control rounded" placeholder="Search"
-						style="min-width:300px;" name="search">
+						style="min-width:300px;" name="q">
 					<button type="submit" class="input-group-text border-2 d-none d-lg-flex"><i
 							class="fas fa-search"></i></button>
 				</form>
@@ -192,7 +187,9 @@
 	</nav>
 	<!-- Navbar -->
 
+	{% block content_thongbao %}
 
+	{% endblock content_thongbao %}
 	{% block content_top %}
 	<!-- Trưởng thêm!!! -->
 
