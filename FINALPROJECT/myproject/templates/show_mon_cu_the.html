@@ -42,8 +42,7 @@ function textAreaAdjust(element) {
     {% if loaiTL %}
     <div class="row p-2 border-top border-bottom">
         <div class="col-12 col-lg-3 pb-1">
-            <div class="bg-secondary card shadow-1-strong h-100">
-                
+            <div class="card shadow-1-strong h-100" style="background:#6c757d">
                     <div class="card-body text-white m-2">
                         <h3 class="card-title">{{ loaiTL.0.get_LoaiTL_display }}</h3>
                         <a href="{{ loaiTL.0.LoaiTL }}" class="btn btn-outline-light active float-right">Xem tất cả</a>
@@ -52,34 +51,32 @@ function textAreaAdjust(element) {
             </div>
         </div>
         <div class="col-lg-9">
-            <div class=" shadow-1-strong"
-                <ol class="list-group list-group-numbered ">
-                    {% for item in loaiTL %}
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <h5 class="card-title">{{item.TenTL}}</h5>
-                            <small class="card-text card-subtitle text-muted">
-                                đăng bởi
-                                    <span class="text-danger">
-                                        {% if user.first_name %}
-                                        {{user.first_name}}
-                                        {% else %}
-                                        {{user.username}}
-                                        {% endif %}
-                                    </span>
-                                lúc {{item.date |date:"H:i"}}
-                                ngày {{item.date |date:"d"}}
-                                tháng {{item.date |date:"m"}}
-                                năm {{item.date |date:"Y"}}
-                            </small>
-                            <p class="card-text">{{item.MoTa|safe_text |truncatechars:200}}</p>
-                            <a href="/document/{{item.MaTL}}" class="card-link">Xem thêm</a>
-                            <a href="/download/{{item.MaTL}}" class="card-link">Tải xuống</a>
-                        </div>
+            <ol class="list-group list-group-numbered ">
+                {% for item in loaiTL %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.TenTL}}</h5>
+                        <small class="card-text card-subtitle text-muted">
+                            đăng bởi
+                                <span class="text-danger">
+                                    {% if item.user.first_name %}
+                                    {{item.user.first_name}}
+                                    {% else %}
+                                    {{item.user.username}}
+                                    {% endif %}
+                                </span>
+                            lúc {{item.date |date:"H:i"}}
+                            ngày {{item.date |date:"d"}}
+                            tháng {{item.date |date:"m"}}
+                            năm {{item.date |date:"Y"}}
+                        </small>
+                        <p class="card-text">{{item.MoTa|safe_text |truncatechars:200}}</p>
+                        <a href="/document/{{item.MaTL}}" class="card-link">Xem thêm</a>
+                        <a href="/download/{{item.MaTL}}" class="card-link">Tải xuống</a>
                     </div>
-                    {% endfor %}
-                </ol>
-            </div>
+                </div>
+                {% endfor %}
+            </ol>
         </div>
     </div>
     {% endif %}
@@ -113,7 +110,7 @@ function textAreaAdjust(element) {
         <div>
             <div class="card1">
                 <div class="ms-2 me-auto" style="padding:0 10px;">
-                    <div class="fw-bold">
+                    <div class="">
                     <b>
                         {% if cmt.user.first_name %}
                         {{cmt.user.first_name}}
@@ -123,7 +120,7 @@ function textAreaAdjust(element) {
                         
                     </b>
                     <span class='font-weight-light font-italic'>
-                        {{cmt.ThoiGian | days_until }} ngày trước
+                        {{cmt.ThoiGian | days_until }} trước
                     <span>
                     </div>
                     {{cmt.NoiDung|linebreaks}}

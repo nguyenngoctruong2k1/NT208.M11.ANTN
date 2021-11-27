@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'myproject.apps.MyprojectConfig',
     'django_social_share',
     'mathfilters',
-    'ckeditor'
+    'ckeditor',
+    'addthis',
 ]
 
 MIDDLEWARE = [
@@ -107,7 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+ADDTHIS_SETTINGS = {
+    'PUB_ID': 'xx-xxxxxxxxxxxxxxxx',
+}
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 

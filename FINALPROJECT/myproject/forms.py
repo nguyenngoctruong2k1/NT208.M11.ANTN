@@ -2,7 +2,7 @@
 from django.db.models import query
 from django.http import request
 from django.template.defaultfilters import slugify
-from myproject.models import CommentMH, InformationUser,CommentTL
+from myproject.models import CommentMH, InformationUser, CommentTL
 from django import forms
 from django.db import models
 from django.forms import fields
@@ -18,8 +18,8 @@ from icecream import ic
 
 class CommentMHForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user',None)
-        self.MaMH = kwargs.pop('MaMH',None)
+        self.user = kwargs.pop('user', None)
+        self.MaMH = kwargs.pop('MaMH', None)
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
@@ -32,24 +32,27 @@ class CommentMHForm(forms.ModelForm):
         model = CommentMH
         fields = ["NoiDung"]
         widgets = {
-            'NoiDung': forms.Textarea(attrs={'class': 'form-control','rows':'3'}),
+            'NoiDung': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
         }
+
 
 class CommentTLForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user',None)
-        self.MaTL = kwargs.pop('MaTL',None)
+        self.user = kwargs.pop('user', None)
+        self.MaTL = kwargs.pop('MaTL', None)
         super().__init__(*args, **kwargs)
+
     def save(self, commit=True):
         comment = super().save(commit=False)
         comment.user = self.user
         comment.MaTL = self.MaTL
         comment.save()
+
     class Meta:
-        model = CommentTL 
+        model = CommentTL
         fields = ["NoiDung"]
         widgets = {
-            'NoiDung': forms.Textarea(attrs={'class': 'form-control','rows':'3'}),
+            'NoiDung': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
         }
 # Create your forms here.
 
@@ -71,7 +74,7 @@ class RegisterForm(forms.Form):
             password2 = self.cleaned_data['password2']
             if password1 == password2 and password1:
                 return password2
-        raise forms.ValidationError("Mật khẩu không hợp lệ")
+        raise forms.ValidationError("Mật khẩu không khớp")
 
     def clean_username(self):
         username = self.cleaned_data['username']

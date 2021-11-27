@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-ln6#5=u=x#)+x^z=8q8#&1lhi*+nzyy6q7_wjjfuy1kd2k%kb%
 DEBUG = False
 # DEBUG = True
 
+
 #ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS = []
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django_social_share',
     'mathfilters',
     'ckeditor',
+    'myproject',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +63,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR/ 'templates'
+            BASE_DIR / 'templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
