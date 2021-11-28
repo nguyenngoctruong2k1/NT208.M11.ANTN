@@ -27,8 +27,15 @@ SECRET_KEY = 'django-insecure-ln6#5=u=x#)+x^z=8q8#&1lhi*+nzyy6q7_wjjfuy1kd2k%kb%
 DEBUG = False
 # DEBUG = True
 
-ALLOWED_HOSTS = ['afternoon-waters-74819.herokuapp.com']
-
+# ALLOWED_HOSTS = ['afternoon-waters-74819.herokuapp.com']
+ALLOWED_HOSTS = [
+   '*',
+   'http://djangoprojectbutterflies.herokuapp.com/',
+   'https://djangoprojectbutterflies.herokuapp.com/',
+   'djangoprojectbutterflies.herokuapp.com',
+   'djangoprojectbutterflies.herokuapp.com/',
+   '127.0.0.1',
+]
 
 # Application definition
 
