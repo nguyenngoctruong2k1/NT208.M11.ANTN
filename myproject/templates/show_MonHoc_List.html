@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load mon_hoc_tags %}
-{% block title %}{{khoa}}{% endblock %}
+{% block title %} {% if nhom_mh %} Nhóm môn học {{ nhom_mh }} của {% endif %} {{khoa}}{% endblock %}
 {% block title_MH %}
 	{% if nhom_mh %}
 		{{ nhom_mh }} >>

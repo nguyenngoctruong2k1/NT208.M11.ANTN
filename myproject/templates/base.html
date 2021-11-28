@@ -186,7 +186,7 @@
 		{% else %}
 			<li id="nav-item me-3 me-lg-1" style="list-style: none;">
 				<a href="{% url 'DangNhap_view' %}" style="color: rgb(255, 255, 255); font-size: 18px;">
-					Login/Join <i class=" fas fa-sign-in-alt"></i></a>
+					Đăng nhập <i class=" fas fa-sign-in-alt"></i></a>
 			</li>
 		{% endif %}
 		</div>
@@ -227,7 +227,7 @@
 								<h4 style="font-size:20px; text-align: center; text-shadow: 2px 2px 5px red;" class="p-2">Tài liệu mới nhất</h4>
 								{% get_tai_lieu as tai_lieu %}
 								{% for item in tai_lieu %}
-								<a href="/document/{{item.MaTL}}" class="list-group-item border-0 pl-2 border-top justify-content-between align-items-center" style="font-size: 12px;">
+								<a href="/document/{{item.MaTL}}" class="list-group-item border-0 pl-2 border-top justify-content-between align-items-center">
 									{{item.TenTL}}
 									<br/>
 									<span class="badge badge-primary badge-pill" style="background-color: rgba(37, 165, 32, 0.6); font-size: 9px;">{{item.date}}</span>

@@ -2,7 +2,7 @@
 {% load myfilters %}
 {% load mathfilters %}
 {% load static %}
-{% block title %}{{ monhoc.TenMH }}{% endblock %}
+{% block title %}{{ monhoc.TenMH }} | {{ monhoc.get_Khoa_display }}{% endblock %}
 {% block title_MH %}
     {{ monhoc.TenMH }}
 {% endblock %}
