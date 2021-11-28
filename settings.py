@@ -30,6 +30,7 @@ DEBUG = False
 # ALLOWED_HOSTS = ['afternoon-waters-74819.herokuapp.com']
 ALLOWED_HOSTS = [
    '*',
+   '0.0.0.0',
    'http://djangoprojectbutterflies.herokuapp.com/',
    'https://djangoprojectbutterflies.herokuapp.com/',
    'djangoprojectbutterflies.herokuapp.com',
