@@ -1,17 +1,9 @@
-import re
-from django.db.models import query
-from django.db.models.fields import FilePathField, NullBooleanField
-from django.http import request
 from django.http.response import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 import datetime
 from django.utils import timezone
 from django.urls import reverse
-from django.views.generic.edit import ModelFormMixin
-from django.views.generic import ListView, DetailView
-from django.http import StreamingHttpResponse
 from wsgiref.util import FileWrapper
-import mimetypes
 
 from myproject.models import CommentTL, MonHoc,FileUpload, TaiLieu,CommentMH,InformationUser,RecentView,ThongBao
 from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHForm,Information, CommentTLForm
@@ -19,14 +11,12 @@ from myproject.forms import ThemMonHoc, ThemTaiLieu, RegisterForm,TL,CommentMHFo
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
-import random
 import hashlib
 import time
 from django.contrib import messages
 import os
 from django.conf import settings
-from PIL import Image
-from django.db.models import Count, Q
+from django.db.models import Q
 from zipfile import ZipFile
 from icecream import ic
 from unidecode import unidecode
@@ -34,14 +24,11 @@ import shutil
 from django.http import HttpResponseRedirect,HttpResponse
 from wsgiref.util import FileWrapper
 from django.db.models import Sum
-from bs4 import BeautifulSoup
-from django.template import RequestContext
 
 # Create your views here.
 
 
 def home_view(request):
-    ic(request.session)
     return render(
         request,
         'global_home.html',
@@ -127,8 +114,7 @@ def MonHoc_show(request, MaMH):
         data.filter(LoaiTL='BaiTap').order_by("-date")[:4],
         data.filter(LoaiTL='TaiLieuTK').order_by("-date")[:4]
     }
-    # tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
-    # ic(tailieu)
+
     monhoc = get_object_or_404(MonHoc, MaMH=MaMH)
     form = CommentMHForm()
     if request.method == 'POST':
@@ -539,7 +525,6 @@ def ThanhVien_view(request):
         data[i].Comment = CommentMH.objects.filter(user=data[i].User).count()
         data[i].Comment += CommentTL.objects.filter(user=data[i].User).count()
 
-    # ic(InformationUser.objects.all())
     return render(
         request,
         'db_ThanhVien.html',
