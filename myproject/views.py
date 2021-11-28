@@ -221,7 +221,7 @@ def DangKy_view(request):
             form.save()
             messages.add_message(request, messages.INFO,
                                  'Đăng kí thành công. Đăng nhập để tiếp tục')
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('DangNhap_view'))
     else:
         form = RegisterForm()
     return render(
