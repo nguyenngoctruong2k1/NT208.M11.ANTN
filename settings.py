@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ln6#5=u=x#)+x^z=8q8#&1lhi*+nzyy6q7_wjjfuy1kd2k%kb%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 # DEBUG = True
-django_heroku.settings(locals())
+
 ALLOWED_HOSTS = ['afternoon-waters-74819.herokuapp.com']
 
 
@@ -134,3 +134,5 @@ MEDIA_ROOT = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_heroku.settings(locals())
