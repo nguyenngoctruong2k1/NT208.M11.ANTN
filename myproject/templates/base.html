@@ -8,7 +8,7 @@
 	{% load static %}
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="icon" type="image/x-icon" href="{% static 'abcd.png' %}" />
+	<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
 	<title>{% block title %}{% endblock %}</title>	
 	<!-- Import Boostrap css, js, font awesome here -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -230,7 +230,13 @@
 								<a href="/document/{{item.MaTL}}" class="list-group-item border-0 pl-2 border-top justify-content-between align-items-center">
 									{{item.TenTL}}
 									<br/>
-									<span class="badge badge-primary badge-pill" style="background-color: rgba(37, 165, 32, 0.6); font-size: 9px;">{{item.date}}</span>
+									<span class="badge badge-primary badge-pill" style="background-color: rgba(37, 165, 32, 0.6); font-size: 11px;"><small class="card-text card-subtitle">
+                           			{{item.date |date:"H:i"}}
+										ngày {{item.date |date:"d"}}
+										tháng {{item.date |date:"m"}}
+										năm {{item.date |date:"Y"}}
+									</small>
+								</span>
 								</a>
 								{% endfor %}
 							</div>

@@ -1,0 +1,78 @@
+/*===============END OF Menu==========*/
+
+/*=====================================
+============    BACKGROUND ============
+=======================================*/
+#background{
+    height: 630px;
+    line-height: 630px;
+    background-color: #DDEBFF;
+}
+/* Dịch chuyển hình xuống góc phải */
+
+
+.backgroundimage{
+    background-image: url('../Image/Untitled-removebg-preview.png');
+    width: 100%;
+    height: 100%;
+    background-size:100%;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+}
+/* Chỉnh thanh tìm kiếm */
+.Search > input[type="Text"] {
+    font-size: 24px;
+    float: left;
+    width: 90%;
+    height: 50px;
+    border-radius: 40px;
+    padding-left: 32px;
+    padding-right: 80px;
+}
+
+.Search > button{
+    float: left;
+    font-size: 45px;
+    color: #535555;
+    font-weight: 600;
+    height: 60px;
+    text-align: center;
+    margin-left: -100px;
+    padding-top: 5px;
+    margin-top: 2px;
+}
+/*============== END OF BACKGROUND===========*/
+
+/* Footer*/
+.footer {
+    background-color: #FFFFFF;
+    text-align: center;
+}
+
+.footer > div{
+    float: left;
+    
+    min-height: 250px;
+    min-width: 350px;
+}
+
+.footer > div > p{
+    font-size: 24px;
+    font-weight: bold;
+    padding-top: 24px;
+}
+
+.footer >div > img{
+    text-align: center;
+    padding-top: 10px;
+    margin-bottom: -45px;
+}
+
+
+/* Chỉnh cho dấu tick*/
+.footer > div > i {
+    color: rgb(48, 165, 48);
+    width: 62px;
+    height: 62px;
+    font-size: 62px;
+}

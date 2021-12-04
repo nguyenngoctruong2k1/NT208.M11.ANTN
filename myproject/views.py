@@ -105,7 +105,7 @@ def MonHocList_view(request, NhomMH, Khoa):
 
 
 def MonHoc_show(request, MaMH):
-    comment = CommentMH.objects.filter(MaMH=MaMH)
+    comment = CommentMH.objects.filter(MaMH=MaMH).order_by("-ThoiGian")
     data = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
     
     tailieu = {
@@ -138,9 +138,8 @@ def MonHoc_show(request, MaMH):
 
 
 def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
-    comment = CommentMH.objects.filter(MaMH=MaMH)
+    comment = CommentMH.objects.filter(MaMH=MaMH).order_by("-ThoiGian")
     tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
-    comment = CommentMH.objects.filter(MaMH=MaMH)
     monhoc = get_object_or_404(MonHoc,MaMH=MaMH)
     if request.method == 'POST':
         form = CommentMHForm(request.POST, user=request.user,MaMH=monhoc)
@@ -160,7 +159,6 @@ def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
         request,
         'show_MonHoc_LoaiTL.html',
         {
-            'comment':comment,
             'monhoc': MonHoc.objects.get(MaMH=MaMH),
             'tailieu': TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL),
             'comment':comment,
@@ -170,7 +168,7 @@ def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
 
 
 def one_document_view(request, slug):
-    comment = CommentTL.objects.filter(MaTL=slug)
+    comment = CommentTL.objects.filter(MaTL=slug).order_by("-ThoiGian")
     tai_lieu = TaiLieu.objects.get(MaTL=slug)
     if request.user.username:
         RecentView.objects.get_or_create(user = request.user, MaTL_id=slug)
@@ -547,7 +545,7 @@ def BinhLuan_view(request):
 def ThongTinCaNhan_view(request):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
-
+    form = Information()
     if request.method == 'POST':
         # Lấy thông tin về form
         form = Information(request.POST)
@@ -578,9 +576,8 @@ def ThongTinCaNhan_view(request):
             infoUser.Github = request.POST['Github']
             infoUser.Bio = request.POST['Bio']
             infoUser.save()
-            messages.add_message(request, messages.INFO,
-                                 'Cập nhật thông tin thành công')
-    form = Information()
+            messages.add_message(request, messages.INFO, 'Cập nhật thông tin thành công')
+
     return render(
         request,
         'db_ThongTinCaNhan.html',
