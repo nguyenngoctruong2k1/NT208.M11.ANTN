@@ -63,7 +63,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <ul class="messages"></ul>
+                <ul class="messages">
                 {% for message in messages %}
                 <li class="text-dark" {% if message.tags %} class="{{ message.tags }}" {% endif %}
                     style="list-style: none;">{{ message }}</li>
@@ -105,44 +105,44 @@
             </div>
             <div class="col-12 col-md-8">
                 <div class="form-group row">
-                    <label for="TenTL" class="col-md-3 col-lg-2 col-form-label ">Họ và tên:</label>
+                    <label class="col-md-3 col-lg-2 col-form-label ">Họ và tên:</label>
                     <div class="col-md-9 col-lg-10 align-self-center">
                         {{ form.Fullname }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="TenTG" class="col-md-3 col-lg-2 col-form-label">Username:</label>
+                    <label class="col-md-3 col-lg-2 col-form-label">Username:</label>
                     <div class="col-md-9 col-lg-10">
                         <input type="text" class="form-control" id="TenTG" disabled value="{{ user.username }} " required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="MaMH" class="col-md-3 col-lg-2 col-form-label">Lớp:</label>
+                    <label class="col-md-3 col-lg-2 col-form-label">Lớp:</label>
                     <div class="col-md-9 col-lg-10">
                         {{ form.Class }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="TenTL" class="col-md-3 col-lg-2 col-form-label">Facebook:</label>
+                    <label class="col-md-3 col-lg-2 col-form-label">Facebook:</label>
                     <div class="col-md-9 col-lg-10">
                         {{ form.Facebook }}
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="TenTG" class="col-md-3 col-lg-2 col-form-label">Github:</label>
+                    <label  class="col-md-3 col-lg-2 col-form-label">Github:</label>
                     <div class="col-md-9 col-lg-10">
                         {{ form.Github }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="MaMH" class="col-md-3 col-lg-2 col-form-label">Email:</label>
+                    <label class="col-md-3 col-lg-2 col-form-label">Email:</label>
                     <div class="col-md-9 col-lg-10">
                         {{ form.Email }}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="exampleFormControlFile1" class="col-md-3 col-lg-2 col-form-label">Tự bạch:</label>
+                    <label class="col-md-3 col-lg-2 col-form-label">Tự bạch:</label>
                     <div class="col-md-9 col-lg-10">
                         {{ form.Bio }}
                     </div>

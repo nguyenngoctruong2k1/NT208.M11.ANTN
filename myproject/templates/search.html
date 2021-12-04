@@ -20,7 +20,7 @@
     <div class="col-12 m-1">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><a href="/document/{{item.MaTL}}" alt='...'>{{item.TenTL}} - {{item.TenTL}}</a></h5>
+                <h5 class="card-title"><a href="/document/{{item.MaTL}}">{{item.TenTL}} - {{item.TenTL}}</a></h5>
                 <small class="card-text card-subtitle text-muted">
                     đăng bởi
                         <span class="text-danger">
@@ -55,7 +55,7 @@
                     <option value="25">35</option>
                 </select>
             </div>
-            <div class="tong-bai col-5 col-sm-4 col-lg-3 d-flex"
+            <div class="tong-bai col-5 col-sm-4 col-lg-3 d-flex">
                 <p style="display: inline;">Trang {{ tailieu.number }} / {{ tailieu.paginator.num_pages }}</p>
                 &ensp;
                 {% if tailieu.has_previous %}

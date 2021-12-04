@@ -48,9 +48,9 @@
             <span class="number">{{ overview.num_user }}</span>
         </a>
     </div>
-    <div class="col-6 col-md-3 pt-2 pt-md-0" class="overview">
+    <div class="col-6 col-md-3 pt-2 pt-md-0">
         <a class="overview" href="#">
-            <span class="name" >Lươt tải</span>
+            <span class="name" >Lượt tải</span>
             <span class="number">{{ overview.num_download.LuotTai__sum }}</span>
         </a>
     </div>
@@ -75,7 +75,7 @@
                 <th scope="col" class="align-middle" style="border-top:0">Tên môn học</th>
                 <th scope="col" class="align-middle" style="border-top:0">Khoa/Bộ môn quản lý</th>
                 <th scope="col" class="align-middle" style="border-top:0">Nhóm môn học</th>
-                <th scope="col" class="align-middle" class="text-center" style="border-top:0">Số lượng TL</th>
+                <th scope="col" class="align-middle text-center" style="border-top:0">Số lượng TL</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,30 +106,28 @@
                 </select>
             </div>
             <div class="tong-bai col-2" style="min-width: 200px;">
-                <p style="display: inline;">Page {{ monhoc.number }} of {{ monhoc.paginator.num_pages }}</p>
-                &ensp;
+                    <p style="display: inline;">Page {{ monhoc.number }} of {{ monhoc.paginator.num_pages }}</p>
+                    &ensp;
                 {% if monhoc.has_previous %}
-                <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.previous_page_number }}"
-                    class="backward">&nbsp;<i class="fas fa-angle-left">&nbsp;</i></a>
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.previous_page_number }}"
+                        class="backward">&nbsp;<i class="fas fa-angle-left">&nbsp;</i></a>
                 {% else %}
-                <a style="text-decoration: none" class="backward"><i class="fas fa-angle-left"></i></a>
+                    <a style="text-decoration: none" class="backward"><i class="fas fa-angle-left"></i></a>
                 {% endif %}
                 &ensp;
                 {% if monhoc.has_next %}
-                <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.next_page_number }}"
-                    class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
+                    <a style="text-decoration: none" href="?num={{num}}&page={{ monhoc.next_page_number }}"
+                        class="forward">&nbsp;<i class="fas fa-angle-right"></i>&nbsp;</a>
                 {% else %}
-                <a style="text-decoration: none" class="forward"><i class="fas fa-angle-right"></i></a>
+                    <a style="text-decoration: none" class="forward"><i class="fas fa-angle-right"></i></a>
                 {% endif %}
             </div>
         </div>
     </div>
-
 </div>
 {% endblock content %}
 
 {% block bonus_content%}
-
 {% if user.is_staff %}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -152,34 +150,34 @@
                         {{value}}
                     </div>
                     {% endfor %}
-                    <p>
+                    <div>
                     <ul class="messages">
                         {% for item in form_error %}
                         <li>{{ item }}</li>
                         {% endfor %}
                     </ul>
-                    </p>
+                    </div>
                     <hr>
                     <!-- {{ form.as_table }} -->
                     <!-- 'MaMH','TenMH','Khoa','NhomMH','MoTa' -->
                     <div class="form-group">
-                        <label for="MaMH" class="col-form-label">Mã MH:</label>
+                        <label class="col-form-label">Mã MH:</label>
                         {{ form.MaMH }}
                     </div>
                     <div class="form-group">
-                        <label for="TenMH" class="col-form-label">Tên môn học:</label>
+                        <label class="col-form-label">Tên môn học:</label>
                         {{ form.TenMH }}
                     </div>
                     <div class="form-group">
-                        <label for="KhoaQL" class="col-form-label">Khoa/Bộ môn quản lý:</label>
+                        <label class="col-form-label">Khoa/Bộ môn quản lý:</label>
                         {{ form.Khoa }}
                     </div>
                     <div class="form-group">
-                        <label for="NhomMH" class="col-form-label">Nhóm môn học: </label>
+                        <label class="col-form-label">Nhóm môn học: </label>
                         {{ form.NhomMH }}
                     </div>
                     <div class="form-group">
-                        <label for="NhomMH" class="col-form-label">Mô tả: </label>
+                        <label class="col-form-label">Mô tả: </label>
                         {{ form.MoTa }}
                     </div>
                     <div class="modal-footer">

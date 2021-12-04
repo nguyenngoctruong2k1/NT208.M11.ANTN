@@ -1,12 +1,7 @@
 {% extends 'base.html' %}
 {% load mon_hoc_tags %}
-{% block title %} {% if nhom_mh %} Nhóm môn học {{ nhom_mh }} của {% endif %} {{khoa}}{% endblock %}
-{% block title_MH %}
-	{% if nhom_mh %}
-		{{ nhom_mh }} >>
-	{% endif %}
-	{{khoa}}
-{% endblock %}
+{% block title %}{% if nhom_mh %}Nhóm môn học {{ nhom_mh|safe }} của {% endif %}{{khoa|safe}}{% endblock %}
+{% block title_MH %}{% if nhom_mh %}{{ nhom_mh }} >> {% endif %}{{khoa}}{% endblock %}
 {% block content %}
 
 
@@ -15,7 +10,7 @@
 	<div class="col-12 m-1">
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title"><a href="/subjects/{{item.MaMH}}" alt='...'>{{item.TenMH}}</a></h5>
+				<h5 class="card-title"><a href="/subjects/{{item.MaMH}}">{{item.TenMH}}</a></h5>
 				<p class="card-text">{{item.MoTa |safe |truncatechars:200}}
 				<a href="/subjects/{{item.MaMH}}">Xem chi tiết...</a>
 				</p>
@@ -36,7 +31,7 @@
                     <option value="25">35</option>
                 </select>
             </div>
-            <div class="tong-bai col-5 col-sm-4 col-lg-3 d-flex"
+            <div class="tong-bai col-5 col-sm-4 col-lg-3 d-flex">
                 <p style="display: inline;">Trang {{ monhoc.number }} / {{ monhoc.paginator.num_pages }}</p>
                 &ensp;
                 {% if monhoc.has_previous %}

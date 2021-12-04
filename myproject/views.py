@@ -466,10 +466,12 @@ def TaiLieu_delete(request, slug):
     # Lấy tất cả các file đính kèm
     fileUp = FileUpload.objects.filter(MaTL=slug)
     if fileUp:
-        basePath = os.path.join('document', slug)
-        paths = os.path.join(settings.MEDIA_ROOT, basePath)
-        shutil.rmtree(paths)
-        os.remove(paths+'.zip')
+        try:
+            basePath = os.path.join('document', slug)
+            paths = os.path.join(settings.MEDIA_ROOT, basePath)
+            shutil.rmtree(paths)
+            os.remove(paths+'.zip')
+        except:pass
     return redirect('TaiLieu_view')
 
 def Doc_Thong_Bao(request,slug):

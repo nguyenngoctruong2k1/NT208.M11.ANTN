@@ -16,8 +16,10 @@ function textAreaAdjust(element) {
 
 
 <div class="row pl-3 pr-3">
-    <table class="table table-borderless">
+
     <h4 class="border-bottom text-dark mt-3 pb-2 col-12" style='text-shadow: 2px 2px 5px red;'>Thông tin về môn học</h4>
+    <table class="table table-borderless">
+    
     <tbody>
         <tr>
             <th style="white-space:nowrap" scope="row">Tên môn học</th>
@@ -51,7 +53,7 @@ function textAreaAdjust(element) {
             </div>
         </div>
         <div class="col-lg-9">
-            <ol class="list-group list-group-numbered ">
+            <div class="list-group list-group-numbered ">
                 {% for item in loaiTL %}
                 <div class="card mb-2">
                     <div class="card-body">
@@ -76,7 +78,7 @@ function textAreaAdjust(element) {
                     </div>
                 </div>
                 {% endfor %}
-            </ol>
+            </div>
         </div>
     </div>
     {% endif %}
@@ -89,7 +91,7 @@ function textAreaAdjust(element) {
 {% if user.username %}
 <div class="row">
     <div class="col-12 d-flex" >
-        <img src="{{ user.last_name}}" class="rounded-circle" width="70" height="70" style="min-width:70px" alt=""loading="lazy">
+        <img src="{{ user.last_name}}" class="rounded-circle" width="70" height="70" style="min-width:70px" alt="" loading="lazy">
         <form method='POST' class="w-100 pl-2">
             {% csrf_token %}
             <div class="form-group border-dark" style='border-bottom: 2px solid;'>
@@ -106,22 +108,22 @@ function textAreaAdjust(element) {
 {% else %}
 {% for cmt in comment %}
     <div class="p-0 col-12 d-flex" >
-        <img src="{{ cmt.user.last_name}}" class="rounded-circle" width="40" height="40" alt=""loading="lazy">
+        <img src="{{ cmt.user.last_name}}" class="rounded-circle" width="40" height="40" alt="" loading="lazy">
         <div>
             <div class="card1">
                 <div class="ms-2 me-auto" style="padding:0 10px;">
-                    <div class="">
-                    <b>
-                        {% if cmt.user.first_name %}
-                        {{cmt.user.first_name}}
-                        {% else %}
-                        {{cmt.user.username}}
-                        {% endif %}
-                        
-                    </b>
-                    <span class='font-weight-light font-italic'>
-                        {{cmt.ThoiGian | days_until }} trước
-                    <span>
+                    <div>
+                        <b>
+                            {% if cmt.user.first_name %}
+                            {{cmt.user.first_name}}
+                            {% else %}
+                            {{cmt.user.username}}
+                            {% endif %}
+                            
+                        </b>
+                        <span class='font-weight-light font-italic'>
+                            {{cmt.ThoiGian | days_until }} trước
+                        </span>
                     </div>
                     {{cmt.NoiDung|linebreaks}}
                 </div>

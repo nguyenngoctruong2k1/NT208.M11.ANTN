@@ -2,10 +2,12 @@
 <html lang="en">
 
 <head>
+	{% load static %}
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
 	<title>Đăng nhập tài khoản</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -148,13 +150,13 @@
 			</div>
 			{% endif %}
 			<h2 style="font-size: 50px; text-align: center;">Đăng Nhập</h2>
-			<p>
-			<ul class="messages">
-				{% for item in form_error %}
-				<li>{{ item }}</li>
-				{% endfor %}
-			</ul>
-			</p>
+			<div>
+				<ul class="messages">
+					{% for item in form_error %}
+					<li>{{ item }}</li>
+					{% endfor %}
+				</ul>
+			</div>
 			<hr>
 			<div class="form-group">
 				<div class="input-group">

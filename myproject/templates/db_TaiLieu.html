@@ -57,9 +57,10 @@
                         <li style="width:100%;text-align: center;"><a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem</a></li>
                         
                         <li style="width:100%;text-align: center;">
-                            <button class="dropdown-item" onclick=FuncDelete("./delete/{{ item.MaTL }}")>Xóa</button>
+                            <button class="dropdown-item" id="{{ item.MaTL }}" onclick="FuncDelete(id)">Xóa</button>
                         </li>
                     </ul>
+                    
                 {% else %}
                     <a class="btn btn-success" style="border-radius: 25px;" href="/document/{{ item.MaTL }}">Xem</a>
                 {% endif %}
@@ -103,50 +104,11 @@
 {% endblock content %}
 {% block script_content %}
 <script>
-    function FuncDelete(link) {
+    function FuncDelete(id) {
         if (confirm("Xác nhận xóa tài liệu: ")) {
-            location.href = link;
+            location.href = "./delete/"+id;
         }
     }
-    $('.dropdown-menu user').on('click', function(e) {
-        if (!$(this).next().hasClass('show')) {
-            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-        }
-        var $subMenu = $(this).next(".dropdown-menu");
-        $subMenu.toggleClass('show');
-
-        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-            $('.dropdown-submenu .show').removeClass("show");
-        });
-        return false;
-    });
-
-    // Sử lý sự kiện khi click subject-item 
-    function show_item_hidden(id){
-        var x = document.getElementsByClassName("object-item-hidden");
-        if (x.length>1) x[0].parentNode.innerHTML = '<div class="subject-item-show" onclick="show_item_hidden(this.parentNode.id)">'+x[0].parentNode.firstElementChild.innerHTML+'</div>';
-        else
-        {
-            var htmlObj = document.getElementById(id);
-            htmlObj.innerHTML = htmlObj.innerHTML + document.getElementById('object-item-hidden').innerHTML;
-            document.getElementById('MaMH').value = htmlObj.firstElementChild.children[1].innerHTML;
-            document.getElementById('TenMH').value = htmlObj.firstElementChild.children[2].innerHTML;
-            // document.getElementById('KhoaQL').value = htmlObj.firstElementChild.children[3].innerHTML;
-            for(var i, j = 0; i = document.getElementById('KhoaQL').options[j]; j++) {
-                if(i.value == htmlObj.firstElementChild.children[3].innerHTML) {
-                    document.getElementById('KhoaQL').selectedIndex = j;
-                    break;
-                }
-            }
-            // document.getElementById('NhomMH').value = htmlObj.firstElementChild.children[4].innerHTML;
-            for(var i, j = 0; i = document.getElementById('NhomMH').options[j]; j++) {
-                if(i.value == htmlObj.firstElementChild.children[4].innerHTML) {
-                    document.getElementById('NhomMH').selectedIndex = j;
-                    break;
-                }
-            }
-        }
-    };
 </script>
 {% endblock%}
 

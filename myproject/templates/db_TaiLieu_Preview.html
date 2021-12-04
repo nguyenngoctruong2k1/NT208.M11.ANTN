@@ -3,7 +3,7 @@
 {% block TrangDTL %}horizontal{% endblock%}
 {% block TieuDe %}Xem trước tài liệu{% endblock %}
 {% block script_content %}
-    <style  type="text/css">
+    <style>
         .django-ckeditor-widget{
             width: 100%;
         }
@@ -55,10 +55,10 @@
                         <li class='list-group-item'><a href="{{ item.Path }}" alt="{{ item.filename }}">{{ item.filename }}</a></li>
                     {% endfor %}
                 {% else %}
-                    <li class='list-group-item'>Không có tệp tài liệu nào!</a></li>
+                    <li class='list-group-item'>Không có tệp tài liệu nào!</li>
                 {% endif %}
                     
-                <ul>
+                </ul>
             </div>
         </div>
         <div class="form-group row justify-content-center">
@@ -73,19 +73,5 @@
 {% endblock content %}
 {% block script_body %}
 
-<script language="javascript">
-    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 500);
-    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1000);
-    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1500);
-    setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 2000);
-    function showFile(){
-        document.getElementById("showFile").innerHTML =""
-        var inp = document.getElementById("myfile");
-        for (i = 0; i < inp.files.length; i++) {
-            let file = inp.files[i];
-            document.getElementById("showFile").innerHTML += "<li class='list-group-item'>"+file.name+"</li>"
-        }
-    }
-</script>
 {% endblock script_body %}
             

@@ -5,7 +5,7 @@
 {% block TieuDe %}Duyệt Tài Liệu{% endblock %}
 {% block script_content %}
 
-<style  type="text/css">
+<style>
     .django-ckeditor-widget{
         width: 100%;
     }
@@ -29,6 +29,7 @@
             </thead>
             <tbody>
             {% for item in tailieu %}
+                <tr>
                 <th scope="row" class="align-middle">{{ tailieu.number| sub:1| mul:num| add:forloop.counter }}</th>
                 <td class="align-middle" >{{ item.TenTL }}</td>
                 <td class="align-middle">
@@ -83,7 +84,7 @@
 
 {% block script_body %}
 
-<script language="javascript">
+<script>
     setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 500);
     setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1000);
     setTimeout(function() {document.getElementById("cke_id_MoTa").style.width = '100%';}, 1500);

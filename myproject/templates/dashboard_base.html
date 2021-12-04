@@ -1,7 +1,7 @@
 {% load static %}
 {% load mathfilters %}
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
@@ -43,7 +43,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="list-item">
+                    <ul class="list-item p-0 w-100">
                         <li class="item {% block TrangTQ %}{% endblock %}">
                             <a class="nav-link pl-2 p-lg-3 p-xl-4" href="{% url 'dashboard_view' %}">
                                 <i class="fas fa-chart-pie"></i>
@@ -90,7 +90,7 @@
                                 Trang chủ
                             </a>
                         </li>
-                    </div>
+                    </ul>
                 </div>
             </nav>
         </div>
@@ -101,7 +101,7 @@
                     <h2 class="TieuDe">{% block TieuDe %}{% endblock %}</h2>
                 </div>
                 <div class="col-6">
-                    <div class="user" rule="button">
+                    <div class="user">
                         <a class="nav-link" href="#" data-toggle="dropdown" style="padding: 0; " aria-expanded="false">
 
                             <div class="row nav-justified">
@@ -133,7 +133,6 @@
             {% block content%}{% endblock %}
 
         </div>
-    </div>
     {% block bonus_content%}{% endblock %}
     {% block script_body %}
 

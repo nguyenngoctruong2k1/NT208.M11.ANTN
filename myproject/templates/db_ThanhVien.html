@@ -12,7 +12,7 @@
                 <th scope="col" class='align-middle' style="border-top:0">#</th>
                 <th scope="col" class='align-middle' style="border-top:0">Người dùng</th>
                 <th scope="col" class='align-middle' style="border-top:0">Thời gian tham gia</th>
-                <th ccope='col' class='align-middle' style="border-top:0">Vai trò</th>
+                <th scope='col' class='align-middle' style="border-top:0">Vai trò</th>
                 <th scope="col" class='align-middle' style="border-top:0">Trạng thái</th>
                 <th scope="col" class='align-middle' style="border-top:0">Đóng góp</th>
                 <th scope="col" class='align-middle' style="border-top:0"></th>
@@ -29,13 +29,13 @@
                     <td>
                         {% if item.User.first_name %}
                             {{ item.User.first_name }}
-                            </br>
+                            <br/>
                         {% endif %}
                         {{ item.User.username }}
                     </td>
                     <td class='align-middle'>
                         {{ item.ThoiGianTG }} ngày 
-                        </br>
+                        <br/>
                         <small class='font-italic'>đăng ký lúc {{ item.User.date_joined | date:'H:i' }} ngày {{ item.User.date_joined | date:'d/m/Y' }} </small>
                          
                         
@@ -56,16 +56,16 @@
                     </td>
                     <td class='align-middle'>
                         {{ item.TaiLieu }} tài liệu
-                        </br>
+                        <br/>
                         {{ item.Comment }} bình luận
                     </td>
                     <td class='align-middle'>
                         <div class="btn-group dropleft">
-                        <a class="nav-link" style='background:none; border:none' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="nav-link" style='background:none; border:none' type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             &ensp; <i class="fas fa-ellipsis-v"></i> &ensp;
-                        </a>
+                        </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem thông tin</a></li>
+                            <a class="dropdown-item" href="/document/{{ item.MaTL }}" target="_blank">Xem thông tin</a>
                             <a class="dropdown-item" href="{% url 'ThanhVien_Active' item.User.username %}">
                                 {% if item.User.is_active %}
                                     Khóa tài khoản
@@ -91,7 +91,7 @@
         <div class="list-subject-footer row text-dark">
             <div class="so-bai col-12 col-sm-6 pr-3 align-self-center ">
                 <p style="display: inline;">Số bài hiển thị tối đa</p>
-                <select id="maximum-number" class='text-dark' name="maximum-number" style="border: none;"onchange= "window.location.href='?num='+this.value">
+                <select id="maximum-number" class='text-dark' name="maximum-number" style="border: none; "onchange= "window.location.href='?num='+this.value">
                     <option value={{num}} selected>{{num}}</option>
                     <option value="10">10</option>
                     <option value="15">15</option>

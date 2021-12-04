@@ -48,8 +48,10 @@ function textAreaAdjust(element) {
                     <i class="fas fa-download"></i>&nbsp; {{ tai_lieu.LuotTai }}
                     <i class="fas fa-eye ml-4"></i>&nbsp; {{ tai_lieu.LuotXem }} 
                 </li>
+                <li class="list-group-item bg-light border-0 shadow-none d-flex  align-items-center">
+                    <a href="/download/{{tai_lieu.MaTL}}" class="btn btn-success">Tải xuống tài liệu</a>
+                </li>
                 
-                <a href="/download/{{tai_lieu.MaTL}}" class="btn btn-success">Tải xuống tài liệu</a>
             </ul>
             
 		</div>
@@ -62,13 +64,13 @@ function textAreaAdjust(element) {
 			<h2 style="font-size: 20px; text-shadow: 2px 2px 5px red;">Mô tả tài liệu</h2>
 			{{ tai_lieu.MoTa | safe }}
 			<h2 style="font-size: 20px; text-shadow: 2px 2px 5px red;">Danh sách File tài liệu đính kèm</h2>
-			<p style="font-size: 16px;">
+			<div style="font-size: 16px;">
 				<ul>
  					{% for item in FileDinhKem %}
 					<li><a href="{{ item.Path }}">{{ item.filename }}</a></li>
 					{% endfor %}
 				</ul>
-			</p>
+			</div>
             <h2 style="font-size: 20px; text-shadow: 2px 2px 5px red;">Chia sẻ</h2>
             <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}" class="fab fa-google-plus fa-2x" style="color:#D34836;" target="_blank"></a>
             <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" class="fab fa-whatsapp-square fa-2x" style="color:#25d366" target="_blank"></a>
@@ -84,7 +86,7 @@ function textAreaAdjust(element) {
 {% if user.username %}
 <div class="row">
     <div class="col-12 d-flex" >
-        <img src="{{ user.last_name}}" class="rounded-circle" width="70" height="70" style="min-width:70px" alt=""loading="lazy">
+        <img src="{{ user.last_name}}" class="rounded-circle" width="70" height="70" style="min-width:70px" alt="" loading="lazy">
         <form method='POST' class="w-100 pl-2">
             {% csrf_token %}
             <div class="form-group border-dark" style='border-bottom: 2px solid;'>
@@ -100,7 +102,7 @@ function textAreaAdjust(element) {
 {% else %}
 {% for cmt in comment %}
     <div class="p-0 col-12 d-flex" >
-        <img src="{{ cmt.user.last_name}}" class="rounded-circle" width="40" height="40" alt=""loading="lazy">
+        <img src="{{ cmt.user.last_name}}" class="rounded-circle" width="40" height="40" alt="" loading="lazy">
         <div>
             <div class="card1">
                 <div class="ms-2 me-auto" style="padding:0 10px;">
@@ -115,7 +117,7 @@ function textAreaAdjust(element) {
                         </b>
                         <span class='font-weight-light font-italic'>
                             {{cmt.ThoiGian | days_until }} trước
-                        <span>
+                        </span>
                     </div>
                     {{cmt.NoiDung|linebreaks}}
                 </div>
