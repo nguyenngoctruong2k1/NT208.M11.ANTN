@@ -84,8 +84,8 @@ class TaiLieu(models.Model):
 
 class FileUpload(models.Model):
     MaTL = models.CharField(max_length=30)
-    filename = models.CharField(max_length=100)
-    Path = models.CharField(max_length=130, primary_key=True)
+    filename = models.CharField(max_length=200)
+    Path = models.CharField(max_length=300, primary_key=True)
 
 
 class CommentTL(models.Model):
