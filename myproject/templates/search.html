@@ -20,14 +20,14 @@
     <div class="col-12 m-1">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><a href="/document/{{item.MaTL}}">{{item.TenTL}} - {{item.TenTL}}</a></h5>
+                <h5 class="card-title"><a href="/document/{{item.MaTL}}">{{item.TenTL}} - {{item.MaMH.TenMH}}</a></h5>
                 <small class="card-text card-subtitle text-muted">
                     đăng bởi
                         <span class="text-danger">
-                            {% if user.first_name %}
-                            {{user.first_name}}
+                            {% if item.user.first_name %}
+                            {{item.user.first_name}}
                             {% else %}
-                            {{user.username}}
+                            {{item.user.username}}
                             {% endif %}
                         </span>
                     lúc {{item.date |date:"H:i"}}
@@ -51,8 +51,8 @@
                     <option value="15">15</option>
                     <option value="20">20</option>
                     <option value="25">25</option>
-                    <option value="25">30</option>
-                    <option value="25">35</option>
+                    <option value="30">30</option>
+                    <option value="35">35</option>
                 </select>
             </div>
             <div class="tong-bai col-5 col-sm-4 col-lg-3 d-flex">
