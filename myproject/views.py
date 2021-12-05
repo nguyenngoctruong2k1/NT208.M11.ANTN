@@ -411,9 +411,9 @@ def TaiLieu_view(request):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
 
-    data = TaiLieu.objects.filter(KiemDuyet=True)
+    data = TaiLieu.objects.filter(KiemDuyet=True).order_by("-date")
     if not request.user.is_staff:
-        data = TaiLieu.objects.filter(user=request.user)
+        data = TaiLieu.objects.filter(user=request.user).order_by("-date")
 
     num = 10
     if request.GET.get('num'):
