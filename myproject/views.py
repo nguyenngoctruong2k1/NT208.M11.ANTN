@@ -25,73 +25,66 @@ from django.http import HttpResponseRedirect,HttpResponse
 from wsgiref.util import FileWrapper
 from django.db.models import Sum
 
-# Create your views here.
-
-
+# Tạo trang chủ
 def home_view(request):
     return render(
         request,
         'global_home.html',
     )
 
-
-# def handler404(request, exception):
-#     data = {}
-#     return render(request, '404.html', data)
-
-
+# Tạo trang seach
 def search_view(request):
-    if(request.GET.get("search") == None):
-        return render(
-            request,
-            '#',
-        )
     keyword= ''
-    if request.method == 'GET' and request.GET.get("search") != None:
-        searched = request.GET.get('search')
+    if request.method == 'GET':
+        # Tiền xử lý từ khóa tìm kiếm
+        if request.GET.get("search") != None:
+            searched = request.GET.get('search')
         keyword = searched
         searched = unidecode(searched)
+        # Nhận kết quả tìm kiếm
+        if searched: data = TaiLieu.objects.filter(KiemDuyet=True).filter(Q(search__icontains=searched))
+        else: data = TaiLieu.objects.filter(KiemDuyet=True)
+        # Phân trang cho kết quả tìm kiếm
+        num = 10
+        if request.GET.get('num'): num = int(request.GET.get('num'))
+        p = Paginator(data, num)
+        page = request.GET.get('page')
+        tailieu = p.get_page(page)
+        # Dữ liệu trả về
+        result = {
+            'tailieu': tailieu,
+            'num': num,
+            'length': len(data),
+            'keyword':keyword
+        }
+        # render kết quả trang tìm kiếm trả kết quả tìm kiếm cho người dùng
+        return render(
+            request,
+            'search.html',
+            result,
+        )
+    return render(
+        request,
+        'search.html',
+    )
 
-        if searched:
-            # monhoc = MonHoc.objects.filter(Q(search__icontains=searched))
-            data = TaiLieu.objects.filter(KiemDuyet=True).filter(Q(search__icontains=searched))
-
-            num = 10
-            if request.GET.get('num'): num = int(request.GET.get('num'))
-            p = Paginator(data, num)
-            page = request.GET.get('page')
-            tailieu = p.get_page(page)
-
-
-            result = {
-                # 'monhoc': monhoc,
-                'tailieu': tailieu,
-                'num': num,
-                'length': len(data),
-                'keyword':keyword
-            }
-            return render(
-                request,
-                'search.html',
-                result,
-            )
-    return HttpResponseRedirect(reverse('search'))
-
-
+# Tạo trang hiển thị danh sách các môn học
 def MonHocList_view(request, NhomMH, Khoa):
+    # Nhận kết quả 
     data = MonHoc.objects.filter(NhomMH=NhomMH).filter(Khoa=Khoa)
+    # Thực hiện phân trang 
     num = 10
     if request.GET.get('num'): num = int(request.GET.get('num'))
     p = Paginator(data, num)
     page = request.GET.get('page')
     monhoc = p.get_page(page)
-
-
+    # Lấy thông tin của request
     khoa = ''
     nhom_mh = ''
     if monhoc:
         khoa = monhoc[0].get_Khoa_display()
         nhom_mh = monhoc[0].get_NhomMH_display()
+    # Thực hiện render trả kết quả cho request
     return render(
         request,
         'show_MonHoc_List.html',
@@ -103,28 +96,32 @@ def MonHocList_view(request, NhomMH, Khoa):
         },
     )
 
-
+# Trang mô tả tổng quát về môn học và show một ít tài liệu
 def MonHoc_show(request, MaMH):
+    # Lấy comment của bài môn học, và xếp theo thời gian
     comment = CommentMH.objects.filter(MaMH=MaMH).order_by("-ThoiGian")
+    # Lấy một ít tài liệu để show
     data = TaiLieu.objects.filter(MaMH=MaMH).filter(KiemDuyet=True)
-    
     tailieu = {
         data.filter(LoaiTL='Slide').order_by("-date")[:4],
         data.filter(LoaiTL='DeThi').order_by("-date")[:4],
         data.filter(LoaiTL='BaiTap').order_by("-date")[:4],
         data.filter(LoaiTL='TaiLieuTK').order_by("-date")[:4]
     }
-
+    # Nhận thông tin về môn học
     monhoc = get_object_or_404(MonHoc, MaMH=MaMH)
+    # Tạo form bình luận cho user
     form = CommentMHForm()
+    # Nhận bình luận của user
     if request.method == 'POST':
         form = CommentMHForm(request.POST, user=request.user, MaMH=monhoc)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(request.path)
-    monhoc = MonHoc.objects.get(MaMH=MaMH)
+    # Lấy thông tin của môn học
     monhoc.len = data.count
     monhoc.download = sum(list(map(lambda item: item[0], data.values_list('LuotTai'))))
+    # Render kết quả
     return render(
         request,
         'show_mon_cu_the.html',
@@ -136,11 +133,15 @@ def MonHoc_show(request, MaMH):
         },
     )
 
-
+# Trang trình bày tất cả các tài liệu trong một loại tài liệu của môn học nào đó
 def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
+    # Nhận tất cả các comment của môn học
     comment = CommentMH.objects.filter(MaMH=MaMH).order_by("-ThoiGian")
+    # Lấy tất cả các tài liệu theo loại tài liệu và mã môn học
     tailieu = TaiLieu.objects.filter(MaMH=MaMH).filter(LoaiTL=LoaiTL)
+    # Lấy thông tin của môn học
     monhoc = get_object_or_404(MonHoc,MaMH=MaMH)
+    # Xử lý commnent
     if request.method == 'POST':
         form = CommentMHForm(request.POST, user=request.user,MaMH=monhoc)
         if form.is_valid():
@@ -148,13 +149,9 @@ def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
             return HttpResponseRedirect(request.path)
     if not tailieu:
         return HttpResponseRedirect(reverse('error'))
-    monhoc = get_object_or_404(MonHoc,MaMH=MaMH)
+    # Tạo form để nhập bình luận
     form = CommentMHForm()
-    if request.method == 'POST':
-        form = CommentMHForm(request.POST, user=request.user,MaMH=monhoc)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.path)
+    # Render kết quả trả về cho request
     return render(
         request,
         'show_MonHoc_LoaiTL.html',
@@ -166,33 +163,39 @@ def MonHoc_LoaiTL_show(request, MaMH, LoaiTL):
         },
     )
 
-
+# Trang trình bày một tài liệu cụ thể
 def one_document_view(request, slug):
+    # Lấy comment và sắp xếp theo thời gian
     comment = CommentTL.objects.filter(MaTL=slug).order_by("-ThoiGian")
+    # Lấy thông tin về tài liệu
     tai_lieu = TaiLieu.objects.get(MaTL=slug)
+    # Tính năng bài viết đã xem cho user đã login
     if request.user.username:
         RecentView.objects.get_or_create(user = request.user, MaTL_id=slug)
         temp =  RecentView.objects.get(user = request.user, MaTL_id=slug)
         if temp:
             temp.ThoiGian = timezone.now()
             temp.save()
+    # Cập nhập lượt xem cho tài liệu
     tai_lieu.LuotXem = tai_lieu.LuotXem + 1
     tai_lieu.save()
+    # Load các file tài liệu đính kèm có trong tài liệu
     FileDinhKem = FileUpload.objects.filter(MaTL=slug)
-    tl = get_object_or_404(TaiLieu, MaTL=slug)
-    form = CommentTLForm()
+    # Nhận bình luận từ các user
     if request.method == 'POST':
-        form = CommentTLForm(request.POST, user=request.user, MaTL=tl)
+        form = CommentTLForm(request.POST, user=request.user, MaTL=tai_lieu)
+        # Lưu form bình luận
         if form.is_valid():
+            # Cập nhập thông báo cho người đăng
             thongbao = ThongBao.objects.create(user = tai_lieu.user)
             temp = thongbao
             temp.NoiDung = str(request.user) + " đã bình luận về tài liệu " + tai_lieu.TenTL + " của bạn"
             if request.user.first_name:
                 temp.NoiDung = str(request.user.first_name) + " đã bình luận về tài liệu " + tai_lieu.TenTL + " của bạn" 
-            
             temp.save()
             form.save()
-            return HttpResponseRedirect(request.path)
+    # Load form bình luận cho các user
+    form = CommentTLForm()
     return render(
         request,
         'show_onedocument.html',
@@ -204,14 +207,14 @@ def one_document_view(request, slug):
         },
     )
 
-
+# Trang thông báo lỗi 
 def error(request, *args, **kwargs):
     return render(
         request,
         '404.html'
     )
 
-
+# Trang đăng kí
 def DangKy_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -229,7 +232,7 @@ def DangKy_view(request):
         {'form': form}
     )
 
-
+# Trang tổng quan, thêm môn học - Dashboard
 def dashboard_view(request):
     # nếu không có tài khoản thì trả về trang đăng nhập
     if not request.user.is_active:
@@ -242,14 +245,12 @@ def dashboard_view(request):
             'num_user': User.objects.filter(is_active=True).count(),
             'num_download': TaiLieu.objects.aggregate(Sum('LuotTai'))
         }
-    # Kết quả trả về với người dùng thường
-
+    # Kết quả trả về với người dùng cộng tác viên
     if request.user.is_staff:
         # Nếu là quản trị viên
         if request.method == 'POST':
             form = ThemMonHoc(request.POST)
             if form.is_valid():
-
                 instance = form.save(commit=False)
                 instance.search = unidecode(
                     instance.TenMH + ' ' + instance.get_Khoa_display()+' ' + instance.MaMH)
@@ -272,6 +273,7 @@ def dashboard_view(request):
         }
 
     # phần xử lý chung
+    # Phân trang
     form = ThemMonHoc()
     num = 10
     if request.GET.get('num'):
@@ -279,6 +281,7 @@ def dashboard_view(request):
     p = Paginator(data, num)
     page = request.GET.get('page')
     monhoc = p.get_page(page)
+    # render
     return render(
         request,
         'db_home.html',
@@ -314,7 +317,7 @@ def DuyetTL_view(request):
         }
     )
 
-
+# API xử lý duyệt tài liệu
 def TaiLieu_Duyet(request, slug):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
@@ -330,8 +333,9 @@ def TaiLieu_Duyet(request, slug):
     tailieu.save()
     return redirect('DuyetTL_view')
 
-
+# Trang xem trước tài liệu trước khi duyệt
 def TaiLieu_Preview(request, MaTL):
+    # Kiểm tra quyền truy cập
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
     if not request.user.is_staff:
@@ -348,11 +352,12 @@ def TaiLieu_Preview(request, MaTL):
         }
     )
 
-
+# Trang đóng góp tài liệu
 def DongGopTL_view(request):
+    # Kiểm tra có phải cộng tác viên không 
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
-
+    # Xử lý form 
     if request.method == 'POST':
 
         # Lấy thông tin từ form
@@ -406,22 +411,23 @@ def DongGopTL_view(request):
         {'form': form}
     )
 
-
+# Trang hiển thị danh sách các tài liệu
 def TaiLieu_view(request):
+    # Kiểm tra quyền 
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
-
+    # Lấy thông tin tài liều cần trả về
     data = TaiLieu.objects.filter(KiemDuyet=True).order_by("-date")
     if not request.user.is_staff:
         data = TaiLieu.objects.filter(user=request.user).order_by("-date")
-
+    # Phân trang 
     num = 10
     if request.GET.get('num'):
         num = int(request.GET.get('num'))
     p = Paginator(data, num)
-
     page = request.GET.get('page')
     tailieu = p.get_page(page)
+    # Render kết quả
     return render(
         request,
         'db_TaiLieu.html',
@@ -430,6 +436,8 @@ def TaiLieu_view(request):
             'num': num
         }
     )
+
+# API để downdload tài liệu thông qua URL
 def TaiLieu_download(request, slug):
     obj = TaiLieu.objects.filter(MaTL=slug)
     if obj:
@@ -443,19 +451,20 @@ def TaiLieu_download(request, slug):
         return response
     return Http404
 
+# API xóa tài liệu
 def TaiLieu_delete(request, slug):
     '''
     Xử lý cho việc xóa tài liệu
     url: dashboard/TaiLieu/delete/<Mã tài liệu>
     '''
-
+    #  Kiểm tra quyền
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('dashboard_view'))
-
+    # Lấy thông tin tài liệu
     tailieu = TaiLieu.objects.get(MaTL=slug)
-
+    # Kiểm tra số lượng tài liệu 
     if tailieu:
         # Giảm số lượng tài liệu của môn học
         mh = MonHoc.objects.get(MaMH=tailieu.MaMH)
@@ -474,6 +483,7 @@ def TaiLieu_delete(request, slug):
         except:pass
     return redirect('TaiLieu_view')
 
+# API kiểm tra việc đọc thông báo
 def Doc_Thong_Bao(request,slug):
     doctb = ThongBao.objects.get(pk=slug)
     doctb.Xem = True
@@ -482,6 +492,7 @@ def Doc_Thong_Bao(request,slug):
     #return HttpResponseRedirect(request.path)
     return render(request,)
 
+# API thay đổi khóa hoạt động của user
 def ThanhVien_Active(request, username):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
@@ -492,7 +503,7 @@ def ThanhVien_Active(request, username):
     user.save()
     return HttpResponseRedirect(reverse('ThanhVien_view'))
 
-
+# API đổi quyền User
 def ThanhVien_Staff(request, username):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
@@ -503,13 +514,13 @@ def ThanhVien_Staff(request, username):
     user.save()
     return HttpResponseRedirect(reverse('ThanhVien_view'))
 
-
+# Trang trả kết quả danh sách các thành viên dashboard
 def ThanhVien_view(request):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('dashboard_view'))
-
+    # Phân trang
     num = 10
     if request.GET.get('num'):
         num = int(request.GET.get('num'))
@@ -543,7 +554,7 @@ def BinhLuan_view(request):
         'db_BinhLuan.html',
     )
 
-
+# Thông tin cá nhân
 def ThongTinCaNhan_view(request):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('DangNhap_view'))
